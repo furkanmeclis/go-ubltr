@@ -1,7 +1,8 @@
 // Package ubltr generates and validates GİB UBL-TR electronic invoice XML.
 //
 // UBL-TR schema definitions are the source of truth. Generated Go types are
-// derived from the schemas and must not be edited by hand.
+// derived from the schemas and must not be edited by hand. The fluent builder
+// API writes those generated types; it is not a second invoice model.
 package ubltr
 
 import (
@@ -48,10 +49,21 @@ func NewInvoice() *invoice.Invoice {
 	return inv
 }
 
+// Violation is one XSD or Schematron failure. Path and RuleID are filled when
+// the engine provides them.
+type Violation struct {
+	Layer    string
+	Path     string
+	RuleID   string
+	Severity string
+	Message  string
+}
+
 // XSDValidationError is returned by [ValidateXSD] when the document is well-formed
 // XML but does not satisfy the GİB UBL-TR Invoice schema.
 type XSDValidationError struct {
-	Messages []string
+	Violations []Violation
+	Messages   []string
 }
 
 func (e *XSDValidationError) Error() string {
@@ -70,13 +82,15 @@ func ValidateXSD(ctx context.Context, xmlBytes []byte) error {
 	if result.Valid() {
 		return nil
 	}
-	return &XSDValidationError{Messages: violationMessages(result)}
+	v := publicViolations(result)
+	return &XSDValidationError{Violations: v, Messages: violationMessages(v)}
 }
 
 // SchematronValidationError is returned by [ValidateSchematron] when the document
 // does not satisfy GİB UBL-TR business rules.
 type SchematronValidationError struct {
-	Messages []string
+	Violations []Violation
+	Messages   []string
 }
 
 func (e *SchematronValidationError) Error() string {
@@ -102,7 +116,8 @@ func ValidateSchematronType(ctx context.Context, xmlBytes []byte, docType string
 	if result.Valid() {
 		return nil
 	}
-	return &SchematronValidationError{Messages: violationMessages(result)}
+	v := publicViolations(result)
+	return &SchematronValidationError{Violations: v, Messages: violationMessages(v)}
 }
 
 // Validate runs Invoice XSD validation then GİB Schematron (e-Fatura).
@@ -113,10 +128,28 @@ func Validate(ctx context.Context, xmlBytes []byte) error {
 	return ValidateSchematron(ctx, xmlBytes)
 }
 
-func violationMessages(result validation.Result) []string {
-	msgs := make([]string, 0, len(result.Violations))
+func publicViolations(result validation.Result) []Violation {
+	out := make([]Violation, 0, len(result.Violations))
 	for _, v := range result.Violations {
-		msgs = append(msgs, v.String())
+		out = append(out, Violation{
+			Layer:    v.Layer,
+			Path:     v.Path,
+			RuleID:   v.RuleID,
+			Severity: v.Severity,
+			Message:  v.Message,
+		})
+	}
+	return out
+}
+
+func violationMessages(vs []Violation) []string {
+	msgs := make([]string, 0, len(vs))
+	for _, v := range vs {
+		if v.Path != "" {
+			msgs = append(msgs, v.Layer+": "+v.Message+" ("+v.Path+")")
+			continue
+		}
+		msgs = append(msgs, v.Layer+": "+v.Message)
 	}
 	return msgs
 }

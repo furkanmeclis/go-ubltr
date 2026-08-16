@@ -34,4 +34,4 @@ go test ./...
 make generate
 ```
 
-Do not edit files under `schema/`. They come from `schemas/ubltr-1.2.1/xsdrt/maindoc/UBL-Invoice-2.1.xsd` via `cmd/ubltr-gen`.
+Do not edit files under `schema/` or `codelist/generated.go` / `codelist/lookup.go`. Types come from the Invoice XSD; code lists come from `UBL-TR_Codelist.xml`.

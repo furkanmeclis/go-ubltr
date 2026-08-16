@@ -6,7 +6,7 @@ Go library for GİB UBL-TR e-Fatura / e-Arşiv Invoice XML.
 
 Do not edit files under `schema/`. Regenerated types come from the vendored XSD in `schemas/` via `ubltr-gen`.
 
-How-to pages live in [`docs/`](docs/): [install](docs/install.md), [usage](docs/usage.md), [rendering](docs/rendering.md), [testing](docs/testing.md).
+How-to pages live in [`docs/`](docs/): [install](docs/install.md), [usage](docs/usage.md), [builder](docs/builder.md), [rendering](docs/rendering.md), [testing](docs/testing.md).
 
 ## Install
 
@@ -71,16 +71,47 @@ func main() {
 }
 ```
 
-`ubltr.NewInvoice()` returns an empty `*invoice.Invoice`. Builders for Party, Tax, and Line are not in this release.
+`ubltr.NewInvoice()` returns an empty `*invoice.Invoice`. Everyday construction lives in [`builder`](builder/) plus generated GİB lists in [`codelist`](codelist/):
+
+```go
+import (
+	"github.com/furkanmeclis/go-ubltr"
+	"github.com/furkanmeclis/go-ubltr/builder"
+	"github.com/furkanmeclis/go-ubltr/codelist"
+)
+
+price, err := builder.MoneyIn(codelist.TRY, "10.00")
+qty, err := builder.QuantityIn(codelist.UnitC62, "2")
+inv, err := builder.NewInvoiceBuilder().
+	Profile(codelist.ProfileTemelFatura).
+	Type(codelist.InvoiceTypeSatis).
+	ID("GIB20260000000001").
+	IssueDate("2026-03-01").
+	SupplierBuilder(supplier).
+	CustomerBuilder(customer).
+	Line(builder.NewInvoiceLineBuilder().
+		Name("Widget").
+		Quantity(qty).
+		Price(price).
+		Tax(builder.NewTaxBuilder().KDV("20"))).
+	Build()
+data, err := ubltr.Marshal(inv)
+```
+
+`Build()` returns generated `*invoice.Invoice`. Unit, currency, profile, tax, and related codes are the full GİB lists (`codelist.ValidUnit("C62")`, `codelist.UnitKWH`, …), generated from `UBL-TR_Codelist.xml` (UBL XSD does not enumerate them).
 
 ## What is generated
 
-`go generate ./schema/ubltr121` runs `cmd/ubltr-gen` against the GİB Invoice XSD:
+`make generate` runs `cmd/ubltr-gen` twice:
 
 ```
 schemas/ubltr-1.2.1/xsdrt/maindoc/UBL-Invoice-2.1.xsd
         ↓
 schema/ubltr121/{invoice,cac,cbc,ext,udt}
+
+schemas/ubltr-1.2.1/schematron/UBL-TR_Codelist.xml
+        ↓
+codelist/{generated.go,lookup.go}
 ```
 
 Only types reachable from the Invoice element are emitted. CreditNote, DespatchAdvice, ReceiptAdvice, ApplicationResponse, and the GİB envelope are not generated yet.
@@ -148,7 +179,7 @@ GİB may update packages independently of this module’s version. Check [ebelge
 ## Development
 
 ```bash
-make generate   # regenerate types from XSD
+make generate   # regenerate XSD types and GİB code lists
 make test       # all workspace modules (PDF tests skip if Chrome is missing)
 ```
 
@@ -158,7 +189,9 @@ Layout:
 
 - `schemas/` — official GİB/OASIS XSD and Schematron files (source of truth)
 - `schema/` — generated Go types (`schema/ubltr121/...`); do not edit by hand
+- `codelist/` — generated GİB unit/currency/profile/tax/… constants
+- `builder/` — fluent Invoice builders on top of generated types
 - `render/` — HTML/XSLT module
 - `render/chromium/` — PDF adapter
 - `examples/render/` — HTML, custom XSLT, and PDF programs
-- `docs/` — install, usage, rendering, and testing guides
+- `docs/` — install, usage, builder, rendering, and testing guides

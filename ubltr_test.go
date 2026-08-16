@@ -206,6 +206,56 @@ func TestNewInvoice(t *testing.T) {
 	}
 }
 
+func TestXSDValidationErrorHasPath(t *testing.T) {
+	t.Parallel()
+
+	err := ubltr.ValidateXSD(t.Context(), []byte(`<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"/>
+`))
+	if err == nil {
+		t.Fatal("expected xsd error")
+	}
+	var xe *ubltr.XSDValidationError
+	if !errors.As(err, &xe) {
+		t.Fatalf("type %T", err)
+	}
+	if len(xe.Violations) == 0 {
+		t.Fatal("expected violations")
+	}
+	if xe.Violations[0].Layer != "xsd" {
+		t.Fatalf("layer = %q", xe.Violations[0].Layer)
+	}
+	if xe.Violations[0].Message == "" && xe.Violations[0].Path == "" {
+		t.Fatalf("empty violation: %+v", xe.Violations[0])
+	}
+	if len(xe.Messages) == 0 {
+		t.Fatal("expected Messages for compatibility")
+	}
+}
+
+func TestSchematronValidationErrorHasRuleID(t *testing.T) {
+	t.Parallel()
+
+	err := ubltr.ValidateSchematron(t.Context(), readFixture(t, "TemelFaturaOrnegi.xml"))
+	if err == nil {
+		t.Fatal("expected schematron error")
+	}
+	var se *ubltr.SchematronValidationError
+	if !errors.As(err, &se) {
+		t.Fatalf("type %T", err)
+	}
+	found := false
+	for _, v := range se.Violations {
+		if v.RuleID != "" || v.Path != "" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("expected path or rule id in %+v", se.Violations)
+	}
+}
+
 func supplierVKN(inv invoice.Invoice) string {
 	for _, id := range inv.AccountingSupplierParty.Party.PartyIdentification {
 		if id.ID.SchemeID == "VKN" {

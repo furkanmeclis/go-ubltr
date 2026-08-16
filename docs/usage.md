@@ -1,6 +1,6 @@
 # Usage
 
-Package `ubltr` works on `[]byte` XML and generated Invoice structs. Builders for Party, Tax, and Line are not in this release; fill the struct or unmarshal existing XML.
+Package `ubltr` works on `[]byte` XML and generated Invoice structs. Fill the struct, unmarshal existing XML, or construct with [`builder`](builder.md).
 
 ## Types
 
@@ -12,6 +12,10 @@ var loaded invoice.Invoice
 ```
 
 Amounts, dates, and times are `string` so lexical values survive round-trip. Identifiers keep `schemeID`.
+
+## Builder
+
+Fluent Invoice construction, decimal money, and GİB code lists: [builder.md](builder.md).
 
 ## Marshal and unmarshal
 
@@ -47,8 +51,8 @@ Typed failures:
 ```go
 var xe *ubltr.XSDValidationError
 var se *ubltr.SchematronValidationError
-if errors.As(err, &xe) { /* xe.Messages */ }
-if errors.As(err, &se) { /* se.Messages */ }
+if errors.As(err, &xe) { /* xe.Violations, xe.Messages */ }
+if errors.As(err, &se) { /* se.Violations, se.Messages */ }
 ```
 
 Malformed XML is a wrapped parse error, not those types.

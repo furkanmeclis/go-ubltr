@@ -13,8 +13,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ValidateSchematron`, `ValidateSchematronType`, and `Validate` (XSD then Schematron) using flattened GİB ISO rules and XPath 3.1.
 - Nested `render` module: XML → XSLT → HTML via helium xslt3, with a user-supplied or `StyleMinimal` stylesheet.
 - Nested `render/chromium` module: HTML → PDF via chromedp (A4). Chrome is a runtime dependency, not a core `go get` dependency.
-- How-to docs under `docs/` (install, usage, rendering, testing).
+- How-to docs under `docs/` (install, usage, builder, rendering, testing).
 - Vendored GİB UBL-TR 1.2.1 XSD, Schematron, and envelope files under `schemas/`.
+- Fluent Invoice builders in package `builder` (party/line/tax/payment/address/delivery) on top of generated types.
+- `builder.Money` / `Quantity` decimal helpers (`shopspring/decimal`, not `float64`) with automatic line and document totals.
+- Generated GİB code lists in package `codelist` from `UBL-TR_Codelist.xml` (full unit, currency, profile, tax, MIME, … plus `Valid*` helpers).
+- Structured `Violation` fields (`Path`, `RuleID`, `Severity`) on XSD and Schematron errors.
 
 ### Known limitations
 

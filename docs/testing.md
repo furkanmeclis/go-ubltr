@@ -38,6 +38,8 @@ GOWORK=off go list -m all | grep chromedp   # empty
 | XSD | `ubltr_test`, `internal/validation` | fixture passes; empty Invoice fails |
 | Schematron | `ubltr_test`, `internal/validation` | fixture is expected to fail current rules (TCKN); unknown ProfileID fails |
 | HTML | `render` | `StyleMinimal` on the GİB sample; Turkish glyphs; malformed XML |
+| Builder | `builder` | fluent Invoice → XSD-valid XML; totals rounding fixture |
+| Code lists | `codelist` | every GİB unit/currency/profile code from `UBL-TR_Codelist.xml` |
 | XSLT host access | `render/xslt/helium` | `document('/etc/passwd')` must not read the disk |
 | PDF pipeline (fake) | `render` | stub `PDFRenderer` |
 | PDF smoke | `render/chromium` | real Chrome; `%PDF` prefix and a page object |
@@ -47,6 +49,7 @@ Table-driven tests use named `t.Run` cases. Independent tests call `t.Parallel()
 ## Fixtures
 
 - `testdata/ubltr-1.2.1/*.xml` — official GİB samples (XSD-valid, Schematron-invalid today).
+- `codelist/` — generated from `schemas/ubltr-1.2.1/schematron/UBL-TR_Codelist.xml`.
 - `render/testdata/styles/minimal.xsl` — MIT test stylesheet.
 - `examples/render/general/general.xslt` — GİB viewer sheet for manual runs, not a unit-test input in core.
 
@@ -57,8 +60,8 @@ make generate
 go test ./...
 ```
 
-If generated files under `schema/` change, include them in the same commit as the generator or XSD update.
+If generated files under `schema/` or `codelist/` change, include them in the same commit as the generator or schema update.
 
 ## Examples
 
-Examples are `main` packages without `_test.go`. Run them with `go run .` from each directory; see [rendering.md](rendering.md).
+Examples are `main` packages without `_test.go`. Run them with `go run .` from each directory; see [rendering.md](rendering.md) and [builder.md](builder.md).
