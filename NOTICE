@@ -1,0 +1,46 @@
+go-ubltr
+Copyright (c) 2026 Furkan Meclis
+
+This product is licensed under the MIT License (see LICENSE).
+
+================================================================================
+Bundled third-party artefacts
+================================================================================
+
+1. OASIS Universal Business Language (UBL) 2.1 schemas (runtime / xsdrt)
+   Location: schemas/ubltr-1.2.1/xsdrt/
+   Copyright (c) OASIS Open 2013. All Rights Reserved.
+   http://docs.oasis-open.org/ubl/os-UBL-2.1/
+   Redistributed with the OASIS copyright notice carried in each schema file.
+   The original notices are kept intact in the .xsd files.
+
+   UBL is freely available without licensing fees. Copies and derivative works
+   that assist in implementation may be distributed provided the OASIS
+   copyright notice is retained. The schema documents themselves are not
+   modified except where Gelir İdaresi Başkanlığı (GİB) has already published
+   a national UBL-TR customization.
+
+2. UN/CEFACT CCTS Core Component Type Schema Module
+   Location: schemas/ubltr-1.2.1/xsdrt/common/CCTS_CCT_SchemaModule-2.1.xsd
+   Copyright (C) UN/CEFACT (2006). All Rights Reserved.
+   Redistributed with the copyright notice retained in the schema file.
+
+3. GİB UBL-TR 1.2.1 package (national Invoice/CreditNote/Despatch customizations)
+   Location: schemas/ubltr-1.2.1/xsdrt/
+   Publisher: Gelir İdaresi Başkanlığı
+   Source: https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/UBL-TR1.2.1_Paketi.zip
+   Retrieved: 2026-08-16
+   No separate open-source license is published with the package. Files are
+   vendored unmodified for implementers of the mandatory UBL-TR standard.
+   This project does not claim copyright over GİB artefacts.
+
+4. GİB e-Fatura Paketi Schematron and envelope schemas
+   Location: schemas/ubltr-1.2.1/schematron/, schemas/ubltr-1.2.1/envelope/
+   Publisher: Gelir İdaresi Başkanlığı
+   Source: https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/e-FaturaPaketi.zip
+   Retrieved: 2026-08-16 (package Last-Modified: 2026-07-27)
+   Files are vendored unmodified. This project does not claim copyright over
+   GİB artefacts.
+
+GİB may publish updates independently of this Go module's semantic version.
+Always verify the current packages at https://ebelge.gib.gov.tr/.
