@@ -6,7 +6,7 @@ Go library for GİB UBL-TR e-Fatura / e-Arşiv Invoice XML, plus CreditNote, App
 
 Do not edit files under `schema/`. Regenerated types come from the vendored XSD in `schemas/` via `ubltr-gen`.
 
-How-to pages live in [`docs/`](docs/): [install](docs/install.md), [usage](docs/usage.md), [builder](docs/builder.md), [rendering](docs/rendering.md), [testing](docs/testing.md).
+How-to pages live in [`docs/`](docs/): [install](docs/install.md), [usage](docs/usage.md), [builder](docs/builder.md), [rendering](docs/rendering.md), [cli](docs/cli.md), [testing](docs/testing.md).
 
 ## Install
 
@@ -29,6 +29,14 @@ PDF (needs a Chrome/Chromium binary at runtime):
 ```bash
 go get github.com/furkanmeclis/go-ubltr/render/chromium
 ```
+
+Command-line tool (nested module; `--pdf` may pull chromedp):
+
+```bash
+go install github.com/furkanmeclis/go-ubltr/cmd/ubltr@latest
+```
+
+From a clone: `go install ./cmd/ubltr`. See [cli](docs/cli.md).
 
 ## Usage
 
@@ -165,6 +173,7 @@ Default XSLT engine is helium `xslt3` (pure Go). `xsi:schemaLocation` on GİB XM
 | XML + XSD + Schematron | `github.com/furkanmeclis/go-ubltr` |
 | HTML | `github.com/furkanmeclis/go-ubltr/render` |
 | PDF | `github.com/furkanmeclis/go-ubltr/render/chromium` |
+| CLI | `github.com/furkanmeclis/go-ubltr/cmd/ubltr` |
 
 ## XML output
 
@@ -202,4 +211,5 @@ Layout:
 - `render/` — HTML/XSLT module
 - `render/chromium/` — PDF adapter
 - `examples/render/` — HTML, custom XSLT, and PDF programs
-- `docs/` — install, usage, builder, rendering, and testing guides
+- `cmd/ubltr/` — nested `ubltr` CLI module
+- `docs/` — install, usage, builder, rendering, CLI, and testing guides

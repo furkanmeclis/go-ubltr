@@ -12,6 +12,7 @@ That runs:
 go test ./...
 go test ./render/...
 go test ./render/chromium/...
+go test ./cmd/ubltr/...
 ```
 
 `go test ./...` from the repo root only covers the **core** module. Nested modules have their own `go.mod`, so they are listed separately in the Makefile.
@@ -45,6 +46,7 @@ GOWORK=off go list -m all | grep chromedp   # empty
 | XSLT host access | `render/xslt/helium` | `document('/etc/passwd')` must not read the disk |
 | PDF pipeline (fake) | `render` | stub `PDFRenderer` |
 | PDF smoke | `render/chromium` | real Chrome; `%PDF` prefix and a page object |
+| CLI | `cmd/ubltr` | validate `--xsd` on fixture (pass); default validate fails Schematron; inspect summary; HTML render; `--pdf` is `%PDF` or a Chrome/chromium-module message |
 
 Table-driven tests use named `t.Run` cases. Independent tests call `t.Parallel()` except the Chrome smoke test.
 

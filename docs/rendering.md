@@ -68,3 +68,5 @@ cd examples/render/pdf
 go run . -in ../../../testdata/ubltr-1.2.1/TemelFaturaOrnegi.xml \
   -xsl ../general/general.xslt -out ../general/TemelFatura.pdf
 ```
+
+Command-line HTML/PDF: [cli.md](cli.md) (`ubltr render`, `ubltr render --pdf`).

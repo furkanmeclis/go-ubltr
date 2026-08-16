@@ -98,4 +98,4 @@ if errors.As(err, &se) { /* se.Violations, se.Messages */ }
 
 Malformed XML is a wrapped parse error, not those types.
 
-Full programs: root [README](../README.md). HTML and PDF: [rendering.md](rendering.md).
+Full programs: root [README](../README.md). HTML and PDF: [rendering.md](rendering.md). CLI: [cli.md](cli.md).
