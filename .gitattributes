@@ -1,0 +1,19 @@
+* text=auto
+
+*.go text eol=lf
+*.mod text eol=lf
+*.sum text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+Makefile text eol=lf
+*.json text eol=lf
+
+# Official GİB / OASIS artefacts: keep published bytes (often CRLF).
+schemas/** -text
+testdata/** -text
+examples/render/general/*.xslt -text
+
+schema/** linguist-generated=true
+codelist/generated.go linguist-generated=true
+codelist/lookup.go linguist-generated=true

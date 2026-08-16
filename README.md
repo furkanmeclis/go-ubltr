@@ -1,12 +1,21 @@
 # go-ubltr
 
-Go library for GİB UBL-TR e-Fatura / e-Arşiv Invoice XML, plus CreditNote, ApplicationResponse, DespatchAdvice, ReceiptAdvice, and the e-Arşiv *report*.
+[![CI](https://github.com/furkanmeclis/go-ubltr/actions/workflows/ci.yml/badge.svg)](https://github.com/furkanmeclis/go-ubltr/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/furkanmeclis/go-ubltr.svg)](https://pkg.go.dev/github.com/furkanmeclis/go-ubltr)
+[![License: MIT](https://img.shields.io/github/license/furkanmeclis/go-ubltr)](LICENSE)
+
+Go library for creating, validating, and rendering Turkish Revenue Administration (GİB) UBL-TR electronic-invoice and e-Arşiv Invoice XML. It also covers CreditNote, ApplicationResponse, DespatchAdvice, ReceiptAdvice, and the e-Arşiv *report*.
 
 **UBL-TR schema definitions are the source of truth. Generated Go types are derived from the schemas.**
 
 Do not edit files under `schema/`. Regenerated types come from the vendored XSD in `schemas/` via `ubltr-gen`.
 
-How-to pages live in [`docs/`](docs/): [install](docs/install.md), [usage](docs/usage.md), [builder](docs/builder.md), [rendering](docs/rendering.md), [cli](docs/cli.md), [testing](docs/testing.md).
+- Documentation: [`docs/`](docs/) ([install](docs/install.md), [usage](docs/usage.md), [builder](docs/builder.md), [rendering](docs/rendering.md), [cli](docs/cli.md), [testing](docs/testing.md))
+- [Changelog](CHANGELOG.md)
+- [Roadmap](ROADMAP.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
 
 ## Install
 
@@ -198,6 +207,7 @@ GİB may update packages independently of this module’s version. Check [ebelge
 ```bash
 make generate   # regenerate XSD types and GİB code lists
 make test       # all workspace modules (PDF tests skip if Chrome is missing)
+make check      # format check, go vet, golangci-lint, then tests
 ```
 
 This repository is a Go workspace (`go.work`). `GOWORK=off go test ./...` tests only the core module.
@@ -212,4 +222,12 @@ Layout:
 - `render/chromium/` — PDF adapter
 - `examples/render/` — HTML, custom XSLT, and PDF programs
 - `cmd/ubltr/` — nested `ubltr` CLI module
-- `docs/` — install, usage, builder, rendering, CLI, and testing guides
+- `docs/` — install, usage, builder, rendering, CLI, testing, and repository-settings guides
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Please follow the [code of conduct](CODE_OF_CONDUCT.md). Security reports go through [SECURITY.md](SECURITY.md), not public issues.
+
+## License
+
+The Go code is MIT. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for OASIS, UN/CEFACT, and GİB artefact terms.

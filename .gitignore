@@ -23,4 +23,3 @@ tmp/
 examples/**/invoice.html
 examples/**/invoice.pdf
 examples/render/general/*.pdf
-ROADMAP.md

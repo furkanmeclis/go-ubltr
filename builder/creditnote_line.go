@@ -35,13 +35,6 @@ func (b *CreditNoteLineBuilder) fail(field, msg string) {
 	b.err = builderErr(field, msg)
 }
 
-func (b *CreditNoteLineBuilder) failErr(field string, err error) {
-	if b == nil || b.err != nil || err == nil {
-		return
-	}
-	b.err = builderWrap(field, err)
-}
-
 // ID sets the line ID. CreditNoteBuilder fills 1, 2, … when empty.
 func (b *CreditNoteLineBuilder) ID(id string) *CreditNoteLineBuilder {
 	b.id = id

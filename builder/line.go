@@ -43,13 +43,6 @@ func (b *InvoiceLineBuilder) fail(field, msg string) {
 	b.err = builderErr(field, msg)
 }
 
-func (b *InvoiceLineBuilder) failErr(field string, err error) {
-	if b == nil || b.err != nil || err == nil {
-		return
-	}
-	b.err = builderWrap(field, err)
-}
-
 // ID sets the line ID. InvoiceBuilder fills 1, 2, … when empty.
 func (b *InvoiceLineBuilder) ID(id string) *InvoiceLineBuilder {
 	b.id = id

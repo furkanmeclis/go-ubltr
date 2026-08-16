@@ -15,6 +15,8 @@ go test ./render/chromium/...
 go test ./cmd/ubltr/...
 ```
 
+`make check` runs format checks, `go vet`, golangci-lint, then the same tests.
+
 `go test ./...` from the repo root only covers the **core** module. Nested modules have their own `go.mod`, so they are listed separately in the Makefile.
 
 PDF tests need Chrome or Chromium. If the binary is missing they **skip**, they do not fail.

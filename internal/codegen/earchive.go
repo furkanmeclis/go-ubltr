@@ -340,7 +340,7 @@ func (g *eaGen) addField(t *eaGoType, el eaElement, parent string, parentUnbound
 	optional := el.MinOccurs == "0" || inChoice
 	repeated := parentUnbounded || el.MaxOccurs == "unbounded" || (el.MaxOccurs != "" && el.MaxOccurs != "1" && el.MaxOccurs != "0")
 	fieldName := exportEA(el.Name)
-	goType := "string"
+	var goType string
 	switch {
 	case el.ComplexType != nil:
 		preferred := fieldName

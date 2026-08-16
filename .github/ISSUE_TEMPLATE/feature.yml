@@ -1,0 +1,49 @@
+name: Feature request
+description: Propose a small, document-centric improvement.
+title: "[feat] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read [ROADMAP.md](https://github.com/furkanmeclis/go-ubltr/blob/main/ROADMAP.md) before requesting work that is listed as out of scope (GİB web services, XML signing, prefix rewriting, Chrome in core).
+
+        **Do not include real invoice XML, taxpayer identifiers (TCKN / VKN), credentials, or customer data.**
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: This request contains no real e-Fatura / e-Arşiv data, taxpayer identifiers, credentials, or customer data.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is hard or impossible with the current API?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: A small API or CLI change. Prefer generated XSD types over a parallel domain model.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Core (marshal, validate, documents)
+        - Builder / code lists
+        - Render / PDF
+        - CLI
+        - Documentation
+        - Other
+    validations:
+      required: true

@@ -1,9 +1,10 @@
 package builder
 
 import (
+	"github.com/shopspring/decimal"
+
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cac"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cbc"
-	"github.com/shopspring/decimal"
 )
 
 type allowanceResult struct {
