@@ -49,7 +49,7 @@ Zero `PDFOptions` means A4 portrait. Set `Landscape: true` for landscape. Margin
 
 HTTP, HTTPS, and `file://` loads are blocked during print. Put images in the HTML as `data:` URLs (GİB `general.xslt` already embeds the e-Fatura logo that way).
 
-`render.ErrPDFRender` wraps Chrome errors. Tests skip when Chrome is missing.
+`render.ErrPDFRender` wraps Chrome errors. The Chrome PDF smoke test is skipped.
 
 ## Examples
 

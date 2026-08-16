@@ -19,7 +19,7 @@ go test ./cmd/ubltr/...
 
 `go test ./...` from the repo root only covers the **core** module. Nested modules have their own `go.mod`, so they are listed separately in the Makefile.
 
-PDF tests need Chrome or Chromium. If the binary is missing they **skip**, they do not fail.
+PDF tests that launch Chrome are skipped. The remaining `render/chromium` test does not start a browser.
 
 ## Core only (no render, no Chrome)
 
@@ -47,7 +47,7 @@ GOWORK=off go list -m all | grep chromedp   # empty
 | Code lists | `codelist` | every GİB unit/currency/profile code from `UBL-TR_Codelist.xml` |
 | XSLT host access | `render/xslt/helium` | `document('/etc/passwd')` must not read the disk |
 | PDF pipeline (fake) | `render` | stub `PDFRenderer` |
-| PDF smoke | `render/chromium` | real Chrome; `%PDF` prefix and a page object |
+| PDF smoke | `render/chromium` | disabled (does not launch Chrome) |
 | CLI | `cmd/ubltr` | validate `--xsd` on fixture (pass); default validate fails Schematron; inspect summary; HTML render; `--pdf` is `%PDF` or a Chrome/chromium-module message |
 
 Table-driven tests use named `t.Run` cases. Independent tests call `t.Parallel()` except the Chrome smoke test.
