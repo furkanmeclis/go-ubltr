@@ -6,6 +6,8 @@ Go library for GİB UBL-TR e-Fatura / e-Arşiv Invoice XML.
 
 Do not edit files under `schema/`. Regenerated types come from the vendored XSD in `schemas/` via `ubltr-gen`.
 
+How-to pages live in [`docs/`](docs/): [install](docs/install.md), [usage](docs/usage.md), [rendering](docs/rendering.md), [testing](docs/testing.md).
+
 ## Install
 
 Requires Go 1.26.1 or later.
@@ -159,3 +161,4 @@ Layout:
 - `render/` — HTML/XSLT module
 - `render/chromium/` — PDF adapter
 - `examples/render/` — HTML, custom XSLT, and PDF programs
+- `docs/` — install, usage, rendering, and testing guides

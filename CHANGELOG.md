@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ValidateSchematron`, `ValidateSchematronType`, and `Validate` (XSD then Schematron) using flattened GİB ISO rules and XPath 3.1.
 - Nested `render` module: XML → XSLT → HTML via helium xslt3, with a user-supplied or `StyleMinimal` stylesheet.
 - Nested `render/chromium` module: HTML → PDF via chromedp (A4). Chrome is a runtime dependency, not a core `go get` dependency.
+- How-to docs under `docs/` (install, usage, rendering, testing).
 - Vendored GİB UBL-TR 1.2.1 XSD, Schematron, and envelope files under `schemas/`.
 
 ### Known limitations
