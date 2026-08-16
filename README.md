@@ -43,6 +43,9 @@ func main() {
 	if err := ubltr.ValidateXSD(context.Background(), data); err != nil {
 		panic(err)
 	}
+	if err := ubltr.ValidateSchematron(context.Background(), data); err != nil {
+		fmt.Println(err)
+	}
 
 	out, err := ubltr.Marshal(&inv)
 	if err != nil {
@@ -70,14 +73,15 @@ Amounts, dates, and times are `string` so lexical values survive round-trip. Ide
 
 ## Validation
 
-| Layer | Status |
-| --- | --- |
-| XSD (Invoice) | Supported via `ValidateXSD`. Uses [helium](https://github.com/lestrrat-go/helium) against the vendored GİB UBL-TR 1.2.1 Invoice schema. |
-| Schematron | Not supported yet. |
+| Layer | API | Notes |
+| --- | --- | --- |
+| XSD (Invoice) | `ValidateXSD` | [helium](https://github.com/lestrrat-go/helium) against the vendored GİB UBL-TR 1.2.1 Invoice schema. |
+| Schematron | `ValidateSchematron`, `ValidateSchematronType` | Official GİB rules, flattened from ISO include/abstract/extends, evaluated with XPath 3.1. |
+| Both | `Validate` | XSD first, then e-Fatura Schematron. |
 
-GİB `UBL-TR_Main_Schematron.xml` is ISO Schematron with `sch:include`, schema-level `let`, abstract rules, and `sch:extends`. Helium’s native compiler does not accept those constructs (it expects a flattened pattern/assert document). An ISO preprocess → SVRL pipeline is not wired. Do not treat XSD success as GİB business-rule success.
+`ValidateSchematron` uses `type=efatura`. Pass `ubltr.TypeEArchive` to `ValidateSchematronType` for e-Arşiv (`ProfileID` must be `EARSIVFATURA`).
 
-e-Arşiv invoices use the same Invoice XSD with `ProfileID=EARSIVFATURA`. Schematron `type` (`efatura` vs `earchive`) is not applied until Schematron runs.
+XSD success is not GİB business-rule success. Official 2009 sample invoices in `testdata/` are XSD-valid and fail current Schematron (for example customer TCKN length). Helium’s native Schematron compiler still cannot ingest the unmodified GİB files; this library flattens them first.
 
 ## XML output
 

@@ -14,6 +14,13 @@ import (
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/invoice"
 )
 
+const (
+	// TypeEFatura is the GİB Schematron type parameter for e-Fatura.
+	TypeEFatura = "efatura"
+	// TypeEArchive is the GİB Schematron type parameter for e-Arşiv.
+	TypeEArchive = "earchive"
+)
+
 // Marshal encodes v as UBL XML with an XML declaration.
 func Marshal(v any) ([]byte, error) {
 	body, err := xml.MarshalIndent(v, "", "  ")
@@ -55,20 +62,61 @@ func (e *XSDValidationError) Error() string {
 }
 
 // ValidateXSD checks xmlBytes against the GİB UBL-TR Invoice XSD.
-//
-// Schematron (GİB business rules) is not run. Native compilation of the official
-// UBL-TR Schematron files is not supported yet; see README.
 func ValidateXSD(ctx context.Context, xmlBytes []byte) error {
 	result, err := validation.XSD(ctx, xmlBytes)
 	if err != nil {
-		return err
+		return fmt.Errorf("validate xsd: %w", err)
 	}
 	if result.Valid() {
 		return nil
 	}
+	return &XSDValidationError{Messages: violationMessages(result)}
+}
+
+// SchematronValidationError is returned by [ValidateSchematron] when the document
+// does not satisfy GİB UBL-TR business rules.
+type SchematronValidationError struct {
+	Messages []string
+}
+
+func (e *SchematronValidationError) Error() string {
+	if e == nil || len(e.Messages) == 0 {
+		return "schematron validation failed"
+	}
+	return "schematron validation failed: " + strings.Join(e.Messages, "; ")
+}
+
+// ValidateSchematron checks xmlBytes against GİB UBL-TR Schematron rules
+// using type=efatura. Use [ValidateSchematronType] for e-Arşiv.
+func ValidateSchematron(ctx context.Context, xmlBytes []byte) error {
+	return ValidateSchematronType(ctx, xmlBytes, TypeEFatura)
+}
+
+// ValidateSchematronType checks xmlBytes against GİB UBL-TR Schematron.
+// docType is "efatura" or "earchive".
+func ValidateSchematronType(ctx context.Context, xmlBytes []byte, docType string) error {
+	result, err := validation.Schematron(ctx, xmlBytes, docType)
+	if err != nil {
+		return fmt.Errorf("validate schematron: %w", err)
+	}
+	if result.Valid() {
+		return nil
+	}
+	return &SchematronValidationError{Messages: violationMessages(result)}
+}
+
+// Validate runs Invoice XSD validation then GİB Schematron (e-Fatura).
+func Validate(ctx context.Context, xmlBytes []byte) error {
+	if err := ValidateXSD(ctx, xmlBytes); err != nil {
+		return err
+	}
+	return ValidateSchematron(ctx, xmlBytes)
+}
+
+func violationMessages(result validation.Result) []string {
 	msgs := make([]string, 0, len(result.Violations))
 	for _, v := range result.Violations {
 		msgs = append(msgs, v.String())
 	}
-	return &XSDValidationError{Messages: msgs}
+	return msgs
 }

@@ -132,6 +132,64 @@ func TestValidateXSD(t *testing.T) {
 	}
 }
 
+func TestValidateSchematron(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name    string
+		xml     []byte
+		docType string
+		wantErr bool
+	}{
+		{
+			name:    "temel fatura fixture fails current rules",
+			xml:     readFixture(t, "TemelFaturaOrnegi.xml"),
+			docType: ubltr.TypeEFatura,
+			wantErr: true,
+		},
+		{
+			name:    "earchive rejects TEMELFATURA",
+			xml:     readFixture(t, "TemelFaturaOrnegi.xml"),
+			docType: ubltr.TypeEArchive,
+			wantErr: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			err := ubltr.ValidateSchematronType(t.Context(), tc.xml, tc.docType)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("ValidateSchematronType() error = %v, wantErr %v", err, tc.wantErr)
+			}
+			if tc.wantErr && err != nil {
+				var ve *ubltr.SchematronValidationError
+				if !errors.As(err, &ve) {
+					t.Fatalf("error type %T, want *ubltr.SchematronValidationError", err)
+				}
+			}
+		})
+	}
+}
+
+func TestValidateRunsXSDThenSchematron(t *testing.T) {
+	t.Parallel()
+
+	err := ubltr.Validate(t.Context(), readFixture(t, "TemelFaturaOrnegi.xml"))
+	if err == nil {
+		t.Fatal("expected schematron failure after xsd success")
+	}
+	var xe *ubltr.XSDValidationError
+	if errors.As(err, &xe) {
+		t.Fatalf("got xsd error, want schematron: %v", err)
+	}
+	var se *ubltr.SchematronValidationError
+	if !errors.As(err, &se) {
+		t.Fatalf("error type %T, want *ubltr.SchematronValidationError", err)
+	}
+}
+
 func TestNewInvoice(t *testing.T) {
 	t.Parallel()
 
