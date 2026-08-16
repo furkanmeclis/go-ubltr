@@ -14,6 +14,20 @@ Requires Go 1.26.1 or later.
 go get github.com/furkanmeclis/go-ubltr
 ```
 
+That module is XML, XSD, and Schematron only. It does not download Chrome, chromedp, or an XSLT adapter.
+
+HTML rendering:
+
+```bash
+go get github.com/furkanmeclis/go-ubltr/render
+```
+
+PDF (needs a Chrome/Chromium binary at runtime):
+
+```bash
+go get github.com/furkanmeclis/go-ubltr/render/chromium
+```
+
 ## Usage
 
 ```go
@@ -83,6 +97,35 @@ Amounts, dates, and times are `string` so lexical values survive round-trip. Ide
 
 XSD success is not GİB business-rule success. Official 2009 sample invoices in `testdata/` are XSD-valid and fail current Schematron (for example customer TCKN length). Helium’s native Schematron compiler still cannot ingest the unmodified GİB files; this library flattens them first.
 
+## Rendering
+
+Style (XML → HTML) and PDF engine (HTML → PDF) are separate nested modules. Core does not import them.
+
+```go
+import (
+	"github.com/furkanmeclis/go-ubltr/render"
+	"github.com/furkanmeclis/go-ubltr/render/chromium"
+	heliumxslt "github.com/furkanmeclis/go-ubltr/render/xslt/helium"
+)
+
+htmlR, err := render.NewHTML(heliumxslt.New(), render.StyleMinimal())
+html, err := htmlR.Render(ctx, xmlBytes)
+
+pdfR := chromium.New(ctx)
+defer pdfR.Close()
+pdf, err := render.ToPDF(ctx, htmlR, pdfR, xmlBytes, render.PDFOptions{})
+```
+
+Pass your own XSLT as `render.Style{Name: "company", Stylesheet: xslBytes}`. `.xsl` and `.xslt` are the same format. A GİB `general.xslt` trial lives in `examples/render/general/` (not a core module dependency).
+
+Default XSLT engine is helium `xslt3` (pure Go). `xsi:schemaLocation` on GİB XML is ignored; `document()` and `xsl:include` cannot read the host. Default PDF engine is headless Chrome via chromedp, A4 portrait. Docker images should install a Turkish-capable font such as Noto Sans.
+
+| Need | Module |
+| --- | --- |
+| XML + XSD + Schematron | `github.com/furkanmeclis/go-ubltr` |
+| HTML | `github.com/furkanmeclis/go-ubltr/render` |
+| PDF | `github.com/furkanmeclis/go-ubltr/render/chromium` |
+
 ## XML output
 
 `encoding/xml` writes namespace URIs on elements. Prefixes such as `cbc:` / `cac:` are not guaranteed. That is valid XML; Schematron XPath binds prefixes to URIs, so prefix spelling is not required for correctness. This library does not rewrite serialized XML with string replace or regex.
@@ -104,10 +147,15 @@ GİB may update packages independently of this module’s version. Check [ebelge
 
 ```bash
 make generate   # regenerate types from XSD
-make test
+make test       # all workspace modules (PDF tests skip if Chrome is missing)
 ```
+
+This repository is a Go workspace (`go.work`). `GOWORK=off go test ./...` tests only the core module.
 
 Layout:
 
 - `schemas/` — official GİB/OASIS XSD and Schematron files (source of truth)
 - `schema/` — generated Go types (`schema/ubltr121/...`); do not edit by hand
+- `render/` — HTML/XSLT module
+- `render/chromium/` — PDF adapter
+- `examples/render/` — HTML, custom XSLT, and PDF programs

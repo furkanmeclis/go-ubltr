@@ -5,6 +5,11 @@ generate:
 
 test:
 	go test ./...
+	go test ./render/...
+	go test ./render/chromium/...
 
 tidy:
+	go work sync
 	go mod tidy
+	cd render && go mod tidy
+	cd render/chromium && go mod tidy
