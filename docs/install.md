@@ -34,4 +34,4 @@ go test ./...
 make generate
 ```
 
-Do not edit files under `schema/` or `codelist/generated.go` / `codelist/lookup.go`. Types come from the Invoice XSD; code lists come from `UBL-TR_Codelist.xml`.
+Do not edit files under `schema/` or `codelist/generated.go` / `codelist/lookup.go`. Document types come from the five UBL-TR maindoc XSDs; code lists come from `UBL-TR_Codelist.xml`.

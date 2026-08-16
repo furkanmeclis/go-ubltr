@@ -35,10 +35,11 @@ GOWORK=off go list -m all | grep chromedp   # empty
 | Area | Package | Notes |
 | --- | --- | --- |
 | Unmarshal / marshal | `ubltr_test` | `testdata/ubltr-1.2.1/TemelFaturaOrnegi.xml` |
-| XSD | `ubltr_test`, `internal/validation` | fixture passes; empty Invoice fails |
+| XSD | `ubltr_test`, `internal/validation` | fixture Invoice passes; empty Invoice/CreditNote fail; CreditNote from Invoice fixture |
+| Detect | `ubltr_test` | Invoice fixture plus each document root, including `eArsivRaporu` |
 | Schematron | `ubltr_test`, `internal/validation` | fixture is expected to fail current rules (TCKN); unknown ProfileID fails |
 | HTML | `render` | `StyleMinimal` on the GİB sample; Turkish glyphs; malformed XML |
-| Builder | `builder` | fluent Invoice → XSD-valid XML; totals rounding fixture |
+| Builder | `builder` | fluent Invoice/CreditNote/ApplicationResponse/DespatchAdvice/ReceiptAdvice → XSD-valid XML; e-Arşiv report → Detect; totals rounding fixture |
 | Code lists | `codelist` | every GİB unit/currency/profile code from `UBL-TR_Codelist.xml` |
 | XSLT host access | `render/xslt/helium` | `document('/etc/passwd')` must not read the disk |
 | PDF pipeline (fake) | `render` | stub `PDFRenderer` |

@@ -2,6 +2,7 @@
 
 generate:
 	go generate ./schema/ubltr121
+	go generate ./schema/earchive
 	go generate ./codelist
 
 test:

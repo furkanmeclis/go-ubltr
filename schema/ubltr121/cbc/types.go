@@ -6,6 +6,9 @@ import (
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/udt"
 )
 
+// AccountingCostCodeType extends CodeType.
+type AccountingCostCodeType = udt.CodeType
+
 // AccountingCostType extends TextType.
 type AccountingCostType = udt.TextType
 
@@ -42,6 +45,9 @@ type BaseAmountType = udt.AmountType
 // BaseUnitMeasureType extends MeasureType.
 type BaseUnitMeasureType = udt.MeasureType
 
+// BatchQuantityType extends QuantityType.
+type BatchQuantityType = udt.QuantityType
+
 // BestBeforeDateType extends DateType.
 type BestBeforeDateType = udt.DateType
 
@@ -56,6 +62,9 @@ type BuildingNameType = udt.NameType
 
 // BuildingNumberType extends TextType.
 type BuildingNumberType = udt.TextType
+
+// BuyerReferenceType extends TextType.
+type BuyerReferenceType = udt.TextType
 
 // CalculationRateType extends RateType.
 type CalculationRateType = udt.RateType
@@ -90,6 +99,9 @@ type CitySubdivisionNameType = udt.NameType
 // CompanyIDType extends IdentifierType.
 type CompanyIDType = udt.IdentifierType
 
+// ConsumerUnitQuantityType extends QuantityType.
+type ConsumerUnitQuantityType = udt.QuantityType
+
 // CopyIndicatorType extends IndicatorType.
 type CopyIndicatorType = udt.IndicatorType
 
@@ -98,6 +110,12 @@ type CorporateRegistrationTypeCodeType = udt.CodeType
 
 // CorporateStockAmountType extends AmountType.
 type CorporateStockAmountType = udt.AmountType
+
+// CreditNoteTypeCodeType extends CodeType.
+type CreditNoteTypeCodeType = udt.CodeType
+
+// CreditedQuantityType extends QuantityType.
+type CreditedQuantityType = udt.QuantityType
 
 // CurrencyCodeType extends CodeType.
 type CurrencyCodeType = udt.CodeType
@@ -129,8 +147,14 @@ type DeclaredForCarriageValueAmountType = udt.AmountType
 // DeclaredStatisticsValueAmountType extends AmountType.
 type DeclaredStatisticsValueAmountType = udt.AmountType
 
+// DeliveredQuantityType extends QuantityType.
+type DeliveredQuantityType = udt.QuantityType
+
 // DescriptionType extends TextType.
 type DescriptionType = udt.TextType
+
+// DespatchAdviceTypeCodeType extends CodeType.
+type DespatchAdviceTypeCodeType = udt.CodeType
 
 // DirectionCodeType extends CodeType.
 type DirectionCodeType = udt.CodeType
@@ -176,6 +200,9 @@ type FamilyNameType = udt.NameType
 
 // FirstNameType extends NameType.
 type FirstNameType = udt.NameType
+
+// FreeOfChargeIndicatorType extends IndicatorType.
+type FreeOfChargeIndicatorType = udt.IndicatorType
 
 // FreeOnBoardValueAmountType extends AmountType.
 type FreeOnBoardValueAmountType = udt.AmountType
@@ -255,6 +282,9 @@ type LatestDeliveryDateType = udt.DateType
 // LatestDeliveryTimeType extends TimeType.
 type LatestDeliveryTimeType = udt.TimeType
 
+// LeadTimeMeasureType extends MeasureType.
+type LeadTimeMeasureType = udt.MeasureType
+
 // LicensePlateIDType extends IdentifierType.
 type LicensePlateIDType = udt.IdentifierType
 
@@ -291,6 +321,9 @@ type ManufactureTimeType = udt.TimeType
 // MaximumMeasureType extends MeasureType.
 type MaximumMeasureType = udt.MeasureType
 
+// MaximumQuantityType extends QuantityType.
+type MaximumQuantityType = udt.QuantityType
+
 // MaximumValueType extends TextType.
 type MaximumValueType = udt.TextType
 
@@ -302,6 +335,9 @@ type MiddleNameType = udt.NameType
 
 // MinimumMeasureType extends MeasureType.
 type MinimumMeasureType = udt.MeasureType
+
+// MinimumQuantityType extends QuantityType.
+type MinimumQuantityType = udt.QuantityType
 
 // MinimumValueType extends TextType.
 type MinimumValueType = udt.TextType
@@ -339,6 +375,15 @@ type NoteType = udt.TextType
 // OrderTypeCodeType extends CodeType.
 type OrderTypeCodeType = udt.CodeType
 
+// OutstandingQuantityType extends QuantityType.
+type OutstandingQuantityType = udt.QuantityType
+
+// OutstandingReasonType extends TextType.
+type OutstandingReasonType = udt.TextType
+
+// OversupplyQuantityType extends QuantityType.
+type OversupplyQuantityType = udt.QuantityType
+
 // PackageLevelCodeType extends CodeType.
 type PackageLevelCodeType = udt.CodeType
 
@@ -375,6 +420,9 @@ type PaymentMeansCodeType = udt.CodeType
 // PaymentNoteType extends TextType.
 type PaymentNoteType = udt.TextType
 
+// PaymentPurposeCodeType extends CodeType.
+type PaymentPurposeCodeType = udt.CodeType
+
 // PenaltyAmountType extends AmountType.
 type PenaltyAmountType = udt.AmountType
 
@@ -402,6 +450,9 @@ type PricingCurrencyCodeType = udt.CodeType
 // ProductTraceIDType extends IdentifierType.
 type ProductTraceIDType = udt.IdentifierType
 
+// ProfileExecutionIDType extends IdentifierType.
+type ProfileExecutionIDType = udt.IdentifierType
+
 // ProfileIDType extends IdentifierType.
 type ProfileIDType = udt.IdentifierType
 
@@ -413,6 +464,18 @@ type RadioCallSignIDType = udt.IdentifierType
 
 // RailCarIDType extends IdentifierType.
 type RailCarIDType = udt.IdentifierType
+
+// ReceiptAdviceTypeCodeType extends CodeType.
+type ReceiptAdviceTypeCodeType = udt.CodeType
+
+// ReceivedDateType extends DateType.
+type ReceivedDateType = udt.DateType
+
+// ReceivedQuantityType extends QuantityType.
+type ReceivedQuantityType = udt.QuantityType
+
+// ReferenceIDType extends IdentifierType.
+type ReferenceIDType = udt.IdentifierType
 
 // RegionType extends TextType.
 type RegionType = udt.TextType
@@ -432,8 +495,20 @@ type RegistrationNationalityIDType = udt.IdentifierType
 // RegistrationNationalityType extends TextType.
 type RegistrationNationalityType = udt.TextType
 
+// RejectReasonCodeType extends CodeType.
+type RejectReasonCodeType = udt.CodeType
+
+// RejectReasonType extends TextType.
+type RejectReasonType = udt.TextType
+
+// RejectedQuantityType extends QuantityType.
+type RejectedQuantityType = udt.QuantityType
+
 // RequiredCustomsIDType extends IdentifierType.
 type RequiredCustomsIDType = udt.IdentifierType
+
+// ResponseCodeType extends CodeType.
+type ResponseCodeType = udt.CodeType
 
 // ReturnableMaterialIndicatorType extends IndicatorType.
 type ReturnableMaterialIndicatorType = udt.IndicatorType
@@ -458,6 +533,9 @@ type SerialIDType = udt.IdentifierType
 
 // ShipsRequirementsType extends TextType.
 type ShipsRequirementsType = udt.TextType
+
+// ShortQuantityType extends QuantityType.
+type ShortQuantityType = udt.QuantityType
 
 // SoleProprietorshipIndicatorType extends IndicatorType.
 type SoleProprietorshipIndicatorType = udt.IndicatorType
@@ -501,6 +579,9 @@ type TaxExemptionReasonType = udt.TextType
 // TaxInclusiveAmountType extends AmountType.
 type TaxInclusiveAmountType = udt.AmountType
 
+// TaxPointDateType extends DateType.
+type TaxPointDateType = udt.DateType
+
 // TaxTypeCodeType extends CodeType.
 type TaxTypeCodeType = udt.CodeType
 
@@ -515,6 +596,12 @@ type TelephoneType = udt.TextType
 
 // TestMethodType extends TextType.
 type TestMethodType = udt.TextType
+
+// TimingComplaintCodeType extends CodeType.
+type TimingComplaintCodeType = udt.CodeType
+
+// TimingComplaintType extends TextType.
+type TimingComplaintType = udt.TextType
 
 // TitleType extends TextType.
 type TitleType = udt.TextType
@@ -536,6 +623,9 @@ type TrackingIDType = udt.IdentifierType
 
 // TradeServiceCodeType extends CodeType.
 type TradeServiceCodeType = udt.CodeType
+
+// TradingRestrictionsType extends TextType.
+type TradingRestrictionsType = udt.TextType
 
 // TrainIDType extends IdentifierType.
 type TrainIDType = udt.IdentifierType

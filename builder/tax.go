@@ -141,6 +141,26 @@ func taxTotalOf(taxes []appliedTax) (cac.TaxTotalType, Money, error) {
 }
 
 func mergeDocumentTax(lines []cac.InvoiceLineType) (cac.TaxTotalType, Money, error) {
+	totals := make([]*cac.TaxTotalType, 0, len(lines))
+	for _, line := range lines {
+		if line.TaxTotal != nil {
+			totals = append(totals, line.TaxTotal)
+		}
+	}
+	return mergeTaxTotals(totals)
+}
+
+func mergeCreditNoteTax(lines []cac.CreditNoteLineType) (cac.TaxTotalType, Money, error) {
+	totals := make([]*cac.TaxTotalType, 0, len(lines))
+	for _, line := range lines {
+		for i := range line.TaxTotal {
+			totals = append(totals, &line.TaxTotal[i])
+		}
+	}
+	return mergeTaxTotals(totals)
+}
+
+func mergeTaxTotals(totals []*cac.TaxTotalType) (cac.TaxTotalType, Money, error) {
 	type key struct{ code, percent string }
 	type bucket struct {
 		taxable Money
@@ -152,11 +172,11 @@ func mergeDocumentTax(lines []cac.InvoiceLineType) (cac.TaxTotalType, Money, err
 	order := []key{}
 	by := map[key]*bucket{}
 
-	for _, line := range lines {
-		if line.TaxTotal == nil {
+	for _, tot := range totals {
+		if tot == nil {
 			continue
 		}
-		for _, sub := range line.TaxTotal.TaxSubtotal {
+		for _, sub := range tot.TaxSubtotal {
 			code := ""
 			if sub.TaxCategory.TaxScheme.TaxTypeCode != nil {
 				code = sub.TaxCategory.TaxScheme.TaxTypeCode.Value

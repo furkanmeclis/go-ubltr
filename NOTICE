@@ -42,5 +42,20 @@ Bundled third-party artefacts
    Files are vendored unmodified. This project does not claim copyright over
    GİB artefacts.
 
+5. GİB e-Arşiv Paketi (report schema, v1.1.8)
+   Location: schemas/earchive/
+   Publisher: Gelir İdaresi Başkanlığı
+   Source: earsiv_paket_v1.1_8 (published 2026-08-11 on ebelge.gib.gov.tr)
+   Retrieved: 2026-08-16
+   SHA-256 (EArsiv.xsd): 02b6d5b673d0eac54ba614ef4df8d8d96e0119d6652f056b99c79beb9fcaa170
+   Vendored unmodified: EArsiv.xsd, eArsivVeri.xsd, faturaOzet.xsd, XAdES.xsd,
+   XAdESv141.xsd, xmldsig-core-schema.xsd. WSDL and the package XSLT are not
+   vendored. This is the e-Arşiv *report* (root eArsivRaporu), not the UBL
+   Invoice used for e-Arşiv invoices (ProfileID EARSIVFATURA).
+   XAdES.xsd / XAdESv141.xsd are ETSI XML Advanced Electronic Signatures
+   schemas; xmldsig-core-schema.xsd is the W3C XML Signature schema. Notices
+   in those files are retained. This project does not generate a Go XAdES
+   model; ds:Signature is kept as InnerXML.
+
 GİB may publish updates independently of this Go module's semantic version.
 Always verify the current packages at https://ebelge.gib.gov.tr/.

@@ -107,6 +107,38 @@ type CountryType struct {
 	Name               cbc.NameType                `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Name"`
 }
 
+// CreditNoteLineType is generated from XSD complexType CreditNoteLineType.
+type CreditNoteLineType struct {
+	ID                    cbc.IDType                     `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ID"`
+	UUID                  *cbc.UUIDType                  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 UUID,omitempty"`
+	Note                  []cbc.NoteType                 `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Note"`
+	CreditedQuantity      *cbc.CreditedQuantityType      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 CreditedQuantity,omitempty"`
+	LineExtensionAmount   *cbc.LineExtensionAmountType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 LineExtensionAmount,omitempty"`
+	TaxPointDate          *cbc.TaxPointDateType          `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 TaxPointDate,omitempty"`
+	AccountingCostCode    *cbc.AccountingCostCodeType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 AccountingCostCode,omitempty"`
+	AccountingCost        *cbc.AccountingCostType        `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 AccountingCost,omitempty"`
+	PaymentPurposeCode    *cbc.PaymentPurposeCodeType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 PaymentPurposeCode,omitempty"`
+	FreeOfChargeIndicator *cbc.FreeOfChargeIndicatorType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 FreeOfChargeIndicator,omitempty"`
+	InvoicePeriod         []PeriodType                   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 InvoicePeriod"`
+	OrderLineReference    []OrderLineReferenceType       `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 OrderLineReference"`
+	DiscrepancyResponse   []ResponseType                 `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DiscrepancyResponse"`
+	DespatchLineReference []LineReferenceType            `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DespatchLineReference"`
+	ReceiptLineReference  []LineReferenceType            `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 ReceiptLineReference"`
+	BillingReference      []BillingReferenceType         `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 BillingReference"`
+	DocumentReference     []DocumentReferenceType        `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DocumentReference"`
+	PricingReference      *PricingReferenceType          `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 PricingReference,omitempty"`
+	OriginatorParty       *PartyType                     `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 OriginatorParty,omitempty"`
+	Delivery              []DeliveryType                 `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Delivery"`
+	PaymentTerms          []PaymentTermsType             `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 PaymentTerms"`
+	TaxTotal              []TaxTotalType                 `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 TaxTotal"`
+	AllowanceCharge       []AllowanceChargeType          `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 AllowanceCharge"`
+	Item                  *ItemType                      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Item,omitempty"`
+	Price                 *PriceType                     `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Price,omitempty"`
+	DeliveryTerms         []DeliveryTermsType            `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DeliveryTerms"`
+	SubCreditNoteLine     []CreditNoteLineType           `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 SubCreditNoteLine"`
+	ItemPriceExtension    *PriceExtensionType            `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 ItemPriceExtension,omitempty"`
+}
+
 // CustomerPartyType is generated from XSD complexType CustomerPartyType.
 type CustomerPartyType struct {
 	Party           PartyType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Party"`
@@ -145,6 +177,34 @@ type DeliveryType struct {
 	Shipment                    *ShipmentType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Shipment,omitempty"`
 }
 
+// DeliveryUnitType is generated from XSD complexType DeliveryUnitType.
+type DeliveryUnitType struct {
+	BatchQuantity          cbc.BatchQuantityType           `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 BatchQuantity"`
+	ConsumerUnitQuantity   *cbc.ConsumerUnitQuantityType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ConsumerUnitQuantity,omitempty"`
+	HazardousRiskIndicator *cbc.HazardousRiskIndicatorType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 HazardousRiskIndicator,omitempty"`
+}
+
+// DependentPriceReferenceType is generated from XSD complexType DependentPriceReferenceType.
+type DependentPriceReferenceType struct {
+	Percent                *cbc.PercentType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Percent,omitempty"`
+	LocationAddress        *AddressType       `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 LocationAddress,omitempty"`
+	DependentLineReference *LineReferenceType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DependentLineReference,omitempty"`
+}
+
+// DespatchLineType is generated from XSD complexType DespatchLineType.
+type DespatchLineType struct {
+	ID                  cbc.IDType                   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ID"`
+	Note                []cbc.NoteType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Note"`
+	DeliveredQuantity   *cbc.DeliveredQuantityType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 DeliveredQuantity,omitempty"`
+	OutstandingQuantity *cbc.OutstandingQuantityType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 OutstandingQuantity,omitempty"`
+	OutstandingReason   []cbc.OutstandingReasonType  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 OutstandingReason"`
+	OversupplyQuantity  *cbc.OversupplyQuantityType  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 OversupplyQuantity,omitempty"`
+	OrderLineReference  OrderLineReferenceType       `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 OrderLineReference"`
+	DocumentReference   []DocumentReferenceType      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DocumentReference"`
+	Item                ItemType                     `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Item"`
+	Shipment            []ShipmentType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Shipment"`
+}
+
 // DespatchType is generated from XSD complexType DespatchType.
 type DespatchType struct {
 	ID                      *cbc.IDType                 `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ID,omitempty"`
@@ -176,6 +236,13 @@ type DocumentReferenceType struct {
 	Attachment          *AttachmentType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Attachment,omitempty"`
 	ValidityPeriod      *PeriodType                   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 ValidityPeriod,omitempty"`
 	IssuerParty         *PartyType                    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 IssuerParty,omitempty"`
+}
+
+// DocumentResponseType is generated from XSD complexType DocumentResponseType.
+type DocumentResponseType struct {
+	Response          ResponseType          `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Response"`
+	DocumentReference DocumentReferenceType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DocumentReference"`
+	LineResponse      []LineResponseType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 LineResponse"`
 }
 
 // ExchangeRateType is generated from XSD complexType ExchangeRateType.
@@ -282,6 +349,22 @@ type ItemInstanceType struct {
 	LotIdentification      *LotIdentificationType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 LotIdentification,omitempty"`
 }
 
+// ItemLocationQuantityType is generated from XSD complexType ItemLocationQuantityType.
+type ItemLocationQuantityType struct {
+	LeadTimeMeasure            *cbc.LeadTimeMeasureType        `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 LeadTimeMeasure,omitempty"`
+	MinimumQuantity            *cbc.MinimumQuantityType        `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 MinimumQuantity,omitempty"`
+	MaximumQuantity            *cbc.MaximumQuantityType        `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 MaximumQuantity,omitempty"`
+	HazardousRiskIndicator     *cbc.HazardousRiskIndicatorType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 HazardousRiskIndicator,omitempty"`
+	TradingRestrictions        []cbc.TradingRestrictionsType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 TradingRestrictions"`
+	ApplicableTerritoryAddress []AddressType                   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 ApplicableTerritoryAddress"`
+	Price                      *PriceType                      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Price,omitempty"`
+	DeliveryUnit               []DeliveryUnitType              `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DeliveryUnit"`
+	ApplicableTaxCategory      []TaxCategoryType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 ApplicableTaxCategory"`
+	Package_                   *PackageType                    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Package,omitempty"`
+	AllowanceCharge            []AllowanceChargeType           `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 AllowanceCharge"`
+	DependentPriceReference    *DependentPriceReferenceType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DependentPriceReference,omitempty"`
+}
+
 // ItemPropertyGroupType is generated from XSD complexType ItemPropertyGroupType.
 type ItemPropertyGroupType struct {
 	ID             cbc.IDType              `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ID"`
@@ -333,6 +416,12 @@ type LineReferenceType struct {
 	LineID            cbc.LineIDType          `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 LineID"`
 	LineStatusCode    *cbc.LineStatusCodeType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 LineStatusCode,omitempty"`
 	DocumentReference *DocumentReferenceType  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DocumentReference,omitempty"`
+}
+
+// LineResponseType is generated from XSD complexType LineResponseType.
+type LineResponseType struct {
+	LineReference LineReferenceType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 LineReference"`
+	Response      []ResponseType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Response"`
 }
 
 // LocationType is generated from XSD complexType LocationType.
@@ -489,15 +578,54 @@ type PersonType struct {
 	IdentityDocumentReference *DocumentReferenceType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 IdentityDocumentReference,omitempty"`
 }
 
+// PriceExtensionType is generated from XSD complexType PriceExtensionType.
+type PriceExtensionType struct {
+	Amount   cbc.AmountType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Amount"`
+	TaxTotal []TaxTotalType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 TaxTotal"`
+}
+
 // PriceType is generated from XSD complexType PriceType.
 type PriceType struct {
 	PriceAmount cbc.PriceAmountType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 PriceAmount"`
+}
+
+// PricingReferenceType is generated from XSD complexType PricingReferenceType.
+type PricingReferenceType struct {
+	OriginalItemLocationQuantity *ItemLocationQuantityType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 OriginalItemLocationQuantity,omitempty"`
+	AlternativeConditionPrice    []PriceType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 AlternativeConditionPrice"`
 }
 
 // RailTransportType is generated from XSD complexType RailTransportType.
 type RailTransportType struct {
 	TrainID   cbc.TrainIDType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 TrainID"`
 	RailCarID *cbc.RailCarIDType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 RailCarID,omitempty"`
+}
+
+// ReceiptLineType is generated from XSD complexType ReceiptLineType.
+type ReceiptLineType struct {
+	ID                    cbc.IDType                   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ID"`
+	Note                  []cbc.NoteType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Note"`
+	ReceivedQuantity      *cbc.ReceivedQuantityType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ReceivedQuantity,omitempty"`
+	ShortQuantity         *cbc.ShortQuantityType       `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ShortQuantity,omitempty"`
+	RejectedQuantity      *cbc.RejectedQuantityType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 RejectedQuantity,omitempty"`
+	RejectReasonCode      *cbc.RejectReasonCodeType    `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 RejectReasonCode,omitempty"`
+	RejectReason          []cbc.RejectReasonType       `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 RejectReason"`
+	OversupplyQuantity    *cbc.OversupplyQuantityType  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 OversupplyQuantity,omitempty"`
+	ReceivedDate          *cbc.ReceivedDateType        `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ReceivedDate,omitempty"`
+	TimingComplaintCode   *cbc.TimingComplaintCodeType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 TimingComplaintCode,omitempty"`
+	TimingComplaint       *cbc.TimingComplaintType     `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 TimingComplaint,omitempty"`
+	OrderLineReference    *OrderLineReferenceType      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 OrderLineReference,omitempty"`
+	DespatchLineReference *LineReferenceType           `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DespatchLineReference,omitempty"`
+	DocumentReference     []DocumentReferenceType      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 DocumentReference"`
+	Item                  ItemType                     `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Item"`
+	Shipment              []ShipmentType               `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 Shipment"`
+}
+
+// ResponseType is generated from XSD complexType ResponseType.
+type ResponseType struct {
+	ReferenceID  cbc.ReferenceIDType   `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ReferenceID"`
+	ResponseCode *cbc.ResponseCodeType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ResponseCode,omitempty"`
+	Description  []cbc.DescriptionType `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Description"`
 }
 
 // RoadTransportType is generated from XSD complexType RoadTransportType.

@@ -1,4 +1,4 @@
-// Package builder constructs generated UBL-TR Invoice types without replacing them.
+// Package builder constructs generated UBL-TR document types without replacing them.
 //
 //	inv, err := builder.NewInvoiceBuilder().
 //	    Profile(codelist.ProfileTemelFatura).
@@ -10,5 +10,6 @@
 //	    Line(line).
 //	    Build()
 //
-// Build returns *invoice.Invoice. Money arithmetic uses decimal, not float64.
+// Build returns generated types (*invoice.Invoice, *creditnote.CreditNote, …).
+// Money arithmetic uses decimal, not float64.
 package builder

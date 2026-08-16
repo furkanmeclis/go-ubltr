@@ -1,15 +1,24 @@
 # Usage
 
-Package `ubltr` works on `[]byte` XML and generated Invoice structs. Fill the struct, unmarshal existing XML, or construct with [`builder`](builder.md).
+Package `ubltr` works on `[]byte` XML and generated document structs. Fill the struct, unmarshal existing XML, or construct with [`builder`](builder.md).
 
 ## Types
 
 ```go
-import "github.com/furkanmeclis/go-ubltr/schema/ubltr121/invoice"
+import (
+	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/creditnote"
+	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/invoice"
+)
 
 inv := ubltr.NewInvoice()
+cn := ubltr.NewCreditNote()
+rep := ubltr.NewEArchiveReport()
 var loaded invoice.Invoice
 ```
+
+`ubltr.Detect(xmlBytes)` returns `KindInvoice`, `KindCreditNote`, `KindApplicationResponse`, `KindDespatchAdvice`, `KindReceiptAdvice`, or `KindEArchiveReport` from the root element. It does not look at ProfileID. `KindEArchiveReport` is `eArsivRaporu`, not an e-Arşiv Invoice.
+
+`ubltr.NewCreditNoteFromInvoice(inv)` copies parties, lines (quantity → CreditedQuantity), totals, and a BillingReference to the original invoice. It writes a new UUID and a placeholder `UBLExtensions` child (GİB sample `n4:` wildcards are not round-tripped).
 
 Amounts, dates, and times are `string` so lexical values survive round-trip. Identifiers keep `schemeID`.
 
@@ -31,18 +40,18 @@ Official sample XML still unmarshals. Extra `xmlns` on GİB fixtures (for exampl
 ## Validation
 
 ```go
-err = ubltr.ValidateXSD(ctx, xmlBytes)
-err = ubltr.ValidateSchematron(ctx, xmlBytes)                 // type=efatura
+err = ubltr.ValidateXSD(ctx, xmlBytes)                            // schema for Detect(xmlBytes)
+err = ubltr.ValidateSchematron(ctx, xmlBytes)                     // type=efatura; Invoice rules
 err = ubltr.ValidateSchematronType(ctx, xmlBytes, ubltr.TypeEArchive)
-err = ubltr.Validate(ctx, xmlBytes)                           // XSD, then e-Fatura Schematron
+err = ubltr.Validate(ctx, xmlBytes)                               // XSD; Schematron only for Invoice
 ```
 
 | Function | Meaning |
 | --- | --- |
-| `ValidateXSD` | GİB UBL-TR 1.2.1 Invoice XSD via helium |
-| `ValidateSchematron` | Business rules, `efatura` |
+| `ValidateXSD` | GİB XSD for the detected document kind (UBL-TR or e-Arşiv report) |
+| `ValidateSchematron` | Invoice business rules, `efatura` |
 | `ValidateSchematronType` | Same rules with `efatura` or `earchive` |
-| `Validate` | XSD first; Schematron only if XSD passes |
+| `Validate` | XSD first; Schematron only for Invoice |
 
 XSD success is not GİB business-rule success. The 2009 files in `testdata/ubltr-1.2.1/` pass XSD and fail current Schematron (for example customer TCKN length).
 

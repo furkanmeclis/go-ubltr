@@ -7,16 +7,7 @@ import (
 	"github.com/furkanmeclis/go-ubltr/codelist"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cac"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cbc"
-	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/ext"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/invoice"
-)
-
-const (
-	ublVersionTR      = "2.1"
-	customizationTR12 = "TR1.2"
-	// extensionContentPlaceholder is one ##other element. UBL requires
-	// ExtensionContent to contain a child outside the ext namespace.
-	extensionContentPlaceholder = `<UBLTR xmlns="urn:ubltr:extension"/>`
 )
 
 // InvoiceBuilder constructs a generated [invoice.Invoice].
@@ -279,13 +270,7 @@ func (b *InvoiceBuilder) Build() (*invoice.Invoice, error) {
 	}
 
 	inv := &invoice.Invoice{}
-	inv.UBLExtensions = ext.UBLExtensionsType{
-		UBLExtension: []ext.UBLExtensionType{{
-			ExtensionContent: ext.ExtensionContentType{
-				InnerXML: extensionContentPlaceholder,
-			},
-		}},
-	}
+	inv.UBLExtensions = ublExtensions()
 	inv.UBLVersionID = cbc.UBLVersionIDType{Value: ublVersionTR}
 	inv.CustomizationID = cbc.CustomizationIDType{Value: customizationTR12}
 	inv.ProfileID = cbc.ProfileIDType{Value: b.profile}
@@ -307,7 +292,7 @@ func (b *InvoiceBuilder) Build() (*invoice.Invoice, error) {
 			EndDate:   optEnd(b.periodEnd),
 		}
 	}
-	inv.Signature = []cac.SignatureType{b.signature()}
+	inv.Signature = []cac.SignatureType{signatureOf(b.supplier)}
 	inv.AccountingSupplierParty = cac.SupplierPartyType{Party: b.supplier}
 	inv.AccountingCustomerParty = cac.CustomerPartyType{Party: b.customer}
 	inv.Delivery = b.deliveries
@@ -392,18 +377,6 @@ func (b *InvoiceBuilder) applyTotals(inv *invoice.Invoice) error {
 	}
 	inv.LegalMonetaryTotal = total
 	return nil
-}
-
-func (b *InvoiceBuilder) signature() cac.SignatureType {
-	return cac.SignatureType{
-		ID:             signatureID(b.supplier),
-		SignatoryParty: b.supplier,
-		DigitalSignatureAttachment: cac.AttachmentType{
-			ExternalReference: &cac.ExternalReferenceType{
-				URI: cbc.URIType{Value: "#Signature"},
-			},
-		},
-	}
 }
 
 func signatureID(p cac.PartyType) cbc.IDType {

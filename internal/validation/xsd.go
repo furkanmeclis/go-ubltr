@@ -15,11 +15,16 @@ import (
 	"github.com/furkanmeclis/go-ubltr/schemas"
 )
 
-const (
-	invoiceXSDRel = "ubltr-1.2.1/xsdrt/maindoc/UBL-Invoice-2.1.xsd"
-	invoiceXSDURI = "mem:/" + invoiceXSDRel
-	memPrefix     = "mem:/"
-)
+const memPrefix = "mem:/"
+
+var schemaRel = map[Kind]string{
+	KindInvoice:             "ubltr-1.2.1/xsdrt/maindoc/UBL-Invoice-2.1.xsd",
+	KindCreditNote:          "ubltr-1.2.1/xsdrt/maindoc/UBL-CreditNote-2.1.xsd",
+	KindApplicationResponse: "ubltr-1.2.1/xsdrt/maindoc/UBL-ApplicationResponse-2.1.xsd",
+	KindDespatchAdvice:      "ubltr-1.2.1/xsdrt/maindoc/UBL-DespatchAdvice-2.1.xsd",
+	KindReceiptAdvice:       "ubltr-1.2.1/xsdrt/maindoc/UBL-ReceiptAdvice-2.1.xsd",
+	KindEArchiveReport:      "earchive/EArsiv.xsd",
+}
 
 // Violation is a single schema or business-rule failure.
 type Violation struct {
@@ -62,38 +67,65 @@ func (f uriFS) ReadFile(name string) ([]byte, error) {
 	return fs.ReadFile(f.inner, rel)
 }
 
-var compileInvoice = sync.OnceValues(func() (*xsd.Schema, error) {
-	ctx := context.Background()
-	schemaData, err := fs.ReadFile(schemas.FS, invoiceXSDRel)
-	if err != nil {
-		return nil, fmt.Errorf("read invoice xsd: %w", err)
+var (
+	schemaMu sync.Mutex
+	schemasX = map[string]*xsd.Schema{}
+)
+
+func compileSchema(rel string) (*xsd.Schema, error) {
+	schemaMu.Lock()
+	defer schemaMu.Unlock()
+	if s, ok := schemasX[rel]; ok {
+		return s, nil
 	}
 
-	p := helium.NewParser().BaseURI(invoiceXSDURI)
+	ctx := context.Background()
+	schemaData, err := fs.ReadFile(schemas.FS, rel)
+	if err != nil {
+		return nil, fmt.Errorf("read xsd %s: %w", rel, err)
+	}
+
+	uri := memPrefix + rel
+	p := helium.NewParser().BaseURI(uri)
 	schemaDoc, err := p.Parse(ctx, schemaData)
 	if err != nil {
-		return nil, fmt.Errorf("parse invoice xsd: %w", err)
+		return nil, fmt.Errorf("parse xsd %s: %w", rel, err)
 	}
 
 	schema, err := xsd.NewCompiler().
 		FS(uriFS{inner: schemas.FS}).
-		BaseDir(invoiceXSDURI).
-		Label(invoiceXSDURI).
+		BaseDir(uri).
+		Label(uri).
 		Parser(p).
 		Compile(ctx, schemaDoc)
 	if err != nil {
-		return nil, fmt.Errorf("compile invoice xsd: %w", err)
+		return nil, fmt.Errorf("compile xsd %s: %w", rel, err)
 	}
+	schemasX[rel] = schema
 	return schema, nil
-})
+}
 
-// XSD validates xmlBytes against the GİB UBL-TR Invoice XSD.
+// XSD validates xmlBytes against the XSD for the detected document kind.
 func XSD(ctx context.Context, xmlBytes []byte) (Result, error) {
+	kind, err := Detect(xmlBytes)
+	if err != nil {
+		return Result{}, err
+	}
+	return XSDFor(ctx, xmlBytes, kind)
+}
+
+// XSDFor validates xmlBytes against the XSD for kind.
+func XSDFor(ctx context.Context, xmlBytes []byte, kind Kind) (Result, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 
-	schema, err := compileInvoice()
+	rel, ok := schemaRel[kind]
+	if !ok {
+		return Result{}, fmt.Errorf("%w: %s", ErrUnknownDocument, kind)
+	}
+
+	schema, err := compileSchema(rel)
 	if err != nil {
 		return Result{}, err
 	}

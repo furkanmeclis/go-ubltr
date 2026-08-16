@@ -1,8 +1,8 @@
-// Package ubltr generates and validates GİB UBL-TR electronic invoice XML.
+// Package ubltr generates and validates GİB UBL-TR electronic document XML.
 //
 // UBL-TR schema definitions are the source of truth. Generated Go types are
 // derived from the schemas and must not be edited by hand. The fluent builder
-// API writes those generated types; it is not a second invoice model.
+// API writes those generated types; it is not a second document model.
 package ubltr
 
 import (
@@ -60,7 +60,7 @@ type Violation struct {
 }
 
 // XSDValidationError is returned by [ValidateXSD] when the document is well-formed
-// XML but does not satisfy the GİB UBL-TR Invoice schema.
+// XML but does not satisfy the GİB UBL-TR schema for its detected document kind.
 type XSDValidationError struct {
 	Violations []Violation
 	Messages   []string
@@ -73,7 +73,8 @@ func (e *XSDValidationError) Error() string {
 	return "xsd validation failed: " + strings.Join(e.Messages, "; ")
 }
 
-// ValidateXSD checks xmlBytes against the GİB UBL-TR Invoice XSD.
+// ValidateXSD checks xmlBytes against the GİB XSD for the detected document
+// kind (UBL-TR documents or the e-Arşiv report).
 func ValidateXSD(ctx context.Context, xmlBytes []byte) error {
 	result, err := validation.XSD(ctx, xmlBytes)
 	if err != nil {
@@ -120,12 +121,21 @@ func ValidateSchematronType(ctx context.Context, xmlBytes []byte, docType string
 	return &SchematronValidationError{Violations: v, Messages: violationMessages(v)}
 }
 
-// Validate runs Invoice XSD validation then GİB Schematron (e-Fatura).
+// Validate runs XSD validation for the detected document kind. Invoice
+// documents then run GİB Schematron (e-Fatura). Other kinds, including the
+// e-Arşiv report, have no Invoice Schematron in this module.
 func Validate(ctx context.Context, xmlBytes []byte) error {
+	kind, err := Detect(xmlBytes)
+	if err != nil {
+		return err
+	}
 	if err := ValidateXSD(ctx, xmlBytes); err != nil {
 		return err
 	}
-	return ValidateSchematron(ctx, xmlBytes)
+	if kind == KindInvoice {
+		return ValidateSchematron(ctx, xmlBytes)
+	}
+	return nil
 }
 
 func publicViolations(result validation.Result) []Violation {

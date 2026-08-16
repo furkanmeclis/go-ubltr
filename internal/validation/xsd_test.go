@@ -27,9 +27,16 @@ func TestXSD(t *testing.T) {
 			wantOK: true,
 		},
 		{
-			name: "empty invoice",
+			name: "empty credit note",
 			xml: []byte(`<?xml version="1.0" encoding="UTF-8"?>
-<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"/>
+<CreditNote xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"/>
+`),
+			wantOK: false,
+		},
+		{
+			name: "empty e-archive report",
+			xml: []byte(`<?xml version="1.0" encoding="UTF-8"?>
+<eArsivRaporu xmlns="http://earsiv.efatura.gov.tr"/>
 `),
 			wantOK: false,
 		},

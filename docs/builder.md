@@ -1,18 +1,18 @@
 # Builder
 
-Package [`builder`](../builder/) fills generated UBL-TR Invoice types. It does not replace `schema/ubltr121`. Package [`codelist`](../codelist/) holds the official GİB code values.
+Package [`builder`](../builder/) fills generated UBL-TR document types. It does not replace `schema/ubltr121`. Package [`codelist`](../codelist/) holds the official GİB code values.
 
 ```
 Developer
     ↓
 builder + codelist
     ↓
-generated Invoice / cac / cbc
+generated Invoice / CreditNote / … + cac / cbc
     ↓
 ubltr.Marshal → XML
 ```
 
-XSD remains the source of truth. `Build()` returns `*invoice.Invoice`.
+XSD remains the source of truth. Invoice `Build()` returns `*invoice.Invoice`. Credit note `Build()` returns `*creditnote.CreditNote`. The e-Arşiv report builder returns `*earchive.EArsivRaporu` (not an Invoice).
 
 ## Invoice
 
@@ -102,6 +102,35 @@ inv.Payment(builder.NewPaymentBuilder().
 	Note("havale"))
 ```
 
+## Other documents
+
+Same party, money, and tax helpers. `Build()` still returns generated types.
+
+| Constructor | Result |
+| --- | --- |
+| `NewCreditNoteBuilder` + `NewCreditNoteLineBuilder` | `*creditnote.CreditNote` — CreditedQuantity, same totals as Invoice |
+| `NewApplicationResponseBuilder` | sender, receiver, `DocumentResponse(id, date, code)` |
+| `NewDespatchAdviceBuilder` + `NewDespatchLineBuilder` | required IssueTime, ShipmentID, OrderLineReference |
+| `NewReceiptAdviceBuilder` + `NewReceiptLineBuilder` | required `DespatchReference` |
+
+```go
+cn, err := builder.NewCreditNoteBuilder().
+	Profile(codelist.ProfileTemelFatura).
+	Type(codelist.InvoiceTypeIade).
+	ID("GIB20260000000002").
+	IssueDate("2026-03-02").
+	SupplierBuilder(supplier).
+	CustomerBuilder(customer).
+	Line(builder.NewCreditNoteLineBuilder().
+		Name("Widget").
+		Quantity(qty).
+		Price(price).
+		Tax(builder.NewTaxBuilder().KDV("20"))).
+	Build()
+
+cn, err = ubltr.NewCreditNoteFromInvoice(inv)
+```
+
 ## Money and totals
 
 Do not use `float64` for amounts. `builder.Money` wraps `shopspring/decimal`. Currencies must match on `Add` / `Sub`.
@@ -127,6 +156,29 @@ Automatic document totals (unless `ManualTotals()`):
 
 Document-level allowances do not recompute line KDV. Put rate-affecting discounts on the line.
 
+## e-Arşiv report
+
+`NewEArchiveReportBuilder` fills `*earchive.EArsivRaporu` (`http://earsiv.efatura.gov.tr`). That is the report sent to GİB, not an e-Arşiv invoice.
+
+```go
+rep, err := builder.NewEArchiveReportBuilder().
+	Version("1.0").
+	MukellefVKN("1288331521").
+	HazirlayanVKN("1288331521").
+	Period("2026-03-01", "2026-03-31").
+	Section("2026-03-01", "2026-03-31", "1").
+	SignatureInnerXML(dsSignatureInner).
+	Invoice(earchive.Fatura{
+		FaturaNo:      "GIB20260000000001",
+		FaturaTip:     earchive.FaturaTipYTBTEVKIFAT,
+		GonderimSekli: earchive.GonderimSekliELEKTRONIK,
+		// … remaining required fatura fields
+	}).
+	Build()
+```
+
+`SignatureInnerXML` is the inner XML of `ds:Signature`. This library does not generate XAdES.
+
 ## Code lists
 
 UBL XSD does not enumerate unit, currency, or profile codes. The GİB lists are generated from [`UBL-TR_Codelist.xml`](../schemas/ubltr-1.2.1/schematron/UBL-TR_Codelist.xml) into `codelist`. Do not edit `codelist/generated.go` or `codelist/lookup.go`.
@@ -148,4 +200,4 @@ Regenerate with `make generate` after updating the vendored GİB package.
 
 ## Tests
 
-`go test ./builder/...` builds a sample invoice and runs `ValidateXSD`. `go test ./codelist/...` checks generated lists against the XML source.
+`go test ./builder/...` builds sample Invoice, CreditNote, ApplicationResponse, DespatchAdvice, ReceiptAdvice, and e-Arşiv report documents. UBL samples run `ValidateXSD`. `go test ./codelist/...` checks generated lists against the XML source.

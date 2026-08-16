@@ -1,6 +1,8 @@
 package ubltr_test
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/xml"
 	"errors"
 	"os"
@@ -9,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/furkanmeclis/go-ubltr"
+	"github.com/furkanmeclis/go-ubltr/schema/earchive"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/invoice"
 )
 
@@ -256,6 +259,123 @@ func TestSchematronValidationErrorHasRuleID(t *testing.T) {
 	}
 }
 
+func TestDetect(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		xml  []byte
+		kind ubltr.Kind
+	}{
+		{
+			name: "invoice fixture",
+			xml:  readFixture(t, "TemelFaturaOrnegi.xml"),
+			kind: ubltr.KindInvoice,
+		},
+		{
+			name: "credit note root",
+			xml:  []byte(`<CreditNote xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"/>`),
+			kind: ubltr.KindCreditNote,
+		},
+		{
+			name: "application response root",
+			xml:  []byte(`<ApplicationResponse xmlns="urn:oasis:names:specification:ubl:schema:xsd:ApplicationResponse-2"/>`),
+			kind: ubltr.KindApplicationResponse,
+		},
+		{
+			name: "despatch advice root",
+			xml:  []byte(`<DespatchAdvice xmlns="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2"/>`),
+			kind: ubltr.KindDespatchAdvice,
+		},
+		{
+			name: "receipt advice root",
+			xml:  []byte(`<ReceiptAdvice xmlns="urn:oasis:names:specification:ubl:schema:xsd:ReceiptAdvice-2"/>`),
+			kind: ubltr.KindReceiptAdvice,
+		},
+		{
+			name: "e-archive report root",
+			xml:  []byte(`<eArsivRaporu xmlns="http://earsiv.efatura.gov.tr"/>`),
+			kind: ubltr.KindEArchiveReport,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			got, err := ubltr.Detect(tc.xml)
+			if err != nil {
+				t.Fatalf("Detect: %v", err)
+			}
+			if got != tc.kind {
+				t.Fatalf("kind = %q, want %q", got, tc.kind)
+			}
+		})
+	}
+}
+
+func TestDetectUnknown(t *testing.T) {
+	t.Parallel()
+
+	_, err := ubltr.Detect([]byte(`<Foo xmlns="urn:example:foo"/>`))
+	if !errors.Is(err, ubltr.ErrUnknownDocument) {
+		t.Fatalf("error = %v, want ErrUnknownDocument", err)
+	}
+}
+
+func TestNewCreditNoteFromInvoice(t *testing.T) {
+	t.Parallel()
+
+	var inv invoice.Invoice
+	if err := ubltr.Unmarshal(readFixture(t, "TemelFaturaOrnegi.xml"), &inv); err != nil {
+		t.Fatalf("unmarshal: %v", err)
+	}
+
+	cn, err := ubltr.NewCreditNoteFromInvoice(&inv)
+	if err != nil {
+		t.Fatalf("NewCreditNoteFromInvoice: %v", err)
+	}
+	if cn.ID.Value != inv.ID.Value {
+		t.Fatalf("ID = %q", cn.ID.Value)
+	}
+	if len(cn.CreditNoteLine) != len(inv.InvoiceLine) {
+		t.Fatalf("lines = %d", len(cn.CreditNoteLine))
+	}
+	if len(cn.BillingReference) == 0 || cn.BillingReference[len(cn.BillingReference)-1].InvoiceDocumentReference == nil {
+		t.Fatal("expected invoice billing reference")
+	}
+	if cn.UUID == nil || cn.UUID.Value == "" || cn.UUID.Value == inv.UUID.Value {
+		t.Fatal("expected a new UUID")
+	}
+
+	data, err := ubltr.Marshal(cn)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	kind, err := ubltr.Detect(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if kind != ubltr.KindCreditNote {
+		t.Fatalf("kind = %q", kind)
+	}
+	if err := ubltr.ValidateXSD(t.Context(), data); err != nil {
+		t.Fatalf("ValidateXSD: %v\n%s", err, data)
+	}
+	if err := ubltr.Validate(t.Context(), data); err != nil {
+		t.Fatalf("Validate (xsd only for credit note): %v", err)
+	}
+}
+
+func TestNewConstructors(t *testing.T) {
+	t.Parallel()
+
+	if ubltr.NewCreditNote() == nil || ubltr.NewApplicationResponse() == nil ||
+		ubltr.NewDespatchAdvice() == nil || ubltr.NewReceiptAdvice() == nil ||
+		ubltr.NewEArchiveReport() == nil {
+		t.Fatal("constructor returned nil")
+	}
+}
+
 func supplierVKN(inv invoice.Invoice) string {
 	for _, id := range inv.AccountingSupplierParty.Party.PartyIdentification {
 		if id.ID.SchemeID == "VKN" {
@@ -263,6 +383,73 @@ func supplierVKN(inv invoice.Invoice) string {
 		}
 	}
 	return ""
+}
+
+func TestEArchiveReportDetectAndEmptyXSD(t *testing.T) {
+	t.Parallel()
+
+	xml := []byte(`<?xml version="1.0" encoding="UTF-8"?>
+<eArsivRaporu xmlns="http://earsiv.efatura.gov.tr"/>
+`)
+	kind, err := ubltr.Detect(xml)
+	if err != nil {
+		t.Fatalf("Detect: %v", err)
+	}
+	if kind != ubltr.KindEArchiveReport {
+		t.Fatalf("kind = %q, want %q", kind, ubltr.KindEArchiveReport)
+	}
+
+	err = ubltr.ValidateXSD(t.Context(), xml)
+	if err == nil {
+		t.Fatal("expected empty e-Arşiv report to fail XSD")
+	}
+	var ve *ubltr.XSDValidationError
+	if !errors.As(err, &ve) {
+		t.Fatalf("error type %T, want *ubltr.XSDValidationError: %v", err, err)
+	}
+}
+
+func TestEArchiveReportTypes(t *testing.T) {
+	t.Parallel()
+
+	if earchive.FaturaTipYTBTEVKIFAT != "YTBTEVKIFAT" {
+		t.Fatalf("FaturaTipYTBTEVKIFAT = %q", earchive.FaturaTipYTBTEVKIFAT)
+	}
+	if earchive.FaturaTipYTBTEVKIFATIADE != "YTBTEVKIFATIADE" {
+		t.Fatalf("FaturaTipYTBTEVKIFATIADE = %q", earchive.FaturaTipYTBTEVKIFATIADE)
+	}
+
+	sum, err := sha256File(t, filepath.Join("schemas", "earchive", "EArsiv.xsd"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sum != earchive.ChecksumEArsiv {
+		t.Fatalf("ChecksumEArsiv = %s, file = %s", earchive.ChecksumEArsiv, sum)
+	}
+
+	rep := ubltr.NewEArchiveReport()
+	rep.Baslik.Versiyon = "1.0"
+	data, err := ubltr.Marshal(rep)
+	if err != nil {
+		t.Fatalf("Marshal: %v", err)
+	}
+	kind, err := ubltr.Detect(data)
+	if err != nil {
+		t.Fatalf("Detect: %v", err)
+	}
+	if kind != ubltr.KindEArchiveReport {
+		t.Fatalf("kind = %q", kind)
+	}
+}
+
+func sha256File(t *testing.T, path string) (string, error) {
+	t.Helper()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	return hex.EncodeToString(sum[:]), nil
 }
 
 func readFixture(t *testing.T, name string) []byte {

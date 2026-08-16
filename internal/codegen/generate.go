@@ -15,29 +15,60 @@ import (
 )
 
 const (
-	NSInvoice = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
-	NSCAC     = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
-	NSCBC     = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
-	NSEXT     = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
-	NSUDT     = "urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2"
-	NSCCT     = "urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2"
-	NSQDT     = "urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2"
+	NSInvoice             = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+	NSCreditNote          = "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
+	NSApplicationResponse = "urn:oasis:names:specification:ubl:schema:xsd:ApplicationResponse-2"
+	NSDespatchAdvice      = "urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2"
+	NSReceiptAdvice       = "urn:oasis:names:specification:ubl:schema:xsd:ReceiptAdvice-2"
+	NSCAC                 = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+	NSCBC                 = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+	NSEXT                 = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+	NSUDT                 = "urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2"
+	NSCCT                 = "urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2"
+	NSQDT                 = "urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2"
 )
 
 var nsPkg = map[string]string{
-	NSInvoice: "invoice",
-	NSCAC:     "cac",
-	NSCBC:     "cbc",
-	NSEXT:     "ext",
-	NSUDT:     "udt",
-	NSCCT:     "udt",
-	NSQDT:     "udt",
+	NSInvoice:             "invoice",
+	NSCreditNote:          "creditnote",
+	NSApplicationResponse: "applicationresponse",
+	NSDespatchAdvice:      "despatchadvice",
+	NSReceiptAdvice:       "receiptadvice",
+	NSCAC:                 "cac",
+	NSCBC:                 "cbc",
+	NSEXT:                 "ext",
+	NSUDT:                 "udt",
+	NSCCT:                 "udt",
+	NSQDT:                 "udt",
+}
+
+type documentRoot struct {
+	NS, Name, TypeName, Pkg, Alias string
+}
+
+var documentRoots = []documentRoot{
+	{NSInvoice, "Invoice", "InvoiceType", "invoice", "Invoice"},
+	{NSCreditNote, "CreditNote", "CreditNoteType", "creditnote", "CreditNote"},
+	{NSApplicationResponse, "ApplicationResponse", "ApplicationResponseType", "applicationresponse", "ApplicationResponse"},
+	{NSDespatchAdvice, "DespatchAdvice", "DespatchAdviceType", "despatchadvice", "DespatchAdvice"},
+	{NSReceiptAdvice, "ReceiptAdvice", "ReceiptAdviceType", "receiptadvice", "ReceiptAdvice"},
 }
 
 type Options struct {
-	SchemaPath string
-	OutDir     string
-	Module     string
+	SchemaPath  string
+	SchemaPaths []string
+	OutDir      string
+	Module      string
+}
+
+func (o Options) paths() []string {
+	if len(o.SchemaPaths) > 0 {
+		return o.SchemaPaths
+	}
+	if o.SchemaPath != "" {
+		return []string{o.SchemaPath}
+	}
+	return nil
 }
 
 type generator struct {
@@ -52,7 +83,11 @@ func Generate(opts Options) error {
 	if opts.Module == "" {
 		opts.Module = "github.com/furkanmeclis/go-ubltr"
 	}
-	s, err := loadSet(opts.SchemaPath)
+	paths := opts.paths()
+	if len(paths) == 0 {
+		return fmt.Errorf("no schema paths")
+	}
+	s, err := loadSet(paths...)
 	if err != nil {
 		return err
 	}
@@ -63,14 +98,23 @@ func Generate(opts Options) error {
 		opts:     opts,
 		checksum: map[string]string{},
 	}
-	if err := g.hashFile(opts.SchemaPath); err != nil {
-		return err
+	for _, p := range paths {
+		if err := g.hashFile(p); err != nil {
+			return err
+		}
 	}
-	inv, ok := s.elements[key(NSInvoice, "Invoice")]
-	if !ok {
-		return fmt.Errorf("Invoice element not found in %s", opts.SchemaPath)
+	found := 0
+	for _, root := range documentRoots {
+		el, ok := s.elements[key(root.NS, root.Name)]
+		if !ok {
+			continue
+		}
+		found++
+		g.markType(el.TypeNS, el.Type)
 	}
-	g.markType(inv.TypeNS, inv.Type)
+	if found == 0 {
+		return fmt.Errorf("no UBL document elements found in %v", paths)
+	}
 	g.markType(NSEXT, "UBLExtensionsType")
 	g.markType(NSEXT, "ExtensionContentType")
 
@@ -95,7 +139,7 @@ func Generate(opts Options) error {
 			return err
 		}
 	}
-	return g.writeManifest(inv)
+	return g.writeManifest()
 }
 
 func (g *generator) hashFile(path string) error {
@@ -239,7 +283,7 @@ func (g *generator) writePackage(pkg string, types []typeRef) error {
 
 func (g *generator) importsFor(pkg string, types []typeRef) []string {
 	need := map[string]bool{}
-	if pkg == "invoice" || pkg == "ext" {
+	if pkg == "ext" || g.isDocumentPkg(pkg) {
 		need["encoding/xml"] = true
 	}
 	for _, tr := range types {
@@ -309,11 +353,11 @@ func (g *generator) writeType(b *bytes.Buffer, pkg string, tr typeRef) {
 	seq := sequenceOf(ct)
 	fmt.Fprintf(b, "// %s is generated from XSD complexType %s.\n", goTypeName(tr.Name), tr.Name)
 	fmt.Fprintf(b, "type %s struct {\n", goTypeName(tr.Name))
-	if pkg == "invoice" && tr.Name == "InvoiceType" {
-		fmt.Fprintf(b, "\tXMLName xml.Name `xml:\"%s Invoice\"`\n", NSInvoice)
-	}
 	if pkg == "ext" && tr.Name == "UBLExtensionsType" {
 		fmt.Fprintf(b, "\tXMLName xml.Name `xml:\"%s UBLExtensions\"`\n", NSEXT)
+	}
+	if root, ok := g.documentRoot(pkg, tr.Name); ok {
+		fmt.Fprintf(b, "\tXMLName xml.Name `xml:\"%s %s\"`\n", root.NS, root.Name)
 	}
 	if seq != nil {
 		ls := g.set.byNS[tr.NS]
@@ -327,9 +371,9 @@ func (g *generator) writeType(b *bytes.Buffer, pkg string, tr typeRef) {
 		}
 	}
 	fmt.Fprintf(b, "}\n\n")
-	if pkg == "invoice" && tr.Name == "InvoiceType" {
-		fmt.Fprintf(b, "// Invoice is the UBL-TR Invoice document element.\n")
-		fmt.Fprintf(b, "type Invoice = InvoiceType\n\n")
+	if root, ok := g.documentRoot(pkg, tr.Name); ok {
+		fmt.Fprintf(b, "// %s is the UBL-TR %s document element.\n", root.Alias, root.Name)
+		fmt.Fprintf(b, "type %s = %s\n\n", root.Alias, goTypeName(tr.Name))
 	}
 }
 
@@ -449,7 +493,25 @@ func (g *generator) goTypeRef(currentPkg, ns, name string) string {
 	return pkg + "." + tname
 }
 
-func (g *generator) writeManifest(inv elemRef) error {
+func (g *generator) isDocumentPkg(pkg string) bool {
+	for _, root := range documentRoots {
+		if root.Pkg == pkg {
+			return true
+		}
+	}
+	return false
+}
+
+func (g *generator) documentRoot(pkg, typeName string) (documentRoot, bool) {
+	for _, root := range documentRoots {
+		if root.Pkg == pkg && root.TypeName == typeName {
+			return root, true
+		}
+	}
+	return documentRoot{}, false
+}
+
+func (g *generator) writeManifest() error {
 	var b bytes.Buffer
 	fmt.Fprintf(&b, "// Code generated by ubltr-gen from UBL-TR 1.2.1 XSD. DO NOT EDIT.\n\n")
 	fmt.Fprintf(&b, "package ubltr121\n\n")
@@ -477,16 +539,17 @@ func (g *generator) writeManifest(inv elemRef) error {
 	if err := os.WriteFile(filepath.Join(g.opts.OutDir, "generated.go"), formatted, 0o644); err != nil {
 		return err
 	}
-	_ = inv
-	return os.WriteFile(filepath.Join(g.opts.OutDir, "doc.go"), []byte(`// Package ubltr121 contains Go types generated from GİB UBL-TR 1.2.1 XML Schema.
+	_ = os.WriteFile(filepath.Join(g.opts.OutDir, "doc.go"), []byte(`// Package ubltr121 contains Go types generated from GİB UBL-TR 1.2.1 XML Schema.
 //
 // UBL-TR schema definitions are the source of truth. Generated Go types are
 // derived from the schemas and must not be edited by hand.
 //
-// Advanced users may import subpackages (cbc, cac, ext, invoice, udt) directly.
+// Advanced users may import subpackages (cbc, cac, ext, invoice, creditnote,
+// applicationresponse, despatchadvice, receiptadvice, udt) directly.
 // The developer-facing API lives in module github.com/furkanmeclis/go-ubltr.
 package ubltr121
 `), 0o644)
+	return nil
 }
 
 func goTypeName(name string) string {

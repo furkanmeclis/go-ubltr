@@ -118,14 +118,19 @@ type typeRef struct {
 	Type xsdComplexType
 }
 
-func loadSet(entry string) (*set, error) {
+func loadSet(entries ...string) (*set, error) {
 	s := &set{
 		byNS:     map[string]*loadedSchema{},
 		elements: map[string]elemRef{},
 		types:    map[string]typeRef{},
 	}
-	if err := s.loadFile(entry, ""); err != nil {
-		return nil, err
+	if len(entries) == 0 {
+		return nil, fmt.Errorf("no schema paths")
+	}
+	for _, entry := range entries {
+		if err := s.loadFile(entry, ""); err != nil {
+			return nil, err
+		}
 	}
 	return s, nil
 }

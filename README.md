@@ -1,6 +1,6 @@
 # go-ubltr
 
-Go library for GİB UBL-TR e-Fatura / e-Arşiv Invoice XML.
+Go library for GİB UBL-TR e-Fatura / e-Arşiv Invoice XML, plus CreditNote, ApplicationResponse, DespatchAdvice, ReceiptAdvice, and the e-Arşiv *report*.
 
 **UBL-TR schema definitions are the source of truth. Generated Go types are derived from the schemas.**
 
@@ -98,23 +98,29 @@ inv, err := builder.NewInvoiceBuilder().
 data, err := ubltr.Marshal(inv)
 ```
 
-`Build()` returns generated `*invoice.Invoice`. Unit, currency, profile, tax, and related codes are the full GİB lists (`codelist.ValidUnit("C62")`, `codelist.UnitKWH`, …), generated from `UBL-TR_Codelist.xml` (UBL XSD does not enumerate them).
+`Build()` returns generated types (`*invoice.Invoice`, `*creditnote.CreditNote`, `*earchive.EArsivRaporu`, …). `ubltr.Detect` reads the XML root; `ValidateXSD` uses the matching schema. `NewCreditNoteFromInvoice` copies parties, lines, and totals onto a CreditNote and adds a billing reference.
+
+Unit, currency, profile, tax, and related codes are the full GİB lists (`codelist.ValidUnit("C62")`, `codelist.UnitKWH`, …), generated from `UBL-TR_Codelist.xml` (UBL XSD does not enumerate them).
 
 ## What is generated
 
-`make generate` runs `cmd/ubltr-gen` twice:
+`make generate` runs `cmd/ubltr-gen` three times:
 
 ```
-schemas/ubltr-1.2.1/xsdrt/maindoc/UBL-Invoice-2.1.xsd
+schemas/ubltr-1.2.1/xsdrt/maindoc/UBL-{Invoice,CreditNote,ApplicationResponse,DespatchAdvice,ReceiptAdvice}-2.1.xsd
         ↓
-schema/ubltr121/{invoice,cac,cbc,ext,udt}
+schema/ubltr121/{invoice,creditnote,applicationresponse,despatchadvice,receiptadvice,cac,cbc,ext,udt}
+
+schemas/earchive/EArsiv.xsd
+        ↓
+schema/earchive
 
 schemas/ubltr-1.2.1/schematron/UBL-TR_Codelist.xml
         ↓
 codelist/{generated.go,lookup.go}
 ```
 
-Only types reachable from the Invoice element are emitted. CreditNote, DespatchAdvice, ReceiptAdvice, ApplicationResponse, and the GİB envelope are not generated yet.
+Types reachable from those five UBL document elements are emitted into shared `cac` / `cbc` packages. The GİB envelope XSD is not generated. The e-Arşiv report is a separate schema (`http://earsiv.efatura.gov.tr`, root `eArsivRaporu`); it is not a UBL Invoice. e-Arşiv *invoices* remain UBL Invoice with `ProfileID` `EARSIVFATURA`.
 
 Amounts, dates, and times are `string` so lexical values survive round-trip. Identifier types keep `schemeID`.
 
@@ -122,9 +128,10 @@ Amounts, dates, and times are `string` so lexical values survive round-trip. Ide
 
 | Layer | API | Notes |
 | --- | --- | --- |
-| XSD (Invoice) | `ValidateXSD` | [helium](https://github.com/lestrrat-go/helium) against the vendored GİB UBL-TR 1.2.1 Invoice schema. |
-| Schematron | `ValidateSchematron`, `ValidateSchematronType` | Official GİB rules, flattened from ISO include/abstract/extends, evaluated with XPath 3.1. |
-| Both | `Validate` | XSD first, then e-Fatura Schematron. |
+| Kind | `Detect` | Root element + namespace (Invoice, CreditNote, …, e-Arşiv report). |
+| XSD | `ValidateXSD` | [helium](https://github.com/lestrrat-go/helium) against the schema for the detected kind. |
+| Schematron | `ValidateSchematron`, `ValidateSchematronType` | Official GİB Invoice rules (e-Fatura / e-Arşiv). |
+| Both | `Validate` | XSD first; Schematron only for Invoice. |
 
 `ValidateSchematron` uses `type=efatura`. Pass `ubltr.TypeEArchive` to `ValidateSchematronType` for e-Arşiv (`ProfileID` must be `EARSIVFATURA`).
 
@@ -167,10 +174,11 @@ Extra `xmlns` declarations that are not part of the generated structs (for examp
 
 ## Schemas and license
 
-Vendored artefacts live in `schemas/ubltr-1.2.1/` (also embedded for validators):
+Vendored artefacts live in `schemas/ubltr-1.2.1/` and `schemas/earchive/` (also embedded for validators):
 
 - XSD: [UBL-TR 1.2.1 Paketi](https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/UBL-TR1.2.1_Paketi.zip)
 - Schematron and envelope: [e-Fatura Paketi](https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/e-FaturaPaketi.zip)
+- e-Arşiv report: GİB `earsiv_paket_v1.1_8` (`EArsiv.xsd`)
 
 The Go code is MIT (`LICENSE`). OASIS UBL 2.1 and UN/CEFACT notices stay in the schema files. GİB publishes no OSS license; files are vendored unmodified. See `NOTICE`.
 
@@ -188,9 +196,9 @@ This repository is a Go workspace (`go.work`). `GOWORK=off go test ./...` tests 
 Layout:
 
 - `schemas/` — official GİB/OASIS XSD and Schematron files (source of truth)
-- `schema/` — generated Go types (`schema/ubltr121/...`); do not edit by hand
+- `schema/` — generated Go types (`schema/ubltr121/...`, `schema/earchive`); do not edit by hand
 - `codelist/` — generated GİB unit/currency/profile/tax/… constants
-- `builder/` — fluent Invoice builders on top of generated types
+- `builder/` — fluent builders on top of generated types
 - `render/` — HTML/XSLT module
 - `render/chromium/` — PDF adapter
 - `examples/render/` — HTML, custom XSLT, and PDF programs

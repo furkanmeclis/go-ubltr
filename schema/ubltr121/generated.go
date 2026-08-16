@@ -6,8 +6,12 @@ package ubltr121
 // UBL-TR schema definitions are the source of truth. Do not edit generated files.
 
 const (
-	UBLTRVersion         = "1.2.1"
-	UBLVersion           = "2.1"
-	Generator            = "github.com/furkanmeclis/go-ubltr/cmd/ubltr-gen"
-	ChecksumUBLInvoice21 = "b68a25ae3d99435f4e4a39809939183dc8b5d687aeebf2d023f4d4c2a436749e"
+	UBLTRVersion                     = "1.2.1"
+	UBLVersion                       = "2.1"
+	Generator                        = "github.com/furkanmeclis/go-ubltr/cmd/ubltr-gen"
+	ChecksumUBLApplicationResponse21 = "f6e1087c2d9a3d3e47feab5cbf16f4340a4a60f8f7452bcf2ae53148977d049f"
+	ChecksumUBLCreditNote21          = "1e117b6c1ab713604b29b0d685442a81a0c78a82575445ee8c43e6050cda7454"
+	ChecksumUBLDespatchAdvice21      = "5ed0dd52359da01ae8bd3d63b3134ad510a333b534f9df057aafdbb8c0f194bb"
+	ChecksumUBLInvoice21             = "b68a25ae3d99435f4e4a39809939183dc8b5d687aeebf2d023f4d4c2a436749e"
+	ChecksumUBLReceiptAdvice21       = "9f4637fa5d439ba550807ad5a9afd59f98d215c580583d2fc72eda9a815bb1ca"
 )

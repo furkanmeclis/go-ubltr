@@ -5,6 +5,7 @@ const (
 	ProfileTemelFatura         = ProfileTEMELFATURA
 	ProfileTicariFatura        = ProfileTICARIFATURA
 	ProfileEArsivFatura        = ProfileEARSIVFATURA
+	ProfileTemelIrsaliye       = ProfileTEMELIRSALIYE
 	InvoiceTypeSatis           = InvoiceSATIS
 	InvoiceTypeIade            = InvoiceIADE
 	TaxKDV                     = Tax0015
@@ -16,4 +17,6 @@ const (
 	PaymentMeansCreditTransfer = PaymentMeans30
 	PaymentMeansBankAccount    = PaymentMeans42
 	PaymentMeansBankCard       = PaymentMeans48
+	ResponseKabul              = ResponseKABUL
+	ResponseRed                = ResponseRED
 )
