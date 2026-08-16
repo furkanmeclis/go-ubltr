@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `NewCreditNote`, `NewApplicationResponse`, `NewDespatchAdvice`, `NewReceiptAdvice`, `NewEArchiveReport`, and `NewCreditNoteFromInvoice`.
 - Generated types and builders for CreditNote, ApplicationResponse, DespatchAdvice, and ReceiptAdvice (`schema/ubltr121/…`, shared `cac` / `cbc`).
 - Generated e-Arşiv *report* types from GİB `EArsiv.xsd` v1.1.8 (`schema/earchive`, root `eArsivRaporu`). Distinct from e-Arşiv invoices (UBL Invoice + `ProfileID` `EARSIVFATURA`). `faturaTip` includes `YTBTEVKIFAT` and `YTBTEVKIFATIADE`. `ds:Signature` is InnerXML (no XAdES Go model).
+- `CloneInvoice`, `CloneCreditNote`, `Inspect`, `Diff`, `AddAttachment` / `AddAdditionalDocumentReference`, and `UnmarshalReader` / `MarshalWrite`.
 
 ### Known limitations
 

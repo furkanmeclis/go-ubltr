@@ -35,7 +35,39 @@ err = ubltr.Unmarshal(xmlBytes, &loaded)
 
 `Marshal` writes an XML declaration. `encoding/xml` emits namespace URIs; `cbc:` / `cac:` prefixes are not guaranteed. That is valid XML.
 
+```go
+err = ubltr.UnmarshalReader(r, &loaded)
+err = ubltr.MarshalWrite(w, &inv)
+```
+
 Official sample XML still unmarshals. Extra `xmlns` on GİB fixtures (for example `n4` in `ExtensionContent`) is not round-tripped on marshal.
+
+## Clone, inspect, attachments, diff
+
+```go
+clone, err := ubltr.CloneInvoice(&inv)
+cn, err := ubltr.NewCreditNoteFromInvoice(&inv)
+
+sum, err := ubltr.Inspect(xmlBytes)
+fmt.Println(sum.String())
+
+err = ubltr.AddAttachment(&inv, ubltr.Attachment{
+	ID:       "ATT-1",
+	MIME:     "application/pdf",
+	Filename: "note.pdf",
+	Data:     pdfBytes,
+})
+
+changes, err := ubltr.Diff(xmlA, xmlB)
+```
+
+`CloneInvoice` / `CloneCreditNote` deep-copy via marshal/unmarshal; the copy does not share slice or pointer identity with the source.
+
+`Inspect` uses `Detect` and unmarshal. It does not run XSD or Schematron. Invoice summaries include ID, profile, parties, line count, tax, and payable.
+
+`AddAttachment` writes `AdditionalDocumentReference` with base64 `EmbeddedDocumentBinaryObject`. MIME must be a GİB MimeCodeList value. UBL-TR allows `mimeCode` only on that binary object; `Filename` is stored as `DocumentDescription` when `Description` is empty.
+
+`Diff` compares XML element trees (developer tool, not a GİB checker). Namespace prefixes are ignored.
 
 ## Validation
 

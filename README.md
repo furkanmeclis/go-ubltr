@@ -98,7 +98,7 @@ inv, err := builder.NewInvoiceBuilder().
 data, err := ubltr.Marshal(inv)
 ```
 
-`Build()` returns generated types (`*invoice.Invoice`, `*creditnote.CreditNote`, `*earchive.EArsivRaporu`, …). `ubltr.Detect` reads the XML root; `ValidateXSD` uses the matching schema. `NewCreditNoteFromInvoice` copies parties, lines, and totals onto a CreditNote and adds a billing reference.
+`Build()` returns generated types (`*invoice.Invoice`, `*creditnote.CreditNote`, `*earchive.EArsivRaporu`, …). `ubltr.Detect` reads the XML root; `ValidateXSD` uses the matching schema. `NewCreditNoteFromInvoice` copies parties, lines, and totals onto a CreditNote and adds a billing reference. `CloneInvoice`, `Inspect`, `AddAttachment`, and `Diff` operate on those documents; see [usage](docs/usage.md).
 
 Unit, currency, profile, tax, and related codes are the full GİB lists (`codelist.ValidUnit("C62")`, `codelist.UnitKWH`, …), generated from `UBL-TR_Codelist.xml` (UBL XSD does not enumerate them).
 

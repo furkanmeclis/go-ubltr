@@ -35,6 +35,7 @@ GOWORK=off go list -m all | grep chromedp   # empty
 | Area | Package | Notes |
 | --- | --- | --- |
 | Unmarshal / marshal | `ubltr_test` | `testdata/ubltr-1.2.1/TemelFaturaOrnegi.xml` |
+| Clone / inspect / attach / diff | `ubltr_test` | fixture Invoice clone identity; Inspect ID/profile/payable; attachment XSD; Diff on ID change |
 | XSD | `ubltr_test`, `internal/validation` | fixture Invoice passes; empty Invoice/CreditNote fail; CreditNote from Invoice fixture |
 | Detect | `ubltr_test` | Invoice fixture plus each document root, including `eArsivRaporu` |
 | Schematron | `ubltr_test`, `internal/validation` | fixture is expected to fail current rules (TCKN); unknown ProfileID fails |
