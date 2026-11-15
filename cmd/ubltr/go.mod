@@ -16,7 +16,8 @@ require (
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/dlclark/regexp2 v1.12.0 // indirect
 	github.com/furkanmeclis/go-ubltr/provider/edm v0.0.0-20261115194115-1bb433204e1d
-	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115194115-1bb433204e1d
+	github.com/furkanmeclis/go-ubltr/provider/isnet v0.0.0-20261115202628-6e840400d911
+	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115202628-6e840400d911
 	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0-20261115194115-1bb433204e1d
 	github.com/furkanmeclis/go-ubltr/provider/nilvera v0.0.0-20261115194115-1bb433204e1d
 	github.com/furkanmeclis/go-ubltr/provider/qnb v0.0.0-20261115194115-1bb433204e1d

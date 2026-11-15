@@ -14,8 +14,10 @@ github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7 h1:
 github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7/go.mod h1:eQeCgKskh/4Nu487oWkIr0hnmocNGdg7Wwmibbko+kI=
 github.com/furkanmeclis/go-ubltr/provider/edm v0.0.0-20261115194115-1bb433204e1d h1:Rg2x04z7lK8AMK1cDJeQ+1VbKmIgVpnbgZBRaz0AnxY=
 github.com/furkanmeclis/go-ubltr/provider/edm v0.0.0-20261115194115-1bb433204e1d/go.mod h1:hxuPH7qcXu+nrdJd2QdqdsGtx6q9LVdp/bWcIqx+uz8=
-github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115194115-1bb433204e1d h1:/ikGuYYPkHumPZRJ5KyUdOvg4+o2Y67YKXkSux1y/uM=
-github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115194115-1bb433204e1d/go.mod h1:clJZJIErkeSCITvaPqZu+CwkToYj5qQUb/yzWzvpxfU=
+github.com/furkanmeclis/go-ubltr/provider/isnet v0.0.0-20261115202628-6e840400d911 h1:zHnwYVFdTUY6EtQj0O7hBB9ST22GT6NB0/Rd4K8Z0j0=
+github.com/furkanmeclis/go-ubltr/provider/isnet v0.0.0-20261115202628-6e840400d911/go.mod h1:RxUftEQQHT+mBdAxmnhhN0rMo/Z8mPl8LCbek8kSrgY=
+github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115202628-6e840400d911 h1:cHb2z2+ipYpi5DB9A+X/6XIUGVvWe7j6XXMdeFppAGo=
+github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115202628-6e840400d911/go.mod h1:clJZJIErkeSCITvaPqZu+CwkToYj5qQUb/yzWzvpxfU=
 github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0-20261115194115-1bb433204e1d h1:17xK+NzqFe/CxReKMAgi9pTuYD7Q+NQ2uFT7dLp02FI=
 github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0-20261115194115-1bb433204e1d/go.mod h1:sl3wSlO/O0CGQ5v74KhFJC26fAVTztEli5YmHRlZDjU=
 github.com/furkanmeclis/go-ubltr/provider/nilvera v0.0.0-20261115194115-1bb433204e1d h1:/pqtl8zhdpbGAXQ53O8fxfsXly1zogW1zcMa0XN79mw=
