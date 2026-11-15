@@ -11,18 +11,20 @@ import (
 )
 
 // Summary is a human-readable view of a document. It is not a second document model.
+// JSON tags give a stable machine-readable form (used by ubltr inspect
+// --format=json).
 type Summary struct {
-	Kind     Kind
-	ID       string
-	UUID     string
-	Profile  string
-	Type     string
-	Currency string
-	Supplier string
-	Customer string
-	Lines    int
-	Tax      string
-	Payable  string
+	Kind     Kind   `json:"kind"`
+	ID       string `json:"id"`
+	UUID     string `json:"uuid"`
+	Profile  string `json:"profile"`
+	Type     string `json:"type"`
+	Currency string `json:"currency"`
+	Supplier string `json:"supplier"`
+	Customer string `json:"customer"`
+	Lines    int    `json:"lines"`
+	Tax      string `json:"tax"`
+	Payable  string `json:"payable"`
 }
 
 func (s Summary) String() string {

@@ -490,12 +490,12 @@ func fireSchematronTest(
 		v.Severity = SeverityError
 	}
 	if node.Type() == helium.AttributeNode {
-		v.Attribute = node.Name()
+		v.Attribute = loc.qname(node)
 		if p := node.Parent(); p != nil {
-			v.Element = p.Name()
+			v.Element = loc.qname(p)
 		}
 	} else {
-		v.Element = node.Name()
+		v.Element = loc.qname(node)
 	}
 	r.Violations = append(r.Violations, v)
 }

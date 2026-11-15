@@ -13,7 +13,7 @@ Usage:
   ubltr <command> [arguments]
 
 Commands:
-  validate    Check XML against GİB XSD and Invoice Schematron
+  validate    Check XML against GİB XSD and Schematron
   inspect     Print a short document summary
   render      Write HTML (or PDF with --pdf)
   generate    Regenerate Go types from vendored XSD (repo checkout)
