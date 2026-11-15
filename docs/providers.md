@@ -96,3 +96,59 @@ Module `github.com/furkanmeclis/go-ubltr/provider/turkcell`, details in
   rate limited to 6 calls per 15 minutes.
 - Live tests: `TURKCELL_API_KEY=... go test -tags live ./...` in
   `provider/turkcell`.
+Integrator modules implement the vendor-neutral
+[`provider`](../provider/README.md) contract. Each is a separate module;
+importing it registers it for `provider.Open`.
+
+## İzibiz
+
+Module `github.com/furkanmeclis/go-ubltr/provider/izibiz`, registry name
+`izibiz`. SOAP: AuthenticationWS, EInvoiceWS, EIArchiveWS, EIrsaliyeWS.
+
+```go
+import _ "github.com/furkanmeclis/go-ubltr/provider/izibiz"
+
+p, err := provider.Open("izibiz", provider.Config{Username: u, Password: pw, Test: true})
+```
+
+| Kind | Operations |
+| --- | --- |
+| e-Fatura | send, status, list-inbox, list-outbox, fetch (UBL/PDF/HTML), respond, mark-taken, check-user |
+| e-Arşiv | send, status, fetch (UBL/PDF/HTML), cancel-earchive |
+| e-İrsaliye | send, status |
+
+- Test system: `https://efaturatest.izibiz.com.tr`. The production host is
+  not published; pass `Endpoint`.
+- One session is shared and renewed on session errors (`10004`, `2005`).
+- Error codes from the İzibiz Developer Portal are in
+  [`provider/izibiz/errors.csv`](../provider/izibiz/errors.csv).
+- Live tests: `IZIBIZ_USERNAME`, `IZIBIZ_PASSWORD`, `-tags live`.
+
+Details: [`provider/izibiz/README.md`](../provider/izibiz/README.md).
+
+## EDM Bilişim
+
+Module `github.com/furkanmeclis/go-ubltr/provider/edm`, registry name
+`edm`. SOAP: `EFaturaEDM.svc`.
+
+```go
+import _ "github.com/furkanmeclis/go-ubltr/provider/edm"
+
+p, err := provider.Open("edm", provider.Config{Username: u, Password: pw, VKN: vkn, Test: true})
+```
+
+| Kind | Operations |
+| --- | --- |
+| e-Fatura | send, status, list-inbox, list-outbox, fetch (UBL/PDF/HTML), mark-taken, check-user |
+
+- Test system: `https://test.edmbilisim.com.tr/EFaturaEDM21ea/EFaturaEDM.svc`.
+  Production URL comes with the contract (`edm.PortalEndpoint` and
+  `edm.InteraktifEndpoint` are the public services).
+- EDM publishes no error-code list; fault codes keep their raw value.
+  [`provider/edm/errors.csv`](../provider/edm/errors.csv) holds the status
+  texts used for status mapping.
+- Commercial responses, e-Arşiv and e-İrsaliye are not covered: their
+  values are not publicly documented.
+- Live tests: `EDM_USERNAME`, `EDM_PASSWORD`, `-tags live`.
+
+Details: [`provider/edm/README.md`](../provider/edm/README.md).

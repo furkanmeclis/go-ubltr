@@ -46,6 +46,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Nested `provider/nes` module: NES REST client for e-Fatura and e-Arşiv (send raw UBL-TR, status, inbox/outbox, fetch, respond, cancel, user check, mark taken, credits).
 - Nested `provider/nilvera` module: Nilvera REST client for e-Fatura and e-Arşiv (send raw UBL-TR, status, inbox/outbox, fetch, respond, cancel, user check, mark taken, credits).
 - Nested `provider/turkcell` module: Turkcell e-Şirket REST client for e-Fatura and e-Arşiv (send raw UBL-TR, status, inbox, fetch, respond, cancel, mark taken).
+- Nested `provider/izibiz` module: İzibiz SOAP integrator (e-Fatura, e-Arşiv, e-İrsaliye send/status, inbox/outbox, fetch, respond, cancel, check-user).
+- Nested `provider/edm` module: EDM Bilişim SOAP integrator (e-Fatura send/status, inbox/outbox, fetch, mark-taken, check-user).
 
 ### Known limitations
 
