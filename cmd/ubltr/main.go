@@ -17,6 +17,7 @@ Commands:
   inspect     Print a short document summary
   render      Write HTML (or PDF with --pdf)
   generate    Regenerate Go types from vendored XSD (repo checkout)
+  watch       Poll an integrator and print events as NDJSON
 
 Exit codes:
   0  success (valid for validate)
@@ -47,6 +48,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return cmdRender(args[1:], stdout, stderr)
 	case "generate":
 		return cmdGenerate(args[1:], stdout, stderr)
+	case "watch":
+		return cmdWatch(args[1:], stdout, stderr)
 	default:
 		fmt.Fprintf(stderr, "ubltr: unknown command %q\n", args[0])
 		fmt.Fprint(stderr, usage)

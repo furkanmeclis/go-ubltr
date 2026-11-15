@@ -1,6 +1,7 @@
 package watch
 
 import (
+	"encoding/json"
 	"strings"
 	"time"
 
@@ -98,4 +99,58 @@ func receivedEvent(providerName, tenant string, info provider.DocumentInfo, at t
 		Info:         info,
 		At:           at,
 	}
+}
+
+// infoJSON is provider.DocumentInfo with snake_case JSON names, so the
+// whole event uses one naming style. The field list must match
+// provider.DocumentInfo exactly (the conversions below enforce it).
+type infoJSON struct {
+	Kind         provider.DocumentKind `json:"kind,omitempty"`
+	Direction    provider.Direction    `json:"direction,omitempty"`
+	UUID         string                `json:"uuid,omitempty"`
+	ID           string                `json:"id,omitempty"`
+	Profile      string                `json:"profile,omitempty"`
+	Type         string                `json:"type,omitempty"`
+	IssueDate    string                `json:"issue_date,omitempty"`
+	SenderVKN    string                `json:"sender_vkn,omitempty"`
+	SenderName   string                `json:"sender_name,omitempty"`
+	ReceiverVKN  string                `json:"receiver_vkn,omitempty"`
+	ReceiverName string                `json:"receiver_name,omitempty"`
+	Currency     string                `json:"currency,omitempty"`
+	Payable      string                `json:"payable,omitempty"`
+	Status       provider.Status       `json:"status,omitempty"`
+	GIBCode      int                   `json:"gib_code,omitempty"`
+	ProviderCode string                `json:"provider_code,omitempty"`
+	CreatedAt    time.Time             `json:"created_at,omitzero"`
+}
+
+type eventFields Event
+
+type eventWire struct {
+	eventFields
+	Info *infoJSON `json:"info,omitempty"`
+}
+
+// MarshalJSON writes the event with snake_case names throughout,
+// including the embedded listing metadata.
+func (e Event) MarshalJSON() ([]byte, error) {
+	w := eventWire{eventFields: eventFields(e)}
+	if e.Info != (provider.DocumentInfo{}) {
+		info := infoJSON(e.Info)
+		w.Info = &info
+	}
+	return json.Marshal(w)
+}
+
+// UnmarshalJSON reads what MarshalJSON writes.
+func (e *Event) UnmarshalJSON(b []byte) error {
+	var w eventWire
+	if err := json.Unmarshal(b, &w); err != nil {
+		return err
+	}
+	*e = Event(w.eventFields)
+	if w.Info != nil {
+		e.Info = provider.DocumentInfo(*w.Info)
+	}
+	return nil
 }

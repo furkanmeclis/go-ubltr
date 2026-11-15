@@ -38,6 +38,9 @@ func TestEventJSONFieldNames(t *testing.T) {
 			t.Errorf("missing JSON field %q in %s", k, b)
 		}
 	}
+	if info, _ := m["info"].(map[string]any); info["uuid"] != "u1" || len(info) != 1 {
+		t.Errorf("info = %v, want snake_case with empty fields omitted", m["info"])
+	}
 	var back Event
 	if err := json.Unmarshal(b, &back); err != nil {
 		t.Fatal(err)

@@ -10,6 +10,8 @@ replace github.com/furkanmeclis/go-ubltr/render/chromium => ../../render/chromiu
 
 require (
 	github.com/furkanmeclis/go-ubltr v0.0.0-00010101000000-000000000000
+	github.com/furkanmeclis/go-ubltr/provider v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0-00010101000000-000000000000
 	github.com/furkanmeclis/go-ubltr/render v0.0.0
 	github.com/furkanmeclis/go-ubltr/render/chromium v0.0.0-00010101000000-000000000000
 )
@@ -27,3 +29,7 @@ require (
 	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.40.0 // indirect
 )
+
+replace github.com/furkanmeclis/go-ubltr/provider => ../../provider
+
+replace github.com/furkanmeclis/go-ubltr/provider/watch => ../../provider/watch
