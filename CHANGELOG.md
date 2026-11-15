@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - `provider/izibiz`: `ListOutbox` lists outgoing e-Arşiv invoices with `GetEArchiveInvoiceList` and pages through `From`/`To` in 24-hour windows. `Capabilities` declares `list-outbox` for `earsiv`.
+- `provider/isnet`: read-only İşNet (NetteFatura) client for e-Fatura and e-Arşiv listing, status, download and recipient check; timeouts from a non-allowlisted IP are reported as `ip-not-allowlisted`.
 
 ### Changed
 

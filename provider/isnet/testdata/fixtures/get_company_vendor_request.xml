@@ -1,0 +1,13 @@
+<!-- Request from integration note 32-isnet.md §5.5. -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:tem="http://tempuri.org/"
+                  xmlns:ein="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <tem:GetCompanyVendor>
+      <tem:request>
+        <ein:CompanyTaxCode>1234567890</ein:CompanyTaxCode>
+      </tem:request>
+    </tem:GetCompanyVendor>
+  </soapenv:Body>
+</soapenv:Envelope>

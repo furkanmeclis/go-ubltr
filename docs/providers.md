@@ -16,6 +16,7 @@ is enough) to register it with `provider.Open`, or use its typed constructor.
 | `provider/qnb` | QNB eSolutions (eFinans) | SOAP | ✓ | ✓ | – |
 | `provider/sovos` | Sovos Türkiye (FIT / Foriba) | SOAP | ✓ | ✓ | – |
 | `provider/trendyol` | Trendyol E-Faturam | REST | ✓ | ✓ | – |
+| `provider/isnet` | İşNet (NetteFatura) | SOAP | ✓ (read-only) | ✓ (read-only) | – |
 
 The exact operations per document kind are in each module's README and in
 `Capabilities()` at runtime:
@@ -233,3 +234,20 @@ Details: [`provider/edm/README.md`](../provider/edm/README.md).
 - e-Arşiv: UBL file send, report status, download, cancel.
 - Stage and live gateways are built in; stage access is IP allow-listed.
 - Details: [provider/trendyol/README.md](../provider/trendyol/README.md).
+
+## isnet — İşNet (NetteFatura)
+
+- Module: `github.com/furkanmeclis/go-ubltr/provider/isnet`
+- Protocol: SOAP 1.1 (WCF `InvoiceService`, `AddressBookService`). No
+  credentials: İşNet allowlists the caller's IP and every request carries
+  the company VKN (`CompanyTaxCode`).
+- Read-only. e-Fatura: inbox and outbox listing, status, UBL/PDF/HTML
+  download, recipient check (`GetTaxPayer`). e-Arşiv: outbox listing,
+  status (with a separate `IsCancelled` query), UBL/PDF download. Sending,
+  answering, archiving and cancelling calls are not implemented.
+- From a non-allowlisted IP the live service does not answer; such
+  timeouts come back as `KindPermission` with code `ip-not-allowlisted`
+  (`isnet.IsIPNotAllowed`), not retryable.
+- Not verified against the live system; request shapes follow the İşNet
+  interface documents and the test-system WSDL.
+- Details: [provider/isnet/README.md](../provider/isnet/README.md).

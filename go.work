@@ -7,6 +7,7 @@ use (
 	./examples/render/pdf
 	./provider
 	./provider/edm
+	./provider/isnet
 	./provider/izibiz
 	./provider/nes
 	./provider/nilvera

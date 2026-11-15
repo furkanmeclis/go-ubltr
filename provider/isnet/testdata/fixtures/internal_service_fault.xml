@@ -1,0 +1,10 @@
+<!-- WCF fault as described in integration note 32-isnet.md §9
+     (faultcode a:InternalServiceFault, faultstring). Text is illustrative. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <s:Fault>
+      <faultcode xmlns:a="http://schemas.microsoft.com/net/2005/12/windowscommunicationfoundation/dispatcher">a:InternalServiceFault</faultcode>
+      <faultstring xml:lang="tr-TR">The server was unable to process the request due to an internal error.</faultstring>
+    </s:Fault>
+  </s:Body>
+</s:Envelope>

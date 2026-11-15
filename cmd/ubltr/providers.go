@@ -10,6 +10,7 @@ import (
 	// Integrator modules register themselves with provider.Register when
 	// imported.
 	_ "github.com/furkanmeclis/go-ubltr/provider/edm"
+	_ "github.com/furkanmeclis/go-ubltr/provider/isnet"
 	_ "github.com/furkanmeclis/go-ubltr/provider/izibiz"
 	_ "github.com/furkanmeclis/go-ubltr/provider/nes"
 	_ "github.com/furkanmeclis/go-ubltr/provider/nilvera"

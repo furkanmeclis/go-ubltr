@@ -1,0 +1,37 @@
+<!-- Request template from integration note 32-isnet.md §5.1 with the
+     placeholders filled (VKN 1234567890, unit B01, page 2 of 20, a
+     creation-date window). The listing does not ask for the UBL, so
+     IsXMLIncluded is false. Fields are in the alphabetical order İşNet
+     requires. -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:tem="http://tempuri.org/"
+                  xmlns:ein="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model"
+                  xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <tem:SearchAllInvoice>
+      <tem:request>
+        <ein:CompanyTaxCode>1234567890</ein:CompanyTaxCode>
+        <ein:IncludeCompanyVendorNumberList><arr:string>B01</arr:string></ein:IncludeCompanyVendorNumberList>
+        <ein:IncludeMainCompany>true</ein:IncludeMainCompany>
+        <ein:InvoiceDirection>Incoming</ein:InvoiceDirection>
+        <ein:MaxInvoiceCreationDate>2026-11-30T23:59:59</ein:MaxInvoiceCreationDate>
+        <ein:MinInvoiceCreationDate>2026-11-01T00:00:00</ein:MinInvoiceCreationDate>
+        <ein:PagingRequest>
+          <ein:PageNumber>2</ein:PageNumber>
+          <ein:RecordsPerPage>20</ein:RecordsPerPage>
+        </ein:PagingRequest>
+        <ein:ResultSet>
+          <ein:IsAdditionalTaxIncluded>false</ein:IsAdditionalTaxIncluded>
+          <ein:IsArchiveIncluded>true</ein:IsArchiveIncluded>
+          <ein:IsAttachmentIncluded>false</ein:IsAttachmentIncluded>
+          <ein:IsExternalUrlIncluded>false</ein:IsExternalUrlIncluded>
+          <ein:IsHtmlIncluded>false</ein:IsHtmlIncluded>
+          <ein:IsInvoiceDetailIncluded>false</ein:IsInvoiceDetailIncluded>
+          <ein:IsPDFIncluded>false</ein:IsPDFIncluded>
+          <ein:IsXMLIncluded>false</ein:IsXMLIncluded>
+        </ein:ResultSet>
+      </tem:request>
+    </tem:SearchAllInvoice>
+  </soapenv:Body>
+</soapenv:Envelope>

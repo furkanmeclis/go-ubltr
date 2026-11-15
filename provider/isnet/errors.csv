@@ -1,0 +1,71 @@
+# İşNet (NetteFatura) codes.
+# Sources:
+# - İşNet integration note 32-isnet.md (internal), sections 4 (GetTaxPayer),
+#   8.1 (InvoiceStatus), 8.2 (e-Arşiv status lists) and 9 (errors), which
+#   summarise the İşNet "E-Fatura", "E-Arşiv" and "AddressBook" Web Servis
+#   Arayüz Dokümanları (V2 12.08.2024, V1 10.01.2023).
+# - Enumerations of the InvoiceService WSDL served by the İşNet test system
+#   (testdata/wsdl/InvoiceService.wsdl): InvoiceStatus,
+#   ArchiveInvoiceStatus, CanceledArchiveInvoiceReportSendingStatus,
+#   ArchiveInvoiceReportSendingStatus.
+#
+# Prefixes:
+#   status.  InvoiceStatus (e-Fatura Status / ApplicationResponseStatus).
+#            States, not errors. The status column is for outgoing
+#            documents; incoming documents in a pending state are
+#            "received". An empty status keeps the DetailStatus mapping
+#            (the note: "önceki durum korunur").
+#   archive. ArchiveInvoiceStatus (e-Arşiv Status).
+#   cancel.  CanceledArchiveInvoiceReportSendingStatus; every value except
+#            Iptal_Edilmedi means the e-Arşiv invoice is cancelled.
+#   report.  ArchiveInvoiceReportSendingStatus; informational, 4 and 5 are
+#            GİB report errors (the note's EARCHIVE_REPORT_ERROR warning).
+#   message: Result=Failed ErrorMessage text (case-insensitive substring).
+# InvoiceDetailStatus values are GİB envelope codes (1000-1300) and use the
+# shared provider GİB table; Failed and ip-not-allowlisted are this
+# module's own codes. İşNet publishes no error-code list.
+code,kind,status,retryable,message,message_en
+Failed,unknown,,false,İşlem başarısız (Result=Failed),Request failed (Result=Failed)
+ip-not-allowlisted,permission,,false,"İşNet yanıt vermedi; çağrıyı yapan IP İşNet'te tanımlı olmayabilir (tanımsız IP'lere TCP yanıtı dönülmez)","İşNet did not answer; the caller's IP may not be allowlisted (İşNet does not answer unknown IPs)"
+message:bulunamad,not-found,,false,Kayıt bulunamadı,Not found
+status.Onay_Bekliyor,ok,delivered,false,Onay bekliyor (0),Waiting for the commercial answer
+status.Onaylandi,ok,accepted,false,Onaylandı (1),Approved
+status.Reddedildi,ok,rejected,false,Reddedildi (2),Rejected
+status.Onay_Akisinda,ok,delivered,false,Onay akışında (3),In the approval flow
+status.Iade_Edildi,ok,rejected,false,İade edildi (4),Returned
+status.Gonderildi,ok,sent,false,Gönderildi (8),Sent; see DetailStatus
+status.Ziplendi,ok,processing,false,Ziplendi (12),Zipped
+status.Gibe_Iletildi,ok,sent,false,GİB'e iletildi (13),Forwarded to GİB; see DetailStatus
+status.Imza_Bekliyor,ok,draft,false,İmza bekliyor (15),Waiting for signature
+status.Gib_Tarafinda_Hata_Olustu,ok,failed,false,GİB tarafında hata oluştu (16),Error on the GİB side
+status.Sistem_Hatasi,ok,failed,false,Sistem hatası (22),System error
+status.Alici_Kabul_Etti,ok,accepted,false,Alıcı kabul etti (24),Accepted by the receiver
+status.Alici_Reddetti,ok,rejected,false,Alıcı reddetti (25),Rejected by the receiver
+status.Alici_Iade_Etti,ok,rejected,false,Alıcı iade etti (26),Returned by the receiver
+status.Otomatik_Onaylandi,ok,accepted,false,Otomatik onaylandı (29),Approved automatically
+status.Otomatik_Alici_Kabul_Etti,ok,accepted,false,Otomatik alıcı kabul etti (30),Accepted automatically
+status.Uygulama_Yaniti_Yollaniyor,ok,,false,Uygulama yanıtı yollanıyor (36),Application response being sent
+status.Uygulama_Yaniti_Hata_Aldi,ok,,false,Uygulama yanıtı hata aldı (37),Application response failed
+status.Irsaliye_Yaniti_Yollaniyor,ok,,false,İrsaliye yanıtı yollanıyor (41),Receipt advice being sent
+status.Irsaliye_Yaniti_Hata_Aldi,ok,,false,İrsaliye yanıtı hata aldı (42),Receipt advice failed
+archive.Fatura_Hazirlaniyor,ok,processing,false,Fatura hazırlanıyor (1),Invoice being prepared
+archive.Fatura_Imzalaniyor,ok,processing,false,Fatura imzalanıyor (2),Invoice being signed
+archive.Pdf_Hazirlaniyor,ok,processing,false,PDF hazırlanıyor (3),PDF being prepared
+archive.Pdf_Imzalaniyor,ok,processing,false,PDF imzalanıyor (4),PDF being signed
+archive.Fatura_Olusturuldu,ok,delivered,false,Fatura oluşturuldu (5),Invoice created
+archive.Silindi,ok,cancelled,false,Silindi (6),Deleted
+cancel.Iptal_Edilmedi,ok,,false,İptal edilmedi (0),Not cancelled
+cancel.Gibe_Otomatik_Raporlanacaktir,ok,cancelled,false,İptal GİB'e otomatik raporlanacak,Cancellation will be reported to GİB
+cancel.Gibe_Gonderilmek_Icin_Bekliyor,ok,cancelled,false,İptal GİB'e gönderilmek için bekliyor (1),Cancellation waiting to be sent to GİB
+cancel.Gibe_Gonderiliyor,ok,cancelled,false,İptal GİB'e gönderiliyor,Cancellation being sent to GİB
+cancel.Gibe_Gonderildi,ok,cancelled,false,İptal GİB'e gönderildi,Cancellation sent to GİB
+cancel.Gibe_Gonderilirken_Sistem_Hatasi_Olustu,ok,cancelled,false,İptal raporu gönderilirken sistem hatası,System error while reporting the cancellation
+cancel.Gib_Tarafinda_Hata_Olustu,ok,cancelled,false,İptal raporunda GİB tarafında hata,GİB error on the cancellation report
+cancel.Gib_Raporu_Kabul_Etti,ok,cancelled,false,GİB iptal raporunu kabul etti (6),GİB accepted the cancellation report
+report.Gibe_Otomatik_Raporlanacaktir,ok,,false,GİB'e otomatik raporlanacak (1),Will be reported to GİB
+report.Gibe_Gonderilmek_Icin_Bekliyor,ok,,false,GİB'e gönderilmek için bekliyor (1),Waiting to be reported to GİB
+report.Gibe_Gonderiliyor,ok,,false,GİB'e gönderiliyor (2),Being reported to GİB
+report.Gibe_Gonderildi,ok,,false,GİB'e gönderildi (3),Reported to GİB
+report.Gibe_Gonderilirken_Sistem_Hatasi_Olustu,unavailable,,true,GİB'e gönderilirken sistem hatası oluştu (4),System error while reporting to GİB
+report.Gib_Tarafinda_Hata_Olustu,validation,,false,GİB tarafında hata oluştu (5),Error on the GİB side
+report.Gib_Raporu_Kabul_Etti,ok,,false,GİB raporu kabul etti (6),GİB accepted the report

@@ -1,0 +1,48 @@
+<!-- SearchArchiveInvoice response built like the §5.4 sample of
+     integration note 32-isnet.md, with the members listed in §6.2
+     (ArchiveInvoices, ArchiveInvoice, PagingResponse) and status members
+     named as in the WSDL ArchiveInvoice type. The first item carries no
+     ETTN / number, so they must come from the UBL (§6.2). No
+     TotalNumberOfPages is sent, so paging falls back to the page size.
+     {{UBL}} is replaced by the tests. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <SearchArchiveInvoiceResponse xmlns="http://tempuri.org/">
+      <SearchArchiveInvoiceResult xmlns:a="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model"
+                                  xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
+                                  xmlns:b="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model.DataTypes.Enums">
+        <a:ErrorMessage i:nil="true"/>
+        <a:ArchiveInvoices>
+          <a:ArchiveInvoice>
+            <a:CancellationReportSendingStatus>Iptal_Edilmedi</a:CancellationReportSendingStatus>
+            <a:CurrencyCode>TRY</a:CurrencyCode>
+            <a:InvoiceCreationDate>2026-11-05T12:00:00</a:InvoiceCreationDate>
+            <a:InvoiceDate>2026-11-05T00:00:00</a:InvoiceDate>
+            <a:InvoiceXml>{{UBL}}</a:InvoiceXml>
+            <a:IsCanceled>false</a:IsCanceled>
+            <a:Receiver>
+              <a:ReceiverName>Nihai Tüketici</a:ReceiverName>
+              <a:ReceiverTaxCode>11111111111</a:ReceiverTaxCode>
+            </a:Receiver>
+            <a:ReportSendingStatus>Gib_Tarafinda_Hata_Olustu</a:ReportSendingStatus>
+            <a:Status>Fatura_Olusturuldu</a:Status>
+            <a:TotalPayableAmount>240.00</a:TotalPayableAmount>
+          </a:ArchiveInvoice>
+          <a:ArchiveInvoice>
+            <a:CancellationReportSendingStatus>Gib_Raporu_Kabul_Etti</a:CancellationReportSendingStatus>
+            <a:ETTN>5D6E7F80-2222-4A5B-9C8D-000000000003</a:ETTN>
+            <a:InvoiceDate>2026-11-06T00:00:00</a:InvoiceDate>
+            <a:InvoiceNumber>EAR2026000000007</a:InvoiceNumber>
+            <a:IsCanceled>true</a:IsCanceled>
+            <a:Status>Fatura_Olusturuldu</a:Status>
+          </a:ArchiveInvoice>
+        </a:ArchiveInvoices>
+        <a:PagingResponse>
+          <a:PageNumber>1</a:PageNumber>
+          <a:RecordsPerPage>2</a:RecordsPerPage>
+        </a:PagingResponse>
+        <a:Result>Success</a:Result>
+      </SearchArchiveInvoiceResult>
+    </SearchArchiveInvoiceResponse>
+  </s:Body>
+</s:Envelope>

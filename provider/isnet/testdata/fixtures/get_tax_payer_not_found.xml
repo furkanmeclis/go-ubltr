@@ -1,0 +1,16 @@
+<!-- GetTaxPayer for a VKN that is not an e-Fatura user. Integration note
+     32-isnet.md §4 and §9: İşNet answers Result=Failed with an ErrorMessage
+     containing "bulunamad" (behaviour recorded by a community module). The
+     full message text is not documented; this one is illustrative. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetTaxPayerResponse xmlns="http://tempuri.org/">
+      <GetTaxPayerResult xmlns:a="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model"
+                         xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <a:ErrorMessage>Mükellef bulunamadı</a:ErrorMessage>
+        <a:Result>Failed</a:Result>
+        <a:TaxPayers i:nil="true"/>
+      </GetTaxPayerResult>
+    </GetTaxPayerResponse>
+  </s:Body>
+</s:Envelope>

@@ -1,0 +1,31 @@
+<!-- GetTaxPayer response with the members listed in integration note
+     32-isnet.md §4 (Result, ErrorMessage, TaxPayers[] > TaxPayer). The
+     note spells the members Taxpayertaxcode, Taxpayername, Registrationdate,
+     Inboxtaglist, Outboxtaglist; they are used here to check the
+     case-insensitive reading (the WSDL spells them TaxPayerTaxCode, ...).
+     Values are illustrative. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetTaxPayerResponse xmlns="http://tempuri.org/">
+      <GetTaxPayerResult xmlns:a="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model"
+                         xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <a:ErrorMessage i:nil="true"/>
+        <a:Result>Success</a:Result>
+        <a:TaxPayers>
+          <a:TaxPayer>
+            <a:Inboxtaglist xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <b:string>urn:mail:defaultpk@ornek.com.tr</b:string>
+            </a:Inboxtaglist>
+            <a:Outboxtaglist xmlns:b="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <b:string>urn:mail:defaultgb@ornek.com.tr</b:string>
+            </a:Outboxtaglist>
+            <a:Registrationdate>2020-01-15T00:00:00</a:Registrationdate>
+            <a:Taxpayername>Örnek Satıcı A.Ş.</a:Taxpayername>
+            <a:Taxpayertaxcode>9876543210</a:Taxpayertaxcode>
+            <a:Type>Ozel</a:Type>
+          </a:TaxPayer>
+        </a:TaxPayers>
+      </GetTaxPayerResult>
+    </GetTaxPayerResponse>
+  </s:Body>
+</s:Envelope>

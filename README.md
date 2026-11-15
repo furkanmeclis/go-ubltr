@@ -227,6 +227,7 @@ Every module declares what it supports (`Capabilities()`, `provider.Supports`), 
 | `provider/qnb` | SOAP | QNB eSolutions (eFinans) |
 | `provider/sovos` | SOAP | Sovos Türkiye (FIT / Foriba) |
 | `provider/trendyol` | REST | Trendyol E-Faturam |
+| `provider/isnet` | SOAP | İşNet (NetteFatura), read-only |
 
 ## XML output
 

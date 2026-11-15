@@ -1,0 +1,32 @@
+<!-- Request template from integration note 32-isnet.md §6.1 with the
+     placeholders filled and the §6.3 cancellation filter. The result-set
+     member is ResultSet, as in İşNet's request sample and the WSDL. -->
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:tem="http://tempuri.org/"
+                  xmlns:ein="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <tem:SearchArchiveInvoice>
+      <tem:request>
+        <ein:CompanyTaxCode>1234567890</ein:CompanyTaxCode>
+        <ein:IsCancelled>true</ein:IsCancelled>
+        <ein:MaxInvoiceCreationDate>2026-11-30T23:59:59</ein:MaxInvoiceCreationDate>
+        <ein:MinInvoiceCreationDate>2026-11-01T00:00:00</ein:MinInvoiceCreationDate>
+        <ein:PagingRequest>
+          <ein:PageNumber>1</ein:PageNumber>
+          <ein:RecordsPerPage>20</ein:RecordsPerPage>
+        </ein:PagingRequest>
+        <ein:ResultSet>
+          <ein:IsAdditionalTaxIncluded>false</ein:IsAdditionalTaxIncluded>
+          <ein:IsArchiveIncluded>true</ein:IsArchiveIncluded>
+          <ein:IsAttachmentIncluded>false</ein:IsAttachmentIncluded>
+          <ein:IsExternalUrlIncluded>false</ein:IsExternalUrlIncluded>
+          <ein:IsHtmlIncluded>false</ein:IsHtmlIncluded>
+          <ein:IsInvoiceDetailIncluded>false</ein:IsInvoiceDetailIncluded>
+          <ein:IsPDFIncluded>false</ein:IsPDFIncluded>
+          <ein:IsXMLIncluded>true</ein:IsXMLIncluded>
+        </ein:ResultSet>
+      </tem:request>
+    </tem:SearchArchiveInvoice>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,65 @@
+<!-- Response shape from integration note 32-isnet.md §5.4 (WCF
+     serialisation; not yet confirmed against a real answer). Invoice
+     members use the names in §5.6 and the WSDL Invoice type; values are
+     illustrative. The first item spells the ETTN member as the WSDL and
+     the community module do (ETTN), the second as the İşNet document does
+     (Ettn). {{UBL}} is replaced by the tests with a base64 UBL-TR
+     invoice. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <SearchAllInvoiceResponse xmlns="http://tempuri.org/">
+      <SearchAllInvoiceResult xmlns:a="http://schemas.datacontract.org/2004/07/EInvoice.Service.Model"
+                              xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <a:ErrorMessage i:nil="true"/>
+        <a:Invoices>
+          <a:Invoice>
+            <a:ApplicationResponseStatus i:nil="true"/>
+            <a:ApprovalDate i:nil="true"/>
+            <a:ArchiveDate i:nil="true"/>
+            <a:CompanyVendorNumber i:nil="true"/>
+            <a:CurrencyCode>TRY</a:CurrencyCode>
+            <a:DetailStatus>Basariyla_Tamamlandi</a:DetailStatus>
+            <a:ETTN>F3B1C2D4-0000-4A5B-9C8D-123456789ABC</a:ETTN>
+            <a:EnvelopeId>0F1E2D3C-4B5A-4978-8695-A4B3C2D1E0F9</a:EnvelopeId>
+            <a:InvoiceCreationDate>2026-11-03T10:15:30.123</a:InvoiceCreationDate>
+            <a:InvoiceDate>2026-11-02T00:00:00</a:InvoiceDate>
+            <a:InvoiceNumber>ABC2026000000123</a:InvoiceNumber>
+            <a:InvoiceType>SATIS</a:InvoiceType>
+            <a:InvoiceXml>{{UBL}}</a:InvoiceXml>
+            <a:IsArchived>false</a:IsArchived>
+            <a:Receiver>
+              <a:ReceiverName>Örnek Satıcı A.Ş.</a:ReceiverName>
+              <a:ReceiverTaxCode>9876543210</a:ReceiverTaxCode>
+            </a:Receiver>
+            <a:ScenarioType>TICARIFATURA</a:ScenarioType>
+            <a:Status>Onay_Bekliyor</a:Status>
+            <a:TotalPayableAmount>1200.00</a:TotalPayableAmount>
+          </a:Invoice>
+          <a:Invoice>
+            <a:CurrencyCode>USD</a:CurrencyCode>
+            <a:DetailStatus>Basariyla_Tamamlandi</a:DetailStatus>
+            <a:Ettn>0A1B2C3D-1111-4A5B-9C8D-000000000002</a:Ettn>
+            <a:InvoiceCreationDate>2026-11-04T08:00:00</a:InvoiceCreationDate>
+            <a:InvoiceDate>2026-11-04T00:00:00</a:InvoiceDate>
+            <a:InvoiceNumber>ABC2026000000124</a:InvoiceNumber>
+            <a:InvoiceType>IADE</a:InvoiceType>
+            <a:Receiver>
+              <a:ReceiverName>İkinci Firma Ltd.</a:ReceiverName>
+              <a:ReceiverTaxCode>1111111111</a:ReceiverTaxCode>
+            </a:Receiver>
+            <a:ScenarioType>TEMELFATURA</a:ScenarioType>
+            <a:Status>Alici_Kabul_Etti</a:Status>
+            <a:TotalPayableAmount>99.90</a:TotalPayableAmount>
+          </a:Invoice>
+        </a:Invoices>
+        <a:PagingResponse>
+          <a:PageNumber>1</a:PageNumber>
+          <a:RecordsPerPage>20</a:RecordsPerPage>
+          <a:TotalNumberOfPages>3</a:TotalNumberOfPages>
+          <a:TotalNumberOfRecords>57</a:TotalNumberOfRecords>
+        </a:PagingResponse>
+        <a:Result>Success</a:Result>
+      </SearchAllInvoiceResult>
+    </SearchAllInvoiceResponse>
+  </s:Body>
+</s:Envelope>
