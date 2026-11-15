@@ -28,7 +28,7 @@ jobs:
             echo
             echo "### Module tags"
             echo
-            git tag --points-at "$GITHUB_SHA" | grep -v "^$GITHUB_REF_NAME$" | sed 's/^/- `/; s/$/`/'
+            git tag -l "*/$GITHUB_REF_NAME" | sort | sed 's/^/- `/; s/$/`/'
           } >> notes.md
           if ! grep -q '[^[:space:]]' notes.md; then echo "Release $GITHUB_REF_NAME" > notes.md; fi
 
