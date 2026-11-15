@@ -58,6 +58,7 @@ module logs in once more and repeats the call. Call `Logout` when done.
 | | check-user | AuthenticationWS `CheckUser` (`DOCUMENT_TYPE=INVOICE`) |
 | `earsiv` | send | EIArchiveWS `WriteToArchiveExtended` |
 | | status | `GetEArchiveInvoiceStatus` |
+| | list-outbox | `GetEArchiveInvoiceList` (`HEADER_ONLY=Y`, `READ_INCLUDED=Y`, date windows) |
 | | fetch (ubl, pdf, html) | `ReadFromArchive` |
 | | cancel-earchive | `CancelEArchiveInvoice` (reason → `IPTAL_NOTU`) |
 | `eirsaliye` | send | EIrsaliyeWS `SendDespatchAdvice` |
@@ -71,6 +72,49 @@ apart), `AssignsNumbers` when a series is configured.
 Listings have no cursor. Use `OnlyNew: true` and `MarkTaken` to work
 through new documents, as İzibiz recommends. Date filters use
 `DATE_TYPE=CREATE`.
+
+### e-Arşiv outbox listing
+
+`ListOutbox` with `Kind: provider.EArchive` calls EIArchiveWS
+`GetEArchiveInvoiceList`. The request sends `LIMIT`, `START_DATE`,
+`END_DATE`, `HEADER_ONLY=Y` and `READ_INCLUDED=Y`. It leaves out `ID`,
+`UUID`, `PERIOD`, `PREFIX`, `REPORT_*` and `CONTENT_TYPE`. The schema has
+no cursor, so the module pages by date window:
+
+- Without `From`, one call is made and `Next` is empty. `To` alone is
+  sent as `END_DATE`.
+- With `From` (`To` defaults to now), each call covers one 24-hour window.
+  `Next` is the start of the following window (RFC 3339). Pass it back as
+  `Cursor` with the same `From` and `To`. A window can be empty while
+  `Next` is still set.
+- Both window bounds are sent, so a document exactly on a boundary can
+  appear on two pages. De-duplicate by UUID.
+- `Limit` applies per window and is capped at 10000, the XSD's
+  `maxOccurs` for `INVOICE`.
+- Dates are written as `YYYY-MM-DDTHH:mm:ss` in Turkey time (UTC+3),
+  as in the vendor sample. The schema does not say whether the filter
+  applies to the issue date or the creation date.
+- `OnlyNew` is rejected: `MarkTaken` marks e-Fatura documents only.
+- An `ERROR_CODE` 10008 (no matching record) becomes an empty page.
+
+Items map `HEADER/INVOICE_ID`, `UUID`, `PROFILE_ID`, `INVOICE_TYPE`,
+`ISSUE_DATE`, `SENDER_*`, `CUSTOMER_*` (receiver), `PAYABLE_AMOUNT` and
+`CURRENCY_CODE`. The status comes from `STATUS_CODE`, or from `STATUS`
+when there is no code, using the e-Arşiv table below. The list header
+has no GİB status code or creation time, so `GIBCode` is 0 and
+`CreatedAt` is zero.
+
+This operation has not been checked against the live İzibiz system. The
+fixture is built from the XSD, and the status values in a listing are
+assumed to match `GetEArchiveInvoiceStatus`.
+
+Schema notes:
+
+- The XSD declares the element `"REPORT_ID "` with a trailing space,
+  which is not a valid name. Integration notes that list the fields
+  leave it out. The module never sends it.
+- `READ_INCLUDED` is `xsd:string` here, not boolean as in EInvoiceWS.
+  The module sends `Y`, as the vendor test code does.
 
 ### Status mapping
 

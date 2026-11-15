@@ -372,6 +372,48 @@ type archiveStatusResponse struct {
 	result
 }
 
+// archiveListRequest is GetEArchiveInvoiceListRequest in XSD order. ID,
+// UUID, PERIOD, PREFIX, REPORT_ID, REPORT_INCLUDED, REPORT_FLAG and
+// CONTENT_TYPE are not sent.
+type archiveListRequest struct {
+	XMLName      xml.Name      `xml:"arc:GetEArchiveInvoiceListRequest"`
+	NS           string        `xml:"xmlns:arc,attr"`
+	Header       requestHeader `xml:"REQUEST_HEADER"`
+	Limit        int           `xml:"LIMIT,omitempty"`
+	StartDate    string        `xml:"START_DATE,omitempty"`
+	EndDate      string        `xml:"END_DATE,omitempty"`
+	HeaderOnly   string        `xml:"HEADER_ONLY,omitempty"`
+	ReadIncluded string        `xml:"READ_INCLUDED,omitempty"`
+}
+
+// archiveListHeader is EARCHIVEINV/HEADER.
+type archiveListHeader struct {
+	InvoiceID          string `xml:"INVOICE_ID"`
+	UUID               string `xml:"UUID"`
+	SenderName         string `xml:"SENDER_NAME"`
+	SenderIdentifier   string `xml:"SENDER_IDENTIFIER"`
+	CustomerName       string `xml:"CUSTOMER_NAME"`
+	CustomerIdentifier string `xml:"CUSTOMER_IDENTIFIER"`
+	ProfileID          string `xml:"PROFILE_ID"`
+	InvoiceType        string `xml:"INVOICE_TYPE"`
+	EArchiveType       string `xml:"EARCHIVE_TYPE"`
+	SendingType        string `xml:"SENDING_TYPE"`
+	Status             string `xml:"STATUS"`
+	StatusCode         string `xml:"STATUS_CODE"`
+	IssueDate          string `xml:"ISSUE_DATE"`
+	PayableAmount      string `xml:"PAYABLE_AMOUNT"`
+	TaxableAmount      string `xml:"TAXABLE_AMOUNT"`
+	CurrencyCode       string `xml:"CURRENCY_CODE"`
+	Reported           string `xml:"REPORTED"`
+}
+
+type archiveListResponse struct {
+	result
+	Invoices []struct {
+		Header archiveListHeader `xml:"HEADER"`
+	} `xml:"INVOICE"`
+}
+
 type archiveCancelRequest struct {
 	XMLName xml.Name               `xml:"arc:CancelEArchiveInvoiceRequest"`
 	NS      string                 `xml:"xmlns:arc,attr"`

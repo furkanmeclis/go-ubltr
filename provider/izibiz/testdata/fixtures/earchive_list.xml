@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- EIArchiveWS GetEArchiveInvoiceListResponse with HEADER_ONLY=Y.
+     Constructed from the GetEArchiveInvoiceListResponse / EARCHIVEINV
+     elements of EFaturaArchive_xsd5.xsd (element order as in the XSD);
+     STATUS_CODE values from the Developer Portal "E-Arşiv Fatura
+     Durumları" table. Not captured from the live system. -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <ns3:GetEArchiveInvoiceListResponse xmlns:ns3="http://schemas.i2i.com/ei/wsdl/archive">
+      <REQUEST_RETURN>
+        <INTL_TXN_ID>1</INTL_TXN_ID>
+        <RETURN_CODE>0</RETURN_CODE>
+      </REQUEST_RETURN>
+      <INVOICE>
+        <HEADER>
+          <INVOICE_ID>EAR2026000000001</INVOICE_ID>
+          <UUID>8d74a41d-729e-4301-a95b-7d582004dc44</UUID>
+          <SENDER_NAME>İZİBİZ AKTİVASYON</SENDER_NAME>
+          <SENDER_IDENTIFIER>4840847211</SENDER_IDENTIFIER>
+          <CUSTOMER_NAME>ALİ VELİ</CUSTOMER_NAME>
+          <CUSTOMER_IDENTIFIER>11111111111</CUSTOMER_IDENTIFIER>
+          <PROFILE_ID>EARSIVFATURA</PROFILE_ID>
+          <INVOICE_TYPE>SATIS</INVOICE_TYPE>
+          <EARCHIVE_TYPE>NORMAL</EARCHIVE_TYPE>
+          <SENDING_TYPE>KAGIT</SENDING_TYPE>
+          <STATUS>RAPORLANDI</STATUS>
+          <STATUS_CODE>130</STATUS_CODE>
+          <ISSUE_DATE>2026-11-02</ISSUE_DATE>
+          <PAYABLE_AMOUNT>1180.00</PAYABLE_AMOUNT>
+          <TAXABLE_AMOUNT>180.00</TAXABLE_AMOUNT>
+          <CURRENCY_CODE>TRY</CURRENCY_CODE>
+          <REPORTED>Y</REPORTED>
+        </HEADER>
+      </INVOICE>
+      <INVOICE>
+        <HEADER>
+          <INVOICE_ID>EAR2026000000002</INVOICE_ID>
+          <UUID>0b4ad2c4-6c1f-4f63-9a43-1c1c5c1c0002</UUID>
+          <SENDER_NAME>İZİBİZ AKTİVASYON</SENDER_NAME>
+          <SENDER_IDENTIFIER>4840847211</SENDER_IDENTIFIER>
+          <CUSTOMER_NAME>ÖRNEK ALICI LTD.</CUSTOMER_NAME>
+          <CUSTOMER_IDENTIFIER>1234567801</CUSTOMER_IDENTIFIER>
+          <PROFILE_ID>EARSIVFATURA</PROFILE_ID>
+          <INVOICE_TYPE>IADE</INVOICE_TYPE>
+          <EARCHIVE_TYPE>INTERNET</EARCHIVE_TYPE>
+          <SENDING_TYPE>ELEKTRONIK</SENDING_TYPE>
+          <STATUS>150</STATUS>
+          <ISSUE_DATE>2026-11-03</ISSUE_DATE>
+          <PAYABLE_AMOUNT>250.50</PAYABLE_AMOUNT>
+          <TAXABLE_AMOUNT>41.75</TAXABLE_AMOUNT>
+          <CURRENCY_CODE>USD</CURRENCY_CODE>
+          <REPORTED>N</REPORTED>
+        </HEADER>
+      </INVOICE>
+    </ns3:GetEArchiveInvoiceListResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

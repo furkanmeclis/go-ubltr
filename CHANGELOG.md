@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `provider/izibiz`: `ListOutbox` lists outgoing e-Arşiv invoices with `GetEArchiveInvoiceList` and pages through `From`/`To` in 24-hour windows. `Capabilities` declares `list-outbox` for `earsiv`.
+
 ### Changed
 
 - GİB e-Fatura Schematron and code lists updated to the 24 August 2026 package (`e-FaturaPaketi (29).zip`): trailer schemes (`DORSE`, `DORSEPLAKA`, `YABANCIDORSE`, `YABANCIDORSEPLAKA`) moved from `LicensePlateIDSchemeIDType` to the new `TransportEquipmentIDSchemeIDType` and are checked on `cac:TransportEquipment/cbc:ID`; the despatch plate requirement applies only when `cac:DriverPerson` is present.

@@ -14,6 +14,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/furkanmeclis/go-ubltr/provider"
 	"github.com/furkanmeclis/go-ubltr/provider/izibiz"
@@ -190,7 +191,8 @@ func TestConformance(t *testing.T) {
 	}
 	providertest.CheckCapabilities(t, p)
 	providertest.CheckCodeTable(t, izibiz.Codes)
-	if !provider.Supports(p, provider.EArchive, provider.OpCancelEArchive) || provider.Supports(p, provider.EDespatch, provider.OpFetch) {
+	if !provider.Supports(p, provider.EArchive, provider.OpCancelEArchive) || !provider.Supports(p, provider.EArchive, provider.OpListOutbox) ||
+		provider.Supports(p, provider.EArchive, provider.OpListInbox) || provider.Supports(p, provider.EDespatch, provider.OpFetch) {
 		t.Error("unexpected capability set")
 	}
 }
@@ -536,6 +538,139 @@ func TestEArchiveFault(t *testing.T) {
 	}
 	if strings.Contains(s.last("CancelEArchiveInvoiceRequest").Body, "IPTAL_NOTU") {
 		t.Error("empty reason sent")
+	}
+}
+
+func TestListOutboxEArchive(t *testing.T) {
+	s := newServer(t)
+	s.on("GetEArchiveInvoiceListRequest", func(int, request) string { return fixture(t, "earchive_list.xml") })
+	p := newProvider(t, s)
+	page, err := p.ListOutbox(context.Background(), provider.ListQuery{Kind: provider.EArchive, Limit: 50000})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(page.Items) != 2 || page.Next != "" {
+		t.Fatalf("page %+v", page)
+	}
+	a, b := page.Items[0], page.Items[1]
+	if a.Kind != provider.EArchive || a.Direction != provider.Outbound || a.UUID != testUUID || a.ID != "EAR2026000000001" ||
+		a.Profile != "EARSIVFATURA" || a.Type != "SATIS" || a.IssueDate != "2026-11-02" ||
+		a.SenderVKN != "4840847211" || a.SenderName != "İZİBİZ AKTİVASYON" || a.ReceiverVKN != "11111111111" || a.ReceiverName != "ALİ VELİ" ||
+		a.Payable != "1180.00" || a.Currency != "TRY" || a.Status != provider.StatusDelivered || a.ProviderCode != "130" || a.GIBCode != 0 {
+		t.Fatalf("item %+v", a)
+	}
+	// No STATUS_CODE: the numeric STATUS is used.
+	if b.Status != provider.StatusCancelled || b.ProviderCode != "150" || b.Currency != "USD" || b.Payable != "250.50" || b.Type != "IADE" {
+		t.Fatalf("item %+v", b)
+	}
+	r := s.last("GetEArchiveInvoiceListRequest")
+	if r.Path != "/EIArchiveWS/EFaturaArchive" || r.Namespace != "http://schemas.i2i.com/ei/wsdl/archive" || r.Session != "S1" {
+		t.Fatalf("request %+v", r)
+	}
+	for _, want := range []string{
+		`<arc:GetEArchiveInvoiceListRequest xmlns:arc="http://schemas.i2i.com/ei/wsdl/archive"><REQUEST_HEADER>`,
+		`<COMPRESSED>N</COMPRESSED></REQUEST_HEADER><LIMIT>10000</LIMIT><HEADER_ONLY>Y</HEADER_ONLY><READ_INCLUDED>Y</READ_INCLUDED></arc:GetEArchiveInvoiceListRequest>`,
+	} {
+		if !strings.Contains(r.Body, want) {
+			t.Errorf("request lacks %s\n%s", want, r.Body)
+		}
+	}
+	if strings.Contains(r.Body, "START_DATE") || strings.Contains(r.Body, "END_DATE") {
+		t.Errorf("unexpected date filter\n%s", r.Body)
+	}
+}
+
+func TestListOutboxEArchiveEmptyAndErrors(t *testing.T) {
+	notFound := archiveEnvelope("GetEArchiveInvoiceListResponse", `<ERROR_TYPE><INTL_TXN_ID>3</INTL_TXN_ID><ERROR_CODE>10008</ERROR_CODE><ERROR_SHORT_DES>Belirtilen kriterlere uygun kayıt bulunamamıştır</ERROR_SHORT_DES></ERROR_TYPE>`)
+	denied := archiveEnvelope("GetEArchiveInvoiceListResponse", `<ERROR_TYPE><INTL_TXN_ID>4</INTL_TXN_ID><ERROR_CODE>10006</ERROR_CODE><ERROR_SHORT_DES>Yetkiniz bulunmamaktadır</ERROR_SHORT_DES></ERROR_TYPE>`)
+	s := newServer(t)
+	s.on("GetEArchiveInvoiceListRequest", func(n int, _ request) string {
+		switch n {
+		case 0:
+			return archiveEnvelope("GetEArchiveInvoiceListResponse", okReturn)
+		case 1:
+			return notFound
+		case 2:
+			return strings.ReplaceAll(fixture(t, "invalid_session.xml"), "{{ROOT}}", "GetEArchiveInvoiceListResponse")
+		case 3:
+			return fixture(t, "earchive_list.xml")
+		}
+		return denied
+	})
+	p := newProvider(t, s)
+	ctx := context.Background()
+	q := provider.ListQuery{Kind: provider.EArchive}
+	for i := 0; i < 2; i++ {
+		page, err := p.ListOutbox(ctx, q)
+		if err != nil || len(page.Items) != 0 || page.Next != "" {
+			t.Fatalf("empty %d: %+v %v", i, page, err)
+		}
+	}
+	page, err := p.ListOutbox(ctx, q)
+	if err != nil || len(page.Items) != 2 || s.logins != 2 || s.last("GetEArchiveInvoiceListRequest").Session != "S2" {
+		t.Fatalf("relogin: %+v %v logins=%d", page, err, s.logins)
+	}
+	_, err = p.ListOutbox(ctx, q)
+	var pe *provider.Error
+	if !errors.Is(err, provider.ErrPermission) || !errors.As(err, &pe) || pe.Code != "10006" || pe.Op != "list-outbox" {
+		t.Fatalf("err = %#v", err)
+	}
+}
+
+func TestListOutboxEArchiveWindows(t *testing.T) {
+	trt := time.FixedZone("TRT", 3*60*60)
+	from := time.Date(2026, 11, 1, 0, 0, 0, 0, trt)
+	to := time.Date(2026, 11, 3, 12, 0, 0, 0, trt)
+	s := newServer(t)
+	s.on("GetEArchiveInvoiceListRequest", func(int, request) string { return archiveEnvelope("GetEArchiveInvoiceListResponse", okReturn) })
+	p := newProvider(t, s)
+	ctx := context.Background()
+	q := provider.ListQuery{Kind: provider.EArchive, From: from, To: to, Limit: 1000}
+	want := []struct{ start, end, next string }{
+		{"2026-11-01T00:00:00", "2026-11-02T00:00:00", "2026-11-01T21:00:00Z"},
+		{"2026-11-02T00:00:00", "2026-11-03T00:00:00", "2026-11-02T21:00:00Z"},
+		{"2026-11-03T00:00:00", "2026-11-03T12:00:00", ""},
+	}
+	for i, w := range want {
+		page, err := p.ListOutbox(ctx, q)
+		if err != nil {
+			t.Fatalf("window %d: %v", i, err)
+		}
+		if page.Next != w.next {
+			t.Fatalf("window %d: Next = %q, want %q", i, page.Next, w.next)
+		}
+		b := s.last("GetEArchiveInvoiceListRequest").Body
+		if !strings.Contains(b, "<LIMIT>1000</LIMIT><START_DATE>"+w.start+"</START_DATE><END_DATE>"+w.end+"</END_DATE><HEADER_ONLY>Y</HEADER_ONLY>") {
+			t.Fatalf("window %d request %s", i, b)
+		}
+		q.Cursor = page.Next
+	}
+
+	// To only: END_DATE without START_DATE.
+	if _, err := p.ListOutbox(ctx, provider.ListQuery{Kind: provider.EArchive, To: to}); err != nil {
+		t.Fatal(err)
+	}
+	if b := s.last("GetEArchiveInvoiceListRequest").Body; strings.Contains(b, "START_DATE") || !strings.Contains(b, "<END_DATE>2026-11-03T12:00:00</END_DATE>") {
+		t.Fatalf("to-only request %s", b)
+	}
+
+	calls := s.calls["GetEArchiveInvoiceListRequest"]
+	for name, bad := range map[string]provider.ListQuery{
+		"only-new":         {Kind: provider.EArchive, OnlyNew: true},
+		"cursor-no-from":   {Kind: provider.EArchive, Cursor: "2026-11-02T00:00:00Z"},
+		"cursor-garbage":   {Kind: provider.EArchive, From: from, To: to, Cursor: "x"},
+		"cursor-before":    {Kind: provider.EArchive, From: from, To: to, Cursor: "2026-10-01T00:00:00Z"},
+		"cursor-after":     {Kind: provider.EArchive, From: from, To: to, Cursor: "2026-11-04T00:00:00Z"},
+		"from-after-to":    {Kind: provider.EArchive, From: to, To: from},
+		"from-equals-to":   {Kind: provider.EArchive, From: from, To: from},
+		"cursor-at-to-end": {Kind: provider.EArchive, From: from, To: to, Cursor: to.UTC().Format(time.RFC3339)},
+	} {
+		if _, err := p.ListOutbox(ctx, bad); !errors.Is(err, provider.ErrInvalidRequest) {
+			t.Errorf("%s: err = %v", name, err)
+		}
+	}
+	if s.calls["GetEArchiveInvoiceListRequest"] != calls {
+		t.Error("invalid queries reached the server")
 	}
 }
 

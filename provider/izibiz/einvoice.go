@@ -130,8 +130,13 @@ func (p *Provider) ListInbox(ctx context.Context, q provider.ListQuery) (*provid
 	return p.list(ctx, q, provider.Inbound, provider.OpListInbox)
 }
 
-// ListOutbox implements provider.OutboxLister (DIRECTION=OUT).
+// ListOutbox implements provider.OutboxLister. e-Fatura uses GetInvoice
+// (DIRECTION=OUT); e-Arşiv uses EIArchiveWS GetEArchiveInvoiceList and
+// pages by date window (see listArchive).
 func (p *Provider) ListOutbox(ctx context.Context, q provider.ListQuery) (*provider.Page, error) {
+	if q.Kind == provider.EArchive {
+		return p.listArchive(ctx, q)
+	}
 	return p.list(ctx, q, provider.Outbound, provider.OpListOutbox)
 }
 

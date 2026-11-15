@@ -167,7 +167,7 @@ func (p *Provider) Capabilities() provider.Capabilities {
 				provider.OpFetch, provider.OpRespond, provider.OpCheckUser, provider.OpMarkTaken,
 			},
 			provider.EArchive: {
-				provider.OpSend, provider.OpStatus, provider.OpFetch, provider.OpCancelEArchive,
+				provider.OpSend, provider.OpStatus, provider.OpListOutbox, provider.OpFetch, provider.OpCancelEArchive,
 			},
 			provider.EDespatch: {
 				provider.OpSend, provider.OpStatus,
