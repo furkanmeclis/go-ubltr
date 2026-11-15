@@ -74,3 +74,25 @@ Module `github.com/furkanmeclis/go-ubltr/provider/nilvera`, details in
   `provider/nilvera/errors.csv`.
 - Live tests: `NILVERA_API_KEY=... go test -tags live ./...` in
   `provider/nilvera`.
+
+## turkcell
+
+Turkcell e-Şirket efaturaservice REST API, e-Fatura and e-Arşiv.
+Module `github.com/furkanmeclis/go-ubltr/provider/turkcell`, details in
+[`provider/turkcell/README.md`](../provider/turkcell/README.md).
+
+- Auth: API key from the portal's API Yönetimi page, `x-api-key` header.
+- Hosts: `https://efaturaservice.turkcellesirket.com` (live),
+  `https://efaturaservicetest.isim360.com` (`Test: true`); `/v1` or `/v2`
+  per endpoint as documented.
+- Send: raw UBL-TR XML (`POST /v2/outboxinvoice`, `POST /v2/earchive`,
+  multipart `invoiceFile`); numbers are assigned when the XML has no
+  `cbc:ID`.
+- Operations: e-Fatura send, status, list-inbox, fetch (UBL / PDF / HTML),
+  respond, mark-taken; e-Arşiv send, status, fetch, cancel-earchive. No
+  outbox listing, user check or credit endpoint is documented.
+- Errors: classified by HTTP status (no vendor code list is published);
+  invoice status codes in `provider/turkcell/errors.csv`. Inbox listing is
+  rate limited to 6 calls per 15 minutes.
+- Live tests: `TURKCELL_API_KEY=... go test -tags live ./...` in
+  `provider/turkcell`.

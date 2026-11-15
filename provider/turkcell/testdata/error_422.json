@@ -1,0 +1,6 @@
+{
+  "Error": {
+    "title": "Validation",
+    "detail": "e-Fatura göndermiş olduğunuz firmanın birden fazla etiketi(alias)'ı mevcuttur."
+  }
+}

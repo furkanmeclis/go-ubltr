@@ -45,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ubltr watch` command: polls an integrator opened with `provider.Open` and prints NDJSON events, or runs `--exec` per event.
 - Nested `provider/nes` module: NES REST client for e-Fatura and e-Arşiv (send raw UBL-TR, status, inbox/outbox, fetch, respond, cancel, user check, mark taken, credits).
 - Nested `provider/nilvera` module: Nilvera REST client for e-Fatura and e-Arşiv (send raw UBL-TR, status, inbox/outbox, fetch, respond, cancel, user check, mark taken, credits).
+- Nested `provider/turkcell` module: Turkcell e-Şirket REST client for e-Fatura and e-Arşiv (send raw UBL-TR, status, inbox, fetch, respond, cancel, mark taken).
 
 ### Known limitations
 

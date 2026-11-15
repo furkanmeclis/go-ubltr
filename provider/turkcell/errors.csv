@@ -1,0 +1,29 @@
+# Turkcell e-Şirket invoice status codes (outbox e-Fatura / e-Arşiv
+# "status" enum and the incoming-invoice "status" enum).
+# Source: https://developer.turkcellesirket.com/fatura (OutboxInvoiceStatuResponseModel,
+# ArchiveInvoiceStatuResponseModel, InboxInvoiceGetModel).
+# The API publishes no separate error-code list: HTTP 422 bodies carry
+# {"Error": {"title", "detail"}} without a code. Rows here describe the
+# outgoing-document meaning; incoming documents are mapped in status.go.
+code,kind,status,retryable,message,message_en
+0,ok,draft,false,Taslak,Draft
+20,ok,queued,false,Kuyruk,Queued
+30,ok,processing,false,Gib'e Gönderiliyor,Sending to GİB
+40,unknown,failed,false,Hata,Error
+50,ok,sent,false,Gib'e İletildi,Delivered to GİB
+60,ok,delivered,false,Onaylandı,Approved
+61,ok,delivered,false,Onaylanıyor,Approving
+62,ok,delivered,false,Onaylama Hatası,Approval error
+65,ok,accepted,false,Otomatik Onaylandı,Approved automatically
+70,ok,delivered,false,Onay Bekliyor,Waiting for approval
+80,ok,rejected,false,Reddedildi,Rejected
+81,ok,delivered,false,Reddediliyor,Rejecting
+82,ok,delivered,false,Reddetme Hatası,Rejection error
+83,ok,delivered,false,Otomatik Reddedilmeyi Bekliyor,Waiting for automatic rejection
+84,ok,delivered,false,Otomatik Reddetme Hatası,Automatic rejection error
+85,ok,rejected,false,Otomatik Reddedildi,Rejected automatically
+90,ok,delivered,false,İade,Returned
+91,ok,delivered,false,İade Ediliyor,Returning
+92,ok,delivered,false,İade Hatası,Return error
+99,ok,cancelled,false,e-Fatura İptal,e-Fatura cancelled
+100,ok,cancelled,false,e-Arşiv İptal,e-Arşiv cancelled

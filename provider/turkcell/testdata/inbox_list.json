@@ -1,0 +1,54 @@
+{
+  "pageIndex": 1,
+  "pageSize": 2,
+  "totalCount": 3,
+  "totalPages": 2,
+  "hasNextPage": true,
+  "hasPreviousPage": false,
+  "items": [
+    {
+      "id": "384ed203-22ab-4623-995b-4824ff1c6e30",
+      "envelopeId": "c149356e-a09f-455a-90e6-4ab96cd27b39",
+      "invoiceNumber": "ABC2024000000001",
+      "executionDate": "2024-03-01 15:35:55",
+      "status": 70,
+      "type": 1,
+      "tipType": 1,
+      "targetTitle": "Örnek A.Ş.",
+      "targetVknTckn": "1234567890",
+      "targetAlias": "urn:mail:defaultgb@example.com",
+      "isArchived": false,
+      "totalAmount": 1000.42,
+      "payableAmount": 1180.5,
+      "currency": "TRY",
+      "isNew": true,
+      "isRead": false,
+      "createdDate": "2024-03-01T15:36:10",
+      "envelope": {
+        "status": 1300
+      }
+    },
+    {
+      "id": "bd0b3e0e-8bd5-4736-9bd1-7dc8fb4a72b3",
+      "envelopeId": "0d2e3f4a-5b6c-4d7e-8f9a-0b1c2d3e4f5a",
+      "invoiceNumber": "XYZ2024000000007",
+      "executionDate": "2024-02-29 10:00:00",
+      "status": 80,
+      "type": 1,
+      "tipType": 2,
+      "targetTitle": "Ayşe Yılmaz",
+      "targetVknTckn": "22222222222",
+      "targetAlias": "urn:mail:defaultgb@example.org",
+      "isArchived": false,
+      "totalAmount": 50,
+      "payableAmount": 50,
+      "currency": "TRY",
+      "isNew": true,
+      "isRead": true,
+      "createdDate": "2024-02-29T10:01:00",
+      "envelope": {
+        "status": 1200
+      }
+    }
+  ]
+}
