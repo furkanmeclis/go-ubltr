@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-15
+
+First release. The core module, `render`, `render/chromium`, `cmd/ubltr`, `provider`, every `provider/<name>` module and `provider/watch` (with `/redis` and `/sql`) are tagged `v0.1.0` (nested modules as `<dir>/v0.1.0`).
+
 ### Added
 
 - XSD-driven Invoice, CreditNote, ApplicationResponse, DespatchAdvice, and ReceiptAdvice types for UBL-TR 1.2.1 (`schema/ubltr121`) and `ubltr-gen`.
@@ -61,4 +65,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `encoding/xml` does not guarantee `cbc:` / `cac:` prefixes.
 - The vendored GİB Schematron rejects `WithholdingTaxTotal` on TEVKIFATIADE and YTBTEVKIFATIADE; `NewReturnInvoiceFrom` uses IADE / YTBIADE for withholding returns.
 
-[Unreleased]: https://github.com/furkanmeclis/go-ubltr/compare/HEAD...HEAD
+[Unreleased]: https://github.com/furkanmeclis/go-ubltr/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/furkanmeclis/go-ubltr/releases/tag/v0.1.0
