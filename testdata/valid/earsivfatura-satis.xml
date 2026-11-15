@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+  <UBLExtensions xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+    <UBLExtension xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+      <ExtensionContent xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"><UBLTR xmlns="urn:ubltr:extension"/></ExtensionContent>
+    </UBLExtension>
+  </UBLExtensions>
+  <UBLVersionID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2.1</UBLVersionID>
+  <CustomizationID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">TR1.2</CustomizationID>
+  <ProfileID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">EARSIVFATURA</ProfileID>
+  <ID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">EAR2026000000001</ID>
+  <CopyIndicator xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">false</CopyIndicator>
+  <UUID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">8C4E3F40-5162-4D73-AE84-9FA0B1C2D3E4</UUID>
+  <IssueDate xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">2026-03-01</IssueDate>
+  <IssueTime xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">10:00:00</IssueTime>
+  <InvoiceTypeCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">SATIS</InvoiceTypeCode>
+  <Note xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">YALNIZ BİN YETMİŞ DOKUZ TÜRK LİRASI SEKSEN SEKİZ KURUŞ</Note>
+  <DocumentCurrencyCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">TRY</DocumentCurrencyCode>
+  <LineCountNumeric xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1</LineCountNumeric>
+  <Signature xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <ID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" schemeID="VKN_TCKN">1288331521</ID>
+    <SignatoryParty xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <PartyIdentification xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" schemeID="VKN">1288331521</ID>
+      </PartyIdentification>
+      <PartyName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">AAA Anonim Şirketi</Name>
+      </PartyName>
+      <PostalAddress xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <StreetName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Papatya Caddesi</StreetName>
+        <BuildingNumber xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">21</BuildingNumber>
+        <CitySubdivisionName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Beşiktaş</CitySubdivisionName>
+        <CityName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">İstanbul</CityName>
+        <PostalZone xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">34100</PostalZone>
+        <Country xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <IdentificationCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">TR</IdentificationCode>
+          <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Türkiye</Name>
+        </Country>
+      </PostalAddress>
+      <PartyTaxScheme xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <TaxScheme xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Büyük Mükellefler</Name>
+        </TaxScheme>
+      </PartyTaxScheme>
+      <Contact xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ElectronicMail xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">info@example.com</ElectronicMail>
+      </Contact>
+    </SignatoryParty>
+    <DigitalSignatureAttachment xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <ExternalReference xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <URI xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">#Signature</URI>
+      </ExternalReference>
+    </DigitalSignatureAttachment>
+  </Signature>
+  <AccountingSupplierParty xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <Party xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <PartyIdentification xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" schemeID="VKN">1288331521</ID>
+      </PartyIdentification>
+      <PartyName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">AAA Anonim Şirketi</Name>
+      </PartyName>
+      <PostalAddress xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <StreetName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Papatya Caddesi</StreetName>
+        <BuildingNumber xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">21</BuildingNumber>
+        <CitySubdivisionName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Beşiktaş</CitySubdivisionName>
+        <CityName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">İstanbul</CityName>
+        <PostalZone xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">34100</PostalZone>
+        <Country xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <IdentificationCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">TR</IdentificationCode>
+          <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Türkiye</Name>
+        </Country>
+      </PostalAddress>
+      <PartyTaxScheme xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <TaxScheme xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Büyük Mükellefler</Name>
+        </TaxScheme>
+      </PartyTaxScheme>
+      <Contact xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ElectronicMail xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">info@example.com</ElectronicMail>
+      </Contact>
+    </Party>
+  </AccountingSupplierParty>
+  <AccountingCustomerParty xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <Party xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <PartyIdentification xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <ID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" schemeID="TCKN">12345678901</ID>
+      </PartyIdentification>
+      <PostalAddress xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <StreetName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Papatya Caddesi</StreetName>
+        <BuildingNumber xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">21</BuildingNumber>
+        <CitySubdivisionName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Beşiktaş</CitySubdivisionName>
+        <CityName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">İstanbul</CityName>
+        <PostalZone xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">34100</PostalZone>
+        <Country xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <IdentificationCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">TR</IdentificationCode>
+          <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Türkiye</Name>
+        </Country>
+      </PostalAddress>
+      <Person xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <FirstName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Ali</FirstName>
+        <FamilyName xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Yılmaz</FamilyName>
+      </Person>
+    </Party>
+  </AccountingCustomerParty>
+  <TaxTotal xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <TaxAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">179.98</TaxAmount>
+    <TaxSubtotal xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <TaxableAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">899.90</TaxableAmount>
+      <TaxAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">179.98</TaxAmount>
+      <Percent xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">20</Percent>
+      <TaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <TaxScheme xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">KDV</Name>
+          <TaxTypeCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">0015</TaxTypeCode>
+        </TaxScheme>
+      </TaxCategory>
+    </TaxSubtotal>
+  </TaxTotal>
+  <LegalMonetaryTotal xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <LineExtensionAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">899.90</LineExtensionAmount>
+    <TaxExclusiveAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">899.90</TaxExclusiveAmount>
+    <TaxInclusiveAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">1079.88</TaxInclusiveAmount>
+    <PayableAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">1079.88</PayableAmount>
+  </LegalMonetaryTotal>
+  <InvoiceLine xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <ID xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">1</ID>
+    <InvoicedQuantity xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" unitCode="C62">1</InvoicedQuantity>
+    <LineExtensionAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">899.90</LineExtensionAmount>
+    <TaxTotal xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <TaxAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">179.98</TaxAmount>
+      <TaxSubtotal xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+        <TaxableAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">899.90</TaxableAmount>
+        <TaxAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">179.98</TaxAmount>
+        <Percent xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">20</Percent>
+        <TaxCategory xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+          <TaxScheme xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+            <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">KDV</Name>
+            <TaxTypeCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">0015</TaxTypeCode>
+          </TaxScheme>
+        </TaxCategory>
+      </TaxSubtotal>
+    </TaxTotal>
+    <Item xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <Name xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">Kablosuz Kulaklık</Name>
+    </Item>
+    <Price xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+      <PriceAmount xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" currencyID="TRY">899.9</PriceAmount>
+    </Price>
+  </InvoiceLine>
+</Invoice>
