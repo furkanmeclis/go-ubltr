@@ -8,8 +8,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dlclark/regexp2 v1.12.0 h1:0j4c5qQmnC6XOWNjP3PIXURXN2gWx76rd3KvgdPkCz8=
 github.com/dlclark/regexp2 v1.12.0/go.mod h1:DHkYz0B9wPfa6wondMfaivmHpzrQ3v9q8cnmRbL6yW8=
-github.com/furkanmeclis/go-ubltr v0.0.0-20261115193915-437b4f0c0da7 h1:Eo+00f6o20WqAcSVi2MKw4bDZMvLec3nhNLv/5EcZic=
-github.com/furkanmeclis/go-ubltr v0.0.0-20261115193915-437b4f0c0da7/go.mod h1:jOWBVxnjvwa5sC1BmJBbiSq1rK6AnueUUZXYdpDJmzU=
+github.com/furkanmeclis/go-ubltr v0.0.0-20261115200118-aac84cd0da85 h1:cqKvoxUUmZsswS3Hyl3PpLiH9mB/pNmE8Sn3GW/0wi4=
+github.com/furkanmeclis/go-ubltr v0.0.0-20261115200118-aac84cd0da85/go.mod h1:jOWBVxnjvwa5sC1BmJBbiSq1rK6AnueUUZXYdpDJmzU=
 github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7 h1:IKqMt3f5vCN3liEei1PNGtmlia+8mHRvODT2FgULbug=
 github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7/go.mod h1:eQeCgKskh/4Nu487oWkIr0hnmocNGdg7Wwmibbko+kI=
 github.com/furkanmeclis/go-ubltr/provider/edm v0.0.0-20261115194115-1bb433204e1d h1:Rg2x04z7lK8AMK1cDJeQ+1VbKmIgVpnbgZBRaz0AnxY=

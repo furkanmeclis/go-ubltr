@@ -3,7 +3,7 @@ module github.com/furkanmeclis/go-ubltr/cmd/ubltr
 go 1.26.1
 
 require (
-	github.com/furkanmeclis/go-ubltr v0.0.0-20261115193915-437b4f0c0da7
+	github.com/furkanmeclis/go-ubltr v0.0.0-20261115200118-aac84cd0da85
 	github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7
 	github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0-20261115194115-1bb433204e1d
 	github.com/furkanmeclis/go-ubltr/render v0.0.0-20261115193915-437b4f0c0da7
