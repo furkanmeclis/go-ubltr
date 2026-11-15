@@ -30,7 +30,7 @@ func ExampleNewInvoiceBuilder() {
 	inv, err := builder.NewInvoiceBuilder().
 		Profile(codelist.ProfileTemelFatura).
 		Type(codelist.InvoiceTypeSatis).
-		ID("GIB20260000000001").
+		ID("GIB2026000000001").
 		IssueDate("2026-03-01").
 		SupplierBuilder(builder.NewPartyBuilder().
 			VKN("1288331521").

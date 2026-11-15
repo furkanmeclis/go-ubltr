@@ -102,7 +102,7 @@ qty, err := builder.QuantityIn(codelist.UnitC62, "2")
 inv, err := builder.NewInvoiceBuilder().
 	Profile(codelist.ProfileTemelFatura).
 	Type(codelist.InvoiceTypeSatis).
-	ID("GIB20260000000001").
+	ID("GIB2026000000001").
 	IssueDate("2026-03-01").
 	SupplierBuilder(supplier).
 	CustomerBuilder(customer).
@@ -189,6 +189,41 @@ Default XSLT engine is helium `xslt3` (pure Go). `xsi:schemaLocation` on GİB XM
 | HTML | `github.com/furkanmeclis/go-ubltr/render` |
 | PDF | `github.com/furkanmeclis/go-ubltr/render/chromium` |
 | CLI | `github.com/furkanmeclis/go-ubltr/cmd/ubltr` |
+| Integrator contract | `github.com/furkanmeclis/go-ubltr/provider` |
+| One integrator | `github.com/furkanmeclis/go-ubltr/provider/<name>` |
+| Polling to events | `github.com/furkanmeclis/go-ubltr/provider/watch` (+ `/redis`, `/sql`) |
+
+## Integrators (özel entegratör)
+
+Integrator clients are nested modules; the core module never imports them.
+
+```bash
+go get github.com/furkanmeclis/go-ubltr/provider/uyumsoft
+```
+
+```go
+import (
+	"github.com/furkanmeclis/go-ubltr/provider"
+	"github.com/furkanmeclis/go-ubltr/provider/uyumsoft"
+)
+
+c, err := uyumsoft.New(uyumsoft.Config{Username: user, Password: pass, Test: true})
+doc := &provider.Document{XML: xmlBytes, ReceiverAlias: "urn:mail:defaultpk@example.com"}
+_ = doc.Inspect() // fills kind, UUID, ID, profile, receiver VKN
+res, err := c.Send(ctx, doc)
+if errors.Is(err, provider.ErrQuotaExceeded) { /* kontör */ }
+```
+
+Every module declares what it supports (`Capabilities()`, `provider.Supports`), returns `*provider.Error` values with a normalized kind plus the raw vendor and GİB codes, and keeps its vendor code list in an embedded `errors.csv`. `provider/watch` turns polling into events (`ubltr watch --provider izibiz … | your-handler`) for integrators without webhooks. See [providers](docs/providers.md) and [watch](docs/watch.md).
+
+| Module | Protocol | Integrator |
+| --- | --- | --- |
+| `provider/uyumsoft` | SOAP | Uyumsoft, muhasebeizleme (preset) |
+| `provider/izibiz` | SOAP | İzibiz |
+| `provider/edm` | SOAP | EDM Bilişim |
+| `provider/nes` | REST | NES |
+| `provider/nilvera` | REST | Nilvera |
+| `provider/turkcell` | REST | Turkcell e-Şirket |
 
 ## XML output
 
@@ -228,6 +263,7 @@ Layout:
 - `render/chromium/` — PDF adapter
 - `examples/render/` — HTML, custom XSLT, and PDF programs
 - `cmd/ubltr/` — nested `ubltr` CLI module
+- `provider/` — integrator contract; `provider/<name>/` — one module per integrator; `provider/watch/` — polling to events
 - `docs/` — install, usage, builder, rendering, CLI, testing, and repository-settings guides
 
 ## Contributing

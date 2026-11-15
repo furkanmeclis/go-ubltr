@@ -30,7 +30,7 @@ func TestInvoiceBuilderXSDValid(t *testing.T) {
 		t.Fatalf("ValidateXSD: %v\n%s", err, data)
 	}
 
-	if inv.ID.Value != "GIB20260000000001" {
+	if inv.ID.Value != "GIB2026000000001" {
 		t.Fatalf("ID = %q", inv.ID.Value)
 	}
 	if inv.LegalMonetaryTotal.PayableAmount.Value != "24.00" {
@@ -105,7 +105,7 @@ func TestInvoiceBuilderRejectsMissingFields(t *testing.T) {
 				return builder.NewInvoiceBuilder().
 					Profile(codelist.ProfileTemelFatura).
 					Type(codelist.InvoiceTypeSatis).
-					ID("GIB20260000000001").
+					ID("GIB2026000000001").
 					IssueDate("2026-03-01").
 					CustomerBuilder(personCustomer(t)).
 					Line(oneLine(t)).
@@ -250,7 +250,7 @@ func baseInvoice(t *testing.T) *builder.InvoiceBuilder {
 	return builder.NewInvoiceBuilder().
 		Profile(codelist.ProfileTemelFatura).
 		Type(codelist.InvoiceTypeSatis).
-		ID("GIB20260000000001").
+		ID("GIB2026000000001").
 		IssueDate("2026-03-01").
 		IssueTime("10:00:00").
 		Currency(codelist.TRY).

@@ -1,7 +1,58 @@
 # Integrator providers
 
-Integrator clients are nested modules under `provider/<name>` that implement
-the vendor-neutral contract in [`provider`](../provider/README.md).
+Özel entegratör clients are nested modules under `provider/<name>`. Each one
+implements the vendor-neutral contract in [`provider`](../provider/README.md);
+the core `go-ubltr` module never imports them. Import a module (a blank import
+is enough) to register it with `provider.Open`, or use its typed constructor.
+
+| Module | Integrator | Protocol | e-Fatura | e-Arşiv | e-İrsaliye |
+| --- | --- | --- | --- | --- | --- |
+| `provider/uyumsoft` | Uyumsoft, muhasebeizleme (preset) | SOAP | ✓ | ✓ | – |
+| `provider/izibiz` | İzibiz | SOAP | ✓ | ✓ | ✓ (send, status) |
+| `provider/edm` | EDM Bilişim | SOAP | ✓ | – | – |
+| `provider/nes` | NES | REST | ✓ | ✓ | – |
+| `provider/nilvera` | Nilvera | REST | ✓ | ✓ | – |
+| `provider/turkcell` | Turkcell e-Şirket | REST | ✓ | ✓ | – |
+
+The exact operations per document kind are in each module's README and in
+`Capabilities()` at runtime:
+
+```go
+if provider.Supports(p, provider.EInvoice, provider.OpRespond) { … }
+```
+
+## Errors
+
+All modules return `*provider.Error`:
+
+| Field | Meaning |
+| --- | --- |
+| `Kind` | Normalized category (`auth`, `validation`, `duplicate`, `recipient`, `quota-exceeded`, `rate-limit`, `unavailable`, …); match with `errors.Is(err, provider.ErrDuplicate)` |
+| `Code`, `Message` | The integrator's own code and text, unchanged |
+| `GIBCode` | GİB envelope status (1000–1300) when known |
+| `Retryable` | Safe to retry later (`provider.IsRetryable`) |
+| `HTTPStatus`, `Raw` | Transport details for diagnostics |
+
+Each module embeds its vendor code list as `errors.csv`
+(`code,kind,status,retryable,message,message_en`). Unknown codes become
+`unknown` but keep the raw code and message, so the tables can be extended
+without code changes. GİB envelope codes are shared in
+[`provider/gib_codes.csv`](../provider/gib_codes.csv).
+
+## Polling and events
+
+Most integrators have no webhooks. [`provider/watch`](watch.md) polls inbox
+and outgoing statuses and emits NDJSON events (`ubltr watch`), with optional
+Redis or SQL state.
+
+## Live tests
+
+Fixture tests run offline. Each module also has read-only live tests behind
+the `live` build tag that read credentials from environment variables, e.g.
+
+```bash
+UYUMSOFT_USERNAME=… UYUMSOFT_PASSWORD=… go -C provider/uyumsoft test -tags live ./...
+```
 
 ## Uyumsoft
 
@@ -31,13 +82,6 @@ c, err := uyumsoft.New(uyumsoft.Config{Username: u, Password: pw, Test: true})
   GİB envelope codes come from `provider.GIBCodes`.
 - **Live tests**: `UYUMSOFT_USERNAME=… UYUMSOFT_PASSWORD=… go test -tags live -run Live ./...`
   inside `provider/uyumsoft`.
-# Integrator modules
-
-Each özel entegratör client is a nested module under `provider/<name>`
-implementing the [`provider`](../provider/README.md) contract. Import the
-module (blank import is enough) to register it, then open it by name or
-use its typed constructor.
-
 ## nes
 
 NES (nes.com.tr) REST API, e-Fatura and e-Arşiv.

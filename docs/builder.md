@@ -38,7 +38,7 @@ addr := builder.NewAddressBuilder().
 inv, err := builder.NewInvoiceBuilder().
 	Profile(codelist.ProfileTemelFatura).
 	Type(codelist.InvoiceTypeSatis).
-	ID("GIB20260000000001").
+	ID("GIB2026000000001").
 	IssueDate("2026-03-01").
 	IssueTime("10:00:00").
 	Currency(codelist.TRY).
@@ -295,7 +295,7 @@ rep, err := builder.NewEArchiveReportBuilder().
 	Section("2026-03-01", "2026-03-31", "1").
 	SignatureInnerXML(dsSignatureInner).
 	Invoice(earchive.Fatura{
-		FaturaNo:      "GIB20260000000001",
+		FaturaNo:      "GIB2026000000001",
 		FaturaTip:     earchive.FaturaTipYTBTEVKIFAT,
 		GonderimSekli: earchive.GonderimSekliELEKTRONIK,
 		// … remaining required fatura fields

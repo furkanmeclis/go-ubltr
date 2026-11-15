@@ -55,7 +55,7 @@ func TestApplicationResponseBuilderXSDValid(t *testing.T) {
 		IssueDate("2026-03-02").
 		SenderBuilder(companySupplier(t)).
 		ReceiverBuilder(personCustomer(t)).
-		DocumentResponse("GIB20260000000001", "2026-03-01", codelist.ResponseKabul).
+		DocumentResponse("GIB2026000000001", "2026-03-01", codelist.ResponseKabul).
 		Build()
 	if err != nil {
 		t.Fatalf("Build: %v", err)
@@ -168,7 +168,7 @@ func TestEArchiveReportBuilder(t *testing.T) {
 		Section("2026-03-01", "2026-03-31", "1").
 		SignatureInnerXML("<SignedInfo></SignedInfo>").
 		Invoice(earchive.Fatura{
-			FaturaNo:         "GIB20260000000001",
+			FaturaNo:         "GIB2026000000001",
 			FaturaUUID:       "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
 			FaturaTip:        earchive.FaturaTipYTBTEVKIFAT,
 			GonderimSekli:    earchive.GonderimSekliELEKTRONIK,
