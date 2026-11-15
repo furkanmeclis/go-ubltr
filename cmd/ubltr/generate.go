@@ -41,6 +41,7 @@ Run from a go-ubltr repository checkout (or any subdirectory).
 	targets := []string{
 		"./schema/ubltr121",
 		"./schema/earchive",
+		"./schema/envelope",
 		"./codelist",
 	}
 	for _, t := range targets {

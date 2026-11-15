@@ -55,6 +55,8 @@ func summaryTitle(k Kind) string {
 		return "ReceiptAdvice"
 	case KindEArchiveReport:
 		return "eArsivRaporu"
+	case KindEnvelope:
+		return "StandardBusinessDocument"
 	default:
 		return "Document"
 	}

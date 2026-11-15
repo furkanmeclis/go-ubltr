@@ -158,6 +158,18 @@ func XSDFor(ctx context.Context, xmlBytes []byte, kind Kind) (Result, error) {
 	return r, nil
 }
 
+// WellFormed reports whether data is namespace-well-formed XML (for example,
+// every prefix is declared).
+func WellFormed(ctx context.Context, data []byte) error {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	if _, err := helium.NewParser().Parse(ctx, data); err != nil {
+		return fmt.Errorf("parse xml: %w", err)
+	}
+	return nil
+}
+
 func xsdViolation(err error, doc *helium.Document, loc nodeLocator) Violation {
 	v := Violation{
 		Layer:    LayerXSD,

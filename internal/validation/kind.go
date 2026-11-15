@@ -77,6 +77,11 @@ func Detect(data []byte) (Kind, error) {
 	}
 }
 
+// KindOf reports the document kind for an expanded root element name.
+func KindOf(n xml.Name) (Kind, error) {
+	return kindFromName(n)
+}
+
 func kindFromName(n xml.Name) (Kind, error) {
 	switch n.Local {
 	case "Invoice":

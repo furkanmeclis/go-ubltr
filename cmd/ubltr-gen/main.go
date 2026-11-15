@@ -1,6 +1,6 @@
 // Command ubltr-gen generates Go types from GİB UBL-TR XSD files,
-// GİB e-Arşiv report types from EArsiv.xsd, or code-list constants
-// from UBL-TR_Codelist.xml.
+// GİB e-Arşiv report types from EArsiv.xsd, GİB envelope types from
+// PackageProxy_1_2.xsd, or code-list constants from UBL-TR_Codelist.xml.
 package main
 
 import (
@@ -26,6 +26,7 @@ func main() {
 	flag.Var(&schemas, "schema", "entry XSD path (repeatable; union of reachable types)")
 	codelist := flag.String("codelist", "", "if set, generate code lists from this UBL-TR_Codelist.xml")
 	earchive := flag.String("earchive", "", "if set, generate e-Arşiv report types from this EArsiv.xsd")
+	envelope := flag.String("envelope", "", "if set, generate GİB envelope types from this PackageProxy_1_2.xsd")
 	out := flag.String("out", "schema/ubltr121", "output directory")
 	mod := flag.String("module", "github.com/furkanmeclis/go-ubltr", "Go module path")
 	flag.Parse()
@@ -40,6 +41,14 @@ func main() {
 
 	if *earchive != "" {
 		if err := codegen.GenerateEArchive(*earchive, *out); err != nil {
+			fmt.Fprintf(os.Stderr, "ubltr-gen: %v\n", err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	if *envelope != "" {
+		if err := codegen.GenerateEnvelope(*envelope, *out); err != nil {
 			fmt.Fprintf(os.Stderr, "ubltr-gen: %v\n", err)
 			os.Exit(1)
 		}

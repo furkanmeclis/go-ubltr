@@ -11,6 +11,7 @@ FMT_MODULES := $(LIB_MODULES)
 generate:
 	$(GO) generate ./schema/ubltr121
 	$(GO) generate ./schema/earchive
+	$(GO) generate ./schema/envelope
 	$(GO) generate ./codelist
 
 test:
