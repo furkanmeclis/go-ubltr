@@ -1,6 +1,10 @@
 package builder
 
 import (
+	"strings"
+
+	"github.com/shopspring/decimal"
+
 	"github.com/furkanmeclis/go-ubltr/codelist"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cac"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cbc"
@@ -14,6 +18,10 @@ type TaxBuilder struct {
 	code, name, percent string
 	exemptionCode       string
 	exemptionReason     string
+
+	withholdingCode    string
+	withholdingPercent string
+	withholdingName    string
 }
 
 // NewTaxBuilder returns an empty tax builder.
@@ -51,17 +59,61 @@ func (b *TaxBuilder) KDV(percent string) *TaxBuilder {
 	return b.Code(codelist.TaxKDV).Percent(percent)
 }
 
-// Exemption sets TaxExemptionReasonCode and TaxExemptionReason.
+// Exemption sets TaxExemptionReasonCode and TaxExemptionReason. The code must
+// be a GİB TaxExemptionReasonCodeType value ([codelist.Exemption301], …).
 func (b *TaxBuilder) Exemption(code, reason string) *TaxBuilder {
+	code = strings.TrimSpace(code)
+	if code != "" && !codelist.ValidExemption(code) && !codelist.ValidExemptionYatirim(code) {
+		b.fail("tax.exemption", "unknown exemption code "+code)
+		return b
+	}
 	b.exemptionCode = code
 	b.exemptionReason = reason
 	return b
 }
 
+// Withholding marks part of this tax as withheld by the buyer (KDV tevkifatı).
+// code is a GİB WithholdingTaxType value ([codelist.Withholding624], …) and
+// percent is the withheld share of the tax ("90" for 9/10). The pair must be
+// listed in WithholdingTaxTypeWithPercent. The withheld amount is
+// tax amount × percent / 100; it is written to cac:WithholdingTaxTotal on the
+// line and summed on the invoice, where it is subtracted from PayableAmount.
+func (b *TaxBuilder) Withholding(code, percent string) *TaxBuilder {
+	code = strings.TrimSpace(code)
+	if !codelist.ValidWithholdingTax(code) {
+		b.fail("tax.withholding", "unknown withholding code "+code)
+		return b
+	}
+	p, err := decimal.NewFromString(strings.TrimSpace(percent))
+	if err != nil {
+		b.fail("tax.withholding.percent", "invalid percent "+percent)
+		return b
+	}
+	canonical := p.String()
+	if !codelist.ValidWithholdingPercent(code + canonical) {
+		b.fail("tax.withholding.percent", "percent "+canonical+" is not allowed for withholding code "+code)
+		return b
+	}
+	b.withholdingCode = code
+	b.withholdingPercent = canonical
+	return b
+}
+
+// WithholdingName sets the withholding TaxScheme/Name. Default "KDV TEVKİFAT".
+func (b *TaxBuilder) WithholdingName(name string) *TaxBuilder {
+	b.withholdingName = name
+	return b
+}
+
+func (b *TaxBuilder) hasWithholding() bool {
+	return b != nil && b.withholdingCode != ""
+}
+
 type appliedTax struct {
-	subtotal cac.TaxSubtotalType
-	tax      Money
-	taxable  Money
+	subtotal    cac.TaxSubtotalType
+	tax         Money
+	taxable     Money
+	withholding *appliedTax
 }
 
 func (b *TaxBuilder) apply(taxable Money) (appliedTax, error) {
@@ -105,7 +157,54 @@ func (b *TaxBuilder) apply(taxable Money) (appliedTax, error) {
 			},
 		},
 	}
-	return appliedTax{subtotal: sub, tax: tax, taxable: taxable}, nil
+	out := appliedTax{subtotal: sub, tax: tax, taxable: taxable}
+	if b.withholdingCode != "" {
+		wh, err := tax.PercentOf(b.withholdingPercent)
+		if err != nil {
+			return appliedTax{}, builderWrap("tax.withholding.percent", err)
+		}
+		wh = wh.Round()
+		whName := b.withholdingName
+		if whName == "" {
+			whName = defaultWithholdingName
+		}
+		out.withholding = &appliedTax{
+			tax:     wh,
+			taxable: tax,
+			subtotal: cac.TaxSubtotalType{
+				TaxableAmount: ptrAmount(tax),
+				TaxAmount:     amountValue(wh, true),
+				Percent:       optPercent(b.withholdingPercent),
+				TaxCategory: cac.TaxCategoryType{
+					TaxScheme: cac.TaxSchemeType{
+						Name:        optText(whName),
+						TaxTypeCode: taxTypeCode(b.withholdingCode),
+					},
+				},
+			},
+		}
+	}
+	return out, nil
+}
+
+// defaultWithholdingName is the TaxScheme/Name written for withholding subtotals.
+const defaultWithholdingName = "KDV TEVKİFAT"
+
+func withholdingTotalOf(taxes []appliedTax) (*cac.TaxTotalType, error) {
+	whs := make([]appliedTax, 0, len(taxes))
+	for _, t := range taxes {
+		if t.withholding != nil {
+			whs = append(whs, *t.withholding)
+		}
+	}
+	if len(whs) == 0 {
+		return nil, nil
+	}
+	tot, _, err := taxTotalOf(whs)
+	if err != nil {
+		return nil, err
+	}
+	return &tot, nil
 }
 
 func taxTypeCode(code string) *cbc.TaxTypeCodeType {
@@ -150,6 +249,16 @@ func mergeDocumentTax(lines []cac.InvoiceLineType) (cac.TaxTotalType, Money, err
 	return mergeTaxTotals(totals)
 }
 
+func mergeWithholdingTax(lines []cac.InvoiceLineType) (cac.TaxTotalType, Money, error) {
+	totals := make([]*cac.TaxTotalType, 0, len(lines))
+	for _, line := range lines {
+		for i := range line.WithholdingTaxTotal {
+			totals = append(totals, &line.WithholdingTaxTotal[i])
+		}
+	}
+	return mergeTaxTotals(totals)
+}
+
 func mergeCreditNoteTax(lines []cac.CreditNoteLineType) (cac.TaxTotalType, Money, error) {
 	totals := make([]*cac.TaxTotalType, 0, len(lines))
 	for _, line := range lines {
@@ -161,13 +270,15 @@ func mergeCreditNoteTax(lines []cac.CreditNoteLineType) (cac.TaxTotalType, Money
 }
 
 func mergeTaxTotals(totals []*cac.TaxTotalType) (cac.TaxTotalType, Money, error) {
-	type key struct{ code, percent string }
+	type key struct{ code, percent, exemption string }
 	type bucket struct {
-		taxable Money
-		tax     Money
-		name    string
-		code    string
-		percent string
+		taxable         Money
+		tax             Money
+		name            string
+		code            string
+		percent         string
+		exemptionCode   string
+		exemptionReason string
 	}
 	order := []key{}
 	by := map[key]*bucket{}
@@ -185,18 +296,26 @@ func mergeTaxTotals(totals []*cac.TaxTotalType) (cac.TaxTotalType, Money, error)
 			if sub.Percent != nil {
 				percent = sub.Percent.Value
 			}
-			k := key{code: code, percent: percent}
+			exemption := ""
+			if sub.TaxCategory.TaxExemptionReasonCode != nil {
+				exemption = sub.TaxCategory.TaxExemptionReasonCode.Value
+			}
+			k := key{code: code, percent: percent, exemption: exemption}
 			bkt, ok := by[k]
 			if !ok {
 				cur := sub.TaxAmount.CurrencyID
 				bkt = &bucket{
-					taxable: ZeroMoney(cur),
-					tax:     ZeroMoney(cur),
-					code:    code,
-					percent: percent,
+					taxable:       ZeroMoney(cur),
+					tax:           ZeroMoney(cur),
+					code:          code,
+					percent:       percent,
+					exemptionCode: exemption,
 				}
 				if sub.TaxCategory.TaxScheme.Name != nil {
 					bkt.name = sub.TaxCategory.TaxScheme.Name.Value
+				}
+				if sub.TaxCategory.TaxExemptionReason != nil {
+					bkt.exemptionReason = sub.TaxCategory.TaxExemptionReason.Value
 				}
 				by[k] = bkt
 				order = append(order, k)
@@ -237,6 +356,8 @@ func mergeTaxTotals(totals []*cac.TaxTotalType) (cac.TaxTotalType, Money, error)
 				TaxAmount:     amountValue(bkt.tax.Round(), true),
 				Percent:       optPercent(bkt.percent),
 				TaxCategory: cac.TaxCategoryType{
+					TaxExemptionReasonCode: optExemptionCode(bkt.exemptionCode),
+					TaxExemptionReason:     optExemptionReason(bkt.exemptionReason),
 					TaxScheme: cac.TaxSchemeType{
 						Name:        optText(bkt.name),
 						TaxTypeCode: taxTypeCode(bkt.code),

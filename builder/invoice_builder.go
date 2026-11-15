@@ -30,6 +30,16 @@ type InvoiceBuilder struct {
 	terms      *cac.PaymentTermsType
 	deliveries []cac.DeliveryType
 	manual     bool
+
+	billingRefs    []billingRef
+	orderRef       *cac.OrderReferenceType
+	despatchRefs   []cac.DocumentReferenceType
+	additionalRefs []cac.DocumentReferenceType
+	xslts          []xsltSpec
+	exchange       *cac.ExchangeRateType
+	buyer          *cac.PartyType
+	taxRep         *cac.PartyType
+	amountWords    bool
 }
 
 // NewInvoiceBuilder returns a fluent invoice builder. Defaults: currency TRY,
@@ -42,6 +52,11 @@ func NewInvoiceBuilder() *InvoiceBuilder {
 		allowances: []allowanceSpec{},
 		means:      []cac.PaymentMeansType{},
 		deliveries: []cac.DeliveryType{},
+
+		billingRefs:    []billingRef{},
+		despatchRefs:   []cac.DocumentReferenceType{},
+		additionalRefs: []cac.DocumentReferenceType{},
+		xslts:          []xsltSpec{},
 	}
 }
 
@@ -254,6 +269,9 @@ func (b *InvoiceBuilder) Build() (*invoice.Invoice, error) {
 	if err := b.checkLineCurrency(); err != nil {
 		return nil, err
 	}
+	if err := b.checkRules(); err != nil {
+		return nil, err
+	}
 
 	uuid := b.uuid
 	if uuid == "" {
@@ -292,18 +310,38 @@ func (b *InvoiceBuilder) Build() (*invoice.Invoice, error) {
 			EndDate:   optEnd(b.periodEnd),
 		}
 	}
+	inv.OrderReference = b.orderRef
+	inv.BillingReference = b.billingReferences()
+	inv.DespatchDocumentReference = b.despatchRefs
+	refs, err := b.additionalReferences(uuid)
+	if err != nil {
+		return nil, err
+	}
+	inv.AdditionalDocumentReference = refs
 	inv.Signature = []cac.SignatureType{signatureOf(b.supplier)}
 	inv.AccountingSupplierParty = cac.SupplierPartyType{Party: b.supplier}
 	inv.AccountingCustomerParty = cac.CustomerPartyType{Party: b.customer}
+	if b.buyer != nil {
+		inv.BuyerCustomerParty = &cac.CustomerPartyType{Party: *b.buyer}
+	}
+	inv.TaxRepresentativeParty = b.taxRep
 	inv.Delivery = b.deliveries
 	inv.PaymentMeans = b.means
 	inv.PaymentTerms = b.terms
+	inv.PricingExchangeRate = b.exchange
 	inv.InvoiceLine = b.lines
 
 	if !b.manual {
 		if err := b.applyTotals(inv); err != nil {
 			return nil, err
 		}
+	}
+	if b.amountWords {
+		payable, err := parseAmount(inv.LegalMonetaryTotal.PayableAmount)
+		if err != nil {
+			return nil, builderWrap("amountInWords", err)
+		}
+		inv.Note = append(inv.Note, cbc.NoteType{Value: AmountInWords(payable)})
 	}
 
 	return inv, nil
@@ -361,11 +399,25 @@ func (b *InvoiceBuilder) applyTotals(inv *invoice.Invoice) error {
 	}
 	taxInclusive = taxInclusive.Round()
 
+	payable := taxInclusive
+	whXML, whSum, err := mergeWithholdingTax(b.lines)
+	if err != nil {
+		return builderWrap("withholding", err)
+	}
+	if whSum.currency != "" {
+		inv.WithholdingTaxTotal = []cac.TaxTotalType{whXML}
+		payable, err = payable.Sub(whSum)
+		if err != nil {
+			return builderWrap("totals", err)
+		}
+		payable = payable.Round()
+	}
+
 	total := cac.MonetaryTotalType{
 		LineExtensionAmount: amountValue(lineExt, true),
 		TaxExclusiveAmount:  amountValue(taxExclusive, true),
 		TaxInclusiveAmount:  amountValue(taxInclusive, true),
-		PayableAmount:       amountValue(taxInclusive, true),
+		PayableAmount:       amountValue(payable, true),
 	}
 	if !doc.allowances.IsZero() {
 		a := amountValue(doc.allowances.Round(), true)

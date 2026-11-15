@@ -125,6 +125,9 @@ func (b *CreditNoteLineBuilder) Build() (cac.CreditNoteLineType, error) {
 
 	applied := make([]appliedTax, 0, len(b.taxes))
 	for _, tb := range b.taxes {
+		if tb.hasWithholding() {
+			return cac.CreditNoteLineType{}, builderErr("line.withholding", "credit note lines have no WithholdingTaxTotal")
+		}
 		at, err := tb.apply(extAmt)
 		if err != nil {
 			return cac.CreditNoteLineType{}, err

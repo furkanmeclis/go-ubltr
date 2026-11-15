@@ -1,6 +1,8 @@
 package builder
 
 import (
+	"strings"
+
 	"github.com/furkanmeclis/go-ubltr/codelist"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cac"
 	"github.com/furkanmeclis/go-ubltr/schema/ubltr121/cbc"
@@ -13,6 +15,9 @@ type PartyBuilder struct {
 	name, website, taxOffice string
 	email, phone, fax        string
 	firstName, familyName    string
+	nationality              string
+	registrationName         string
+	companyID                string
 	ids                      []cac.PartyIdentificationType
 	address                  cac.AddressType
 	hasAddress               bool
@@ -117,6 +122,22 @@ func (b *PartyBuilder) Person(first, family string) *PartyBuilder {
 	return b
 }
 
+// LegalEntity sets PartyLegalEntity RegistrationName (resmi unvan) and,
+// when non-empty, CompanyID. IHRACAT requires a registration name on the
+// buyer ([InvoiceBuilder.BuyerCustomerBuilder]).
+func (b *PartyBuilder) LegalEntity(registrationName, companyID string) *PartyBuilder {
+	b.registrationName = registrationName
+	b.companyID = companyID
+	return b
+}
+
+// Nationality sets Person/NationalityID (ISO 3166-1 alpha-2). It is written
+// only when Person is set.
+func (b *PartyBuilder) Nationality(code string) *PartyBuilder {
+	b.nationality = strings.ToUpper(strings.TrimSpace(code))
+	return b
+}
+
 // Build returns a generated party. At least one identification and an address are required.
 func (b *PartyBuilder) Build() (cac.PartyType, error) {
 	if b == nil {
@@ -160,6 +181,19 @@ func (b *PartyBuilder) Build() (cac.PartyType, error) {
 			FirstName:  cbc.FirstNameType{Value: b.firstName},
 			FamilyName: cbc.FamilyNameType{Value: b.familyName},
 		}
+		if b.nationality != "" {
+			p.Person.NationalityID = &cbc.NationalityIDType{Value: b.nationality}
+		}
+	}
+	if b.registrationName != "" || b.companyID != "" {
+		le := cac.PartyLegalEntityType{}
+		if b.registrationName != "" {
+			le.RegistrationName = &cbc.RegistrationNameType{Value: b.registrationName}
+		}
+		if b.companyID != "" {
+			le.CompanyID = &cbc.CompanyIDType{Value: b.companyID}
+		}
+		p.PartyLegalEntity = []cac.PartyLegalEntityType{le}
 	}
 	return p, nil
 }

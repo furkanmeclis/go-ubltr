@@ -6,8 +6,12 @@ const (
 	ProfileTicariFatura        = ProfileTICARIFATURA
 	ProfileEArsivFatura        = ProfileEARSIVFATURA
 	ProfileTemelIrsaliye       = ProfileTEMELIRSALIYE
+	ProfileIhracat             = ProfileIHRACAT
 	InvoiceTypeSatis           = InvoiceSATIS
 	InvoiceTypeIade            = InvoiceIADE
+	InvoiceTypeTevkifat        = InvoiceTEVKIFAT
+	InvoiceTypeTevkifatIade    = InvoiceTEVKIFATIADE
+	InvoiceTypeIstisna         = InvoiceISTISNA
 	TaxKDV                     = Tax0015
 	TRY                        = CurrencyTRY
 	USD                        = CurrencyUSD

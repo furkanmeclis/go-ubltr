@@ -26,6 +26,8 @@ type InvoiceLineBuilder struct {
 	hasPrice   bool
 	taxes      []*TaxBuilder
 	allowances []allowanceSpec
+	deliveries []cac.DeliveryType
+	notes      []string
 }
 
 // NewInvoiceLineBuilder returns an empty line builder.
@@ -33,6 +35,8 @@ func NewInvoiceLineBuilder() *InvoiceLineBuilder {
 	return &InvoiceLineBuilder{
 		taxes:      []*TaxBuilder{},
 		allowances: []allowanceSpec{},
+		deliveries: []cac.DeliveryType{},
+		notes:      []string{},
 	}
 }
 
@@ -41,6 +45,32 @@ func (b *InvoiceLineBuilder) fail(field, msg string) {
 		return
 	}
 	b.err = builderErr(field, msg)
+}
+
+func (b *InvoiceLineBuilder) failErr(field string, err error) {
+	if b == nil || b.err != nil || err == nil {
+		return
+	}
+	b.err = builderWrap(field, err)
+}
+
+// Note appends a line cbc:Note.
+func (b *InvoiceLineBuilder) Note(note string) *InvoiceLineBuilder {
+	b.notes = append(b.notes, note)
+	return b
+}
+
+// Delivery appends a line-level cac:Delivery built from db. IHRACAT invoices
+// carry the GTİP (RequiredCustomsID), INCOTERMS, transport mode, and package
+// details here.
+func (b *InvoiceLineBuilder) Delivery(db *DeliveryBuilder) *InvoiceLineBuilder {
+	d, err := db.Build()
+	if err != nil {
+		b.failErr("line.delivery", err)
+		return b
+	}
+	b.deliveries = append(b.deliveries, d)
+	return b
 }
 
 // ID sets the line ID. InvoiceBuilder fills 1, 2, … when empty.
@@ -147,16 +177,30 @@ func (b *InvoiceLineBuilder) Build() (cac.InvoiceLineType, error) {
 		}
 		tax = &tot
 	}
+	wh, err := withholdingTotalOf(applied)
+	if err != nil {
+		return cac.InvoiceLineType{}, builderWrap("line.withholding", err)
+	}
+
+	notes := make([]cbc.NoteType, 0, len(b.notes))
+	for _, n := range b.notes {
+		notes = append(notes, cbc.NoteType{Value: n})
+	}
 
 	id := b.id
 	line := cac.InvoiceLineType{
 		ID:                  cbcID(id),
+		Note:                notes,
 		InvoicedQuantity:    quantityValue(b.qty),
 		LineExtensionAmount: amountValue(ext, true),
+		Delivery:            b.deliveries,
 		AllowanceCharge:     charges.xml,
 		TaxTotal:            tax,
 		Item:                cac.ItemType{Name: cbc.NameType{Value: b.name}},
 		Price:               cac.PriceType{PriceAmount: amountValue(b.price, false)},
+	}
+	if wh != nil {
+		line.WithholdingTaxTotal = []cac.TaxTotalType{*wh}
 	}
 	return line, nil
 }
