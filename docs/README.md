@@ -9,8 +9,8 @@ Guides for [go-ubltr](https://github.com/furkanmeclis/go-ubltr). The root [READM
 | [Builder](builder.md) | Fluent construction for Invoice and other UBL-TR documents, money, GİB code lists |
 | [e-Arşiv report](e-archive-report.md) | e-Arşiv invoice (`EARSIVFATURA`) vs e-Arşiv report (`EArsiv.xsd`) |
 | [Rendering](rendering.md) | XML → HTML → PDF, stylesheets, security defaults |
-| [CLI](cli.md) | `ubltr validate`, `inspect` (text or JSON), `render`, `generate` |
-| [CLI](cli.md) | `ubltr validate`, `inspect`, `render`, `generate` |
+| [CLI](cli.md) | `ubltr validate`, `inspect` (text or JSON), `render`, `generate`, `watch` |
+| [Providers](providers.md) | Özel entegratör modules, capabilities, error handling |
 | [Watch](watch.md) | Polling integrators into events (webhook replacement), `ubltr watch`, Redis and SQL state |
 | [Testing](testing.md) | `make test`, `make check`, core-only runs, PDF skip, fixtures |
 
