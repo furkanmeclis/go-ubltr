@@ -239,8 +239,8 @@ Extra `xmlns` declarations that are not part of the generated structs (for examp
 Vendored artefacts live in `schemas/ubltr-1.2.1/` and `schemas/earchive/` (also embedded for validators):
 
 - XSD: [UBL-TR 1.2.1 Paketi](https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/UBL-TR1.2.1_Paketi.zip)
-- Schematron and envelope: [e-Fatura Paketi](https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/e-FaturaPaketi.zip)
-- e-Arşiv report: GİB `earsiv_paket_v1.1_8` (`EArsiv.xsd`)
+- Schematron and envelope: [e-Fatura Paketi, 24 August 2026](https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/e-FaturaPaketi%20(29).zip)
+- e-Arşiv report: [GİB `earsiv_paket_v1.20`](https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/earsiv_paket_v1.20.zip) (`EArsiv.xsd`, 5 November 2026)
 
 The Go code is MIT (`LICENSE`). OASIS UBL 2.1 and UN/CEFACT notices stay in the schema files. GİB publishes no OSS license; files are vendored unmodified. See `NOTICE`.
 

@@ -3,7 +3,7 @@
 package codelist
 
 // SourceChecksum is SHA-256 of schemas/ubltr-1.2.1/schematron/UBL-TR_Codelist.xml.
-const SourceChecksum = "60aa2e531c21f99b522a2b72872f07bedebc57e00b0a1a6816a74dcd50100292"
+const SourceChecksum = "b6809ae4d38401b6d3f35e63e52d9ab3a0e014d746e3883514895e919e23b8b2"
 
 // Profile values from GİB UBL-TR_Codelist.xml (ProfileIDType).
 const (
@@ -570,12 +570,16 @@ const (
 
 // PlateScheme values from GİB UBL-TR_Codelist.xml (LicensePlateIDSchemeIDType).
 const (
-	PlateSchemeDORSE             = "DORSE"
-	PlateSchemePLAKA             = "PLAKA"
-	PlateSchemeDORSEPLAKA        = "DORSEPLAKA"
-	PlateSchemeYABANCIDORSE      = "YABANCIDORSE"
-	PlateSchemeYABANCIPLAKA      = "YABANCIPLAKA"
-	PlateSchemeYABANCIDORSEPLAKA = "YABANCIDORSEPLAKA"
+	PlateSchemePLAKA        = "PLAKA"
+	PlateSchemeYABANCIPLAKA = "YABANCIPLAKA"
+)
+
+// TrailerScheme values from GİB UBL-TR_Codelist.xml (TransportEquipmentIDSchemeIDType).
+const (
+	TrailerSchemeDORSE             = "DORSE"
+	TrailerSchemeDORSEPLAKA        = "DORSEPLAKA"
+	TrailerSchemeYABANCIDORSE      = "YABANCIDORSE"
+	TrailerSchemeYABANCIDORSEPLAKA = "YABANCIDORSEPLAKA"
 )
 
 // DocumentDesc values from GİB UBL-TR_Codelist.xml (DocumentDescriptionType).

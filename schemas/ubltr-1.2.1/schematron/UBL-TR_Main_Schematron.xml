@@ -514,7 +514,10 @@
 		</sch:rule>
 		<sch:rule context="desp:DespatchAdvice/cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID">
 			<sch:extends rule="LicensePlateIDSchemeIDCheck"/>
-		</sch:rule>		
+		</sch:rule>
+		<sch:rule context="desp:DespatchAdvice/cac:Shipment/cac:TransportHandlingUnit/cac:TransportEquipment/cbc:ID">
+			<sch:extends rule="TransportEquipmentIDSchemeIDCheck"/>
+		</sch:rule>			
 		<sch:rule context="desp:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:PartyIdentification/cbc:ID">
 			<sch:extends rule="PartyIdentificationSchemeIDCheck"/>
 		</sch:rule>		

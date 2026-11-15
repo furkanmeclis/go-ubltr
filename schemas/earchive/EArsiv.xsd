@@ -27,9 +27,9 @@
 										<xs:sequence>
 											<xs:element name="ytbNo" minOccurs="1">
 												<xs:simpleType>
-													<xs:restriction base="xs:string">
-														<xs:pattern value="[0-9]{6}"/>
-													</xs:restriction>
+												<xs:restriction base="xs:string">
+												<xs:pattern value="[0-9]{6}"/>
+												</xs:restriction>
 												</xs:simpleType>
 											</xs:element>
 											<xs:element name="tarih" type="xs:date" minOccurs="1"/>
@@ -125,7 +125,8 @@
 										<xs:sequence>
 											<xs:element name="sarjZamani"
 												type="earsiv:sarjZamanType"/>
-											<xs:element name="esuRaporID" type="earsiv:uuidType" maxOccurs="unbounded"/>
+											<xs:element name="esuRaporID" type="earsiv:uuidType"
+												maxOccurs="unbounded"/>
 											<xs:element name="plaka" type="xs:string"/>
 											<xs:element name="toplamTutar"
 												type="earsiv:currencyValueType"/>
@@ -165,7 +166,10 @@
 								<xs:element name="mustahsilMakbuzUrl" minOccurs="1"
 									type="earsiv:urlType"/>
 								<xs:element name="vergiBilgisi" type="earsiv:vergiBilgisiType"/>
-								<xs:element name="mustahsilBilgileri" type="earsiv:aliciTypeMin"/>
+								<xs:element name="mustahsilBilgileri"
+									type="earsiv:aliciTypeMustahsil"/>
+								<xs:element name="operatorUygulamaBilgi" 
+									type="earsiv:operatorKullanimType" minOccurs="0" maxOccurs="1"/>
 								<xs:element name="imzaZamani" type="xs:dateTime" minOccurs="1"/>
 								<xs:element name="ynOkcFisBilgisi" minOccurs="0"
 									maxOccurs="unbounded">
@@ -455,6 +459,45 @@
 			<xs:element minOccurs="0" name="tesisatNumarasi" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="aliciTypeMustahsil">
+		<xs:sequence>
+			<xs:element name="gercekKisi">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="tckn" type="earsiv:tcknType"/>
+						<xs:element name="adiSoyadi">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="2"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="bilgiDetay" minOccurs="0" maxOccurs="1">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="kod">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:minLength value="4"/>
+												<xs:maxLength value="6"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="telefon">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:pattern value="0[1-9][0-9]{9}"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="aliciTypeMin">
 		<xs:sequence>
 			<xs:choice>
@@ -487,6 +530,12 @@
 					</xs:complexType>
 				</xs:element>
 			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="operatorKullanimType">
+		<xs:sequence>
+			<xs:element name="unvan" type="xs:string"/>
+			<xs:element name="vkn" type="earsiv:vknType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:simpleType name="odemeTipEnum">
@@ -848,6 +897,16 @@
 			<xs:enumeration value="SGK_PRIM"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="contactTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SMS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="yontemTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SMS_PROVIDER"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="vergiBilgisiType">
 		<xs:sequence>
 			<xs:element name="vergilerToplami">
@@ -1035,7 +1094,7 @@
 			<xs:fractionDigits value="2"/>
 		</xs:restriction>
 	</xs:simpleType>
-	
+
 	<xs:simpleType name="sarjCurrencyValueType">
 		<xs:restriction base="xs:decimal">
 			<xs:totalDigits value="24"/>

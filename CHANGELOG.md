@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- GİB e-Fatura Schematron and code lists updated to the 24 August 2026 package (`e-FaturaPaketi (29).zip`): trailer schemes (`DORSE`, `DORSEPLAKA`, `YABANCIDORSE`, `YABANCIDORSEPLAKA`) moved from `LicensePlateIDSchemeIDType` to the new `TransportEquipmentIDSchemeIDType` and are checked on `cac:TransportEquipment/cbc:ID`; the despatch plate requirement applies only when `cac:DriverPerson` is present.
+- `codelist`: new `TrailerScheme*` constants and `ValidTrailerScheme`. `ValidPlateScheme` no longer accepts trailer schemes; the old `PlateSchemeDORSE…` names remain as deprecated aliases.
+- e-Arşiv report schema updated to `earsiv_paket_v1.20` (5 November 2026): `mustahsilBilgileri` uses the new `aliciTypeMustahsil`, and `operatorUygulamaBilgi` is added; `schema/earchive` regenerated.
+
 ## [0.1.0] - 2026-11-15
 
 First release. The core module, `render`, `render/chromium`, `cmd/ubltr`, `provider`, every `provider/<name>` module and `provider/watch` (with `/redis` and `/sql`) are tagged `v0.1.0` (nested modules as `<dir>/v0.1.0`).

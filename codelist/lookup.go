@@ -692,11 +692,20 @@ func ValidPlateScheme(code string) bool {
 }
 
 var validPlateSchemeSet = map[string]struct{}{
+	"PLAKA":        {},
+	"YABANCIPLAKA": {},
+}
+
+// ValidTrailerScheme reports whether code is in GİB TransportEquipmentIDSchemeIDType.
+func ValidTrailerScheme(code string) bool {
+	_, ok := validTrailerSchemeSet[strings.TrimSpace(code)]
+	return ok
+}
+
+var validTrailerSchemeSet = map[string]struct{}{
 	"DORSE":             {},
-	"PLAKA":             {},
 	"DORSEPLAKA":        {},
 	"YABANCIDORSE":      {},
-	"YABANCIPLAKA":      {},
 	"YABANCIDORSEPLAKA": {},
 }
 

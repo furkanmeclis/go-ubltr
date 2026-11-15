@@ -125,7 +125,7 @@ Users who integrate with GİB **directly** from their own IT system are a differ
 
 **e-Arşiv report (`EArsiv.xsd`):**
 
-- The report schema is vendored under [`schemas/earchive/`](../schemas/earchive/) (`EArsiv.xsd` from GİB `earsiv_paket_v1.1_8`)
+- The report schema is vendored under [`schemas/earchive/`](../schemas/earchive/) (`EArsiv.xsd` from GİB `earsiv_paket_v1.20`)
 - Generated types live in [`schema/earchive`](../schema/earchive/) (`eArsivRaporu`, not Invoice)
 - `Detect`, `ValidateXSD`, `NewEArchiveReport`, and `builder.NewEArchiveReportBuilder` work on that report XML
 
@@ -137,7 +137,7 @@ Related how-tos: [usage](usage.md), [builder](builder.md), [rendering](rendering
 
 GİB publishes e-Arşiv guides and packages on [ebelge.gib.gov.tr](https://ebelge.gib.gov.tr/). Packages and guide numbers change independently of this module. Always use the copies currently listed there.
 
-This repository vendors the e-Arşiv **report** schema from GİB package `earsiv_paket_v1.1_8` (see `NOTICE`). Invoice rules still come from UBL-TR 1.2.1 and the e-Fatura Schematron package.
+This repository vendors the e-Arşiv **report** schema from GİB package `earsiv_paket_v1.20` (see `NOTICE`). Invoice rules still come from UBL-TR 1.2.1 and the e-Fatura Schematron package.
 
 The e-Arşiv Teknik Kılavuzu is listed by GİB as:
 

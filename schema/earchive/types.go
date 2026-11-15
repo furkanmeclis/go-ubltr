@@ -49,6 +49,18 @@ type AliciTypeMinTuzelKisi struct {
 	Unvan string `xml:"http://earsiv.efatura.gov.tr unvan"`
 }
 
+// AliciTypeMustahsil is generated from EArsiv.xsd aliciTypeMustahsil.
+type AliciTypeMustahsil struct {
+	GercekKisi AliciTypeMustahsilGercekKisi `xml:"http://earsiv.efatura.gov.tr gercekKisi"`
+}
+
+// AliciTypeMustahsilGercekKisi is generated from EArsiv.xsd AliciTypeMustahsilGercekKisi.
+type AliciTypeMustahsilGercekKisi struct {
+	Tckn       string      `xml:"http://earsiv.efatura.gov.tr tckn"`
+	AdiSoyadi  string      `xml:"http://earsiv.efatura.gov.tr adiSoyadi"`
+	BilgiDetay *BilgiDetay `xml:"http://earsiv.efatura.gov.tr bilgiDetay,omitempty"`
+}
+
 // AliciTypeTuzelKisi is generated from EArsiv.xsd AliciTypeTuzelKisi.
 type AliciTypeTuzelKisi struct {
 	Vkn   string `xml:"http://earsiv.efatura.gov.tr vkn"`
@@ -107,6 +119,12 @@ type BelgeItirazType struct {
 type BelgeTutar struct {
 	Tutar string `xml:"http://earsiv.efatura.gov.tr tutar"`
 	Tip   string `xml:"http://earsiv.efatura.gov.tr tip"`
+}
+
+// BilgiDetay is generated from EArsiv.xsd BilgiDetay.
+type BilgiDetay struct {
+	Kod     string `xml:"http://earsiv.efatura.gov.tr kod"`
+	Telefon string `xml:"http://earsiv.efatura.gov.tr telefon"`
 }
 
 // ContactPerson is generated from EArsiv.xsd ContactPerson.
@@ -282,19 +300,20 @@ type Mukellef struct {
 
 // MustahsilMakbuz is generated from EArsiv.xsd MustahsilMakbuz.
 type MustahsilMakbuz struct {
-	MakbuzNo           string                           `xml:"http://earsiv.efatura.gov.tr makbuzNo"`
-	DosyaAdi           string                           `xml:"http://earsiv.efatura.gov.tr dosyaAdi"`
-	OzetDeger          string                           `xml:"http://earsiv.efatura.gov.tr ozetDeger"`
-	DuzenlenmeTarihi   string                           `xml:"http://earsiv.efatura.gov.tr duzenlenmeTarihi"`
-	DuzenlenmeZamani   string                           `xml:"http://earsiv.efatura.gov.tr duzenlenmeZamani"`
-	ToplamTutar        string                           `xml:"http://earsiv.efatura.gov.tr toplamTutar"`
-	OdenecekTutar      string                           `xml:"http://earsiv.efatura.gov.tr odenecekTutar"`
-	ParaBirimi         string                           `xml:"http://earsiv.efatura.gov.tr paraBirimi"`
-	MustahsilMakbuzUrl string                           `xml:"http://earsiv.efatura.gov.tr mustahsilMakbuzUrl"`
-	VergiBilgisi       VergiBilgisiType                 `xml:"http://earsiv.efatura.gov.tr vergiBilgisi"`
-	MustahsilBilgileri AliciTypeMin                     `xml:"http://earsiv.efatura.gov.tr mustahsilBilgileri"`
-	ImzaZamani         string                           `xml:"http://earsiv.efatura.gov.tr imzaZamani"`
-	YnOkcFisBilgisi    []MustahsilMakbuzYnOkcFisBilgisi `xml:"http://earsiv.efatura.gov.tr ynOkcFisBilgisi,omitempty"`
+	MakbuzNo              string                           `xml:"http://earsiv.efatura.gov.tr makbuzNo"`
+	DosyaAdi              string                           `xml:"http://earsiv.efatura.gov.tr dosyaAdi"`
+	OzetDeger             string                           `xml:"http://earsiv.efatura.gov.tr ozetDeger"`
+	DuzenlenmeTarihi      string                           `xml:"http://earsiv.efatura.gov.tr duzenlenmeTarihi"`
+	DuzenlenmeZamani      string                           `xml:"http://earsiv.efatura.gov.tr duzenlenmeZamani"`
+	ToplamTutar           string                           `xml:"http://earsiv.efatura.gov.tr toplamTutar"`
+	OdenecekTutar         string                           `xml:"http://earsiv.efatura.gov.tr odenecekTutar"`
+	ParaBirimi            string                           `xml:"http://earsiv.efatura.gov.tr paraBirimi"`
+	MustahsilMakbuzUrl    string                           `xml:"http://earsiv.efatura.gov.tr mustahsilMakbuzUrl"`
+	VergiBilgisi          VergiBilgisiType                 `xml:"http://earsiv.efatura.gov.tr vergiBilgisi"`
+	MustahsilBilgileri    AliciTypeMustahsil               `xml:"http://earsiv.efatura.gov.tr mustahsilBilgileri"`
+	OperatorUygulamaBilgi *OperatorKullanimType            `xml:"http://earsiv.efatura.gov.tr operatorUygulamaBilgi,omitempty"`
+	ImzaZamani            string                           `xml:"http://earsiv.efatura.gov.tr imzaZamani"`
+	YnOkcFisBilgisi       []MustahsilMakbuzYnOkcFisBilgisi `xml:"http://earsiv.efatura.gov.tr ynOkcFisBilgisi,omitempty"`
 }
 
 // MustahsilMakbuzIptal is generated from EArsiv.xsd MustahsilMakbuzIptal.
@@ -325,6 +344,12 @@ type OkcType struct {
 	Marka   string `xml:"http://earsiv.efatura.gov.tr marka"`
 	Model   string `xml:"http://earsiv.efatura.gov.tr model"`
 	SicilNo string `xml:"http://earsiv.efatura.gov.tr sicilNo"`
+}
+
+// OperatorKullanimType is generated from EArsiv.xsd operatorKullanimType.
+type OperatorKullanimType struct {
+	Unvan string `xml:"http://earsiv.efatura.gov.tr unvan"`
+	Vkn   string `xml:"http://earsiv.efatura.gov.tr vkn"`
 }
 
 // PartyIdentificationType is generated from EArsiv.xsd partyIdentificationType.
@@ -569,6 +594,11 @@ const (
 	BilgiFisTipOTOPARKBFIS        = "OTOPARKBFIS"
 	BilgiFisTipCARIHESAPBFIS      = "CARIHESAPBFIS"
 	BilgiFisTipDIGERBFIS          = "DIGERBFIS"
+)
+
+// contactTypeEnum values from EArsiv.xsd.
+const (
+	ContactTypeSMS = "SMS"
 )
 
 // currencyCode values from EArsiv.xsd.
@@ -917,4 +947,9 @@ const (
 const (
 	VergiTipKDV = "KDV"
 	VergiTipOTV = "OTV"
+)
+
+// yontemTypeEnum values from EArsiv.xsd.
+const (
+	YontemTypeSMS_PROVIDER = "SMS_PROVIDER"
 )

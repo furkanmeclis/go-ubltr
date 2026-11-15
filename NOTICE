@@ -29,7 +29,8 @@ Bundled third-party artefacts
    Location: schemas/ubltr-1.2.1/xsdrt/
    Publisher: Gelir İdaresi Başkanlığı
    Source: https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/UBL-TR1.2.1_Paketi.zip
-   Retrieved: 2026-08-16
+   Retrieved: 2026-08-16; checked 2026-11-15 against UBLTR_1.2.1_Paketi.zip
+   (announced 2026-03-16), whose xsdrt files are byte-identical.
    No separate open-source license is published with the package. Files are
    vendored unmodified for implementers of the mandatory UBL-TR standard.
    This project does not claim copyright over GİB artefacts.
@@ -37,25 +38,34 @@ Bundled third-party artefacts
 4. GİB e-Fatura Paketi Schematron and envelope schemas
    Location: schemas/ubltr-1.2.1/schematron/, schemas/ubltr-1.2.1/envelope/
    Publisher: Gelir İdaresi Başkanlığı
-   Source: https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/e-FaturaPaketi.zip
-   Retrieved: 2026-08-16 (package Last-Modified: 2026-07-27)
+   Source: https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/e-FaturaPaketi%20(29).zip
+   (announced 2026-08-24: fixes to the 2026-07-27 package; the unnumbered
+   e-FaturaPaketi.zip URL still serves the 2026-07-27 files)
+   Retrieved: 2026-11-15
+   SHA-256 (zip): 12901476cd424fd65c779a4fb44cee798f9921ce55b003f8a076c936ddf8b583
+   Envelope XSDs are unchanged from the 2026-07-27 package.
    Files are vendored unmodified. This project does not claim copyright over
    GİB artefacts.
 
-5. GİB e-Arşiv Paketi (report schema, v1.1.8)
+5. GİB e-Arşiv Paketi (report schema, v1.20)
    Location: schemas/earchive/
    Publisher: Gelir İdaresi Başkanlığı
-   Source: earsiv_paket_v1.1_8 (published 2026-08-11 on ebelge.gib.gov.tr)
-   Retrieved: 2026-08-16
-   SHA-256 (EArsiv.xsd): 02b6d5b673d0eac54ba614ef4df8d8d96e0119d6652f056b99c79beb9fcaa170
+   Source: https://ebelge.gib.gov.tr/dosyalar/kilavuzlar/earsiv_paket_v1.20.zip
+   (announced 2026-11-05)
+   Retrieved: 2026-11-15
+   SHA-256 (zip): 36abf382079d857f96450f81aa294a863e919d3bb7f58d41f3c41cf75151a8f8
+   SHA-256 (EArsiv.xsd): ae9e7dd451ef65c68b9c68c0311ab41905a24b799912654da1755f6ee202c6a6
+   The package names the file eArsiv.xsd; it is stored here as EArsiv.xsd.
+   The other vendored XSDs are unchanged from v1.1.8.
    Vendored unmodified: EArsiv.xsd, eArsivVeri.xsd, faturaOzet.xsd, XAdES.xsd,
-   XAdESv141.xsd, xmldsig-core-schema.xsd. WSDL and the package XSLT are not
-   vendored. This is the e-Arşiv *report* (root eArsivRaporu), not the UBL
+   XAdESv141.xsd, xmldsig-core-schema.xsd. WSDL, the package XSLT and the
+   report Schematron (earsiv_schematron.xsl, new in v1.20) are not vendored. This is the e-Arşiv *report* (root eArsivRaporu), not the UBL
    Invoice used for e-Arşiv invoices (ProfileID EARSIVFATURA).
    XAdES.xsd / XAdESv141.xsd are ETSI XML Advanced Electronic Signatures
    schemas; xmldsig-core-schema.xsd is the W3C XML Signature schema. Notices
    in those files are retained. This project does not generate a Go XAdES
    model; ds:Signature is kept as InnerXML.
 
-GİB may publish updates independently of this Go module's semantic version.
-Always verify the current packages at https://ebelge.gib.gov.tr/.
+GİB may publish updates independently of this Go module's semantic version,
+sometimes under a new file name (for example "e-FaturaPaketi (29).zip").
+Always check the announcements at https://ebelge.gib.gov.tr/duyurular.html.

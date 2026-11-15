@@ -5,5 +5,5 @@ package earchive
 const (
 	Namespace      = "http://earsiv.efatura.gov.tr"
 	Generator      = "github.com/furkanmeclis/go-ubltr/cmd/ubltr-gen"
-	ChecksumEArsiv = "02b6d5b673d0eac54ba614ef4df8d8d96e0119d6652f056b99c79beb9fcaa170"
+	ChecksumEArsiv = "ae9e7dd451ef65c68b9c68c0311ab41905a24b799912654da1755f6ee202c6a6"
 )

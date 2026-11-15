@@ -46,6 +46,7 @@ var codeListSpecs = []codeListSpec{
 	{XMLName: "TransportModeCodeList", Prefix: "TransportMode", Valid: "ValidTransportMode", Consts: true},
 	{XMLName: "PartyIdentificationIDType", Prefix: "Scheme", Valid: "ValidPartyScheme", Consts: true},
 	{XMLName: "LicensePlateIDSchemeIDType", Prefix: "PlateScheme", Valid: "ValidPlateScheme", Consts: true},
+	{XMLName: "TransportEquipmentIDSchemeIDType", Prefix: "TrailerScheme", Valid: "ValidTrailerScheme", Consts: true},
 	{XMLName: "DocumentDescriptionType", Prefix: "DocumentDesc", Valid: "ValidDocumentDesc", Consts: true},
 	{XMLName: "ResponseCodeType", Prefix: "Response", Valid: "ValidResponse", Consts: true},
 	{XMLName: "AppResponseCodeType", Prefix: "AppResponse", Valid: "ValidAppResponse", Consts: true},

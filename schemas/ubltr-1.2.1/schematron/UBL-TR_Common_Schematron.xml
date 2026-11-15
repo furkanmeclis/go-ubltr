@@ -778,13 +778,19 @@
 		</sch:rule>
 		
 		<sch:rule abstract="true" id="LicensePlateIDSchemeIDCheck">
-			<sch:assert test="contains($LicensePlateIDSchemeIDType, concat(',',@schemeID,','))">Geçersiz schemeID niteliği : '<sch:value-of select="@schemeID"/>'. Geçerli değerler için kod listesine bakınız.</sch:assert>
-			<sch:assert test="not(@schemeID = 'PLAKA' or @schemeID = 'DORSE' or @schemeID = 'DORSEPLAKA') or (normalize-space(.) != '' and matches(normalize-space(.), '^(0[1-9]|[1-7][0-9]|8[01])[A-Z]+[0-9]+$'))">Geçersiz plaka değeri : '<sch:value-of select="."/>'</sch:assert>
-			<sch:assert test="not(@schemeID = 'YABANCIPLAKA' or @schemeID = 'YABANCIDORSE' or @schemeID = 'YABANCIDORSEPLAKA') or (normalize-space(.) != '' and matches(normalize-space(.), '^[A-Z0-9_-]+$'))">Geçersiz yabancı plaka değeri : '<sch:value-of select="."/>'</sch:assert>
+			<sch:assert test="contains($LicensePlateIDSchemeIDType, concat(',',@schemeID,','))">Geçersiz cbc:LicensePlateID schemeID niteliği : '<sch:value-of select="@schemeID"/>'. Geçerli değerler için kod listesine bakınız.</sch:assert>
+			<sch:assert test="not(@schemeID = 'PLAKA') or (normalize-space(.) != '' and matches(normalize-space(.), '^(0[1-9]|[1-7][0-9]|8[01])[A-Z]+[0-9]+$'))">Geçersiz plaka değeri : '<sch:value-of select="."/>'</sch:assert>
+			<sch:assert test="not(@schemeID = 'YABANCIPLAKA') or (normalize-space(.) != '' and matches(normalize-space(.), '^[A-Z0-9_-]+$'))">Geçersiz yabancı plaka değeri : '<sch:value-of select="."/>'</sch:assert>
+		</sch:rule>
+		
+		<sch:rule abstract="true" id="TransportEquipmentIDSchemeIDCheck">
+			<sch:assert test="contains($TransportEquipmentIDSchemeIDType, concat(',',@schemeID,','))">Geçersiz TransportEquipment ID schemeID niteliği : '<sch:value-of select="@schemeID"/>'. Geçerli değerler için kod listesine bakınız.</sch:assert>
+			<sch:assert test="not(@schemeID = 'DORSE' or @schemeID = 'DORSEPLAKA') or (normalize-space(.) != '' and matches(normalize-space(.), '^(0[1-9]|[1-7][0-9]|8[01])[A-Z]+[0-9]+$'))">Geçersiz dorse plaka değeri : '<sch:value-of select="."/>'</sch:assert>
+			<sch:assert test="not(@schemeID = 'YABANCIDORSE' or @schemeID = 'YABANCIDORSEPLAKA') or (normalize-space(.) != '' and matches(normalize-space(.), '^[A-Z0-9_-]+$'))">Geçersiz yabancı dorse plaka değeri : '<sch:value-of select="."/>'</sch:assert>
 		</sch:rule>
 
 		<sch:rule abstract="true" id="LicensePlateIDCheck">
-			<sch:assert test="count(cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID[contains($LicensePlateIDSchemeIDType, concat(',',@schemeID,',')) and normalize-space(.) != '']) &gt; 0">İrsaliyede plaka bilgisi içeren cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID elementi bulunmalıdır.</sch:assert>
+			<sch:assert test="count(cac:ShipmentStage/cac:DriverPerson) = 0 or count(cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID[contains($LicensePlateIDSchemeIDType, concat(',',@schemeID,',')) and normalize-space(.) != '']) &gt; 0">İrsaliyede şoför bilgisi olduğu durumda  plaka bilgisi içeren cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID elementi bulunmalıdır.</sch:assert>
 		</sch:rule>
 		
 		<!-- ReceiptAdvice -->	

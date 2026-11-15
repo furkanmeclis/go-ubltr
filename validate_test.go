@@ -154,10 +154,10 @@ func TestValidateOtherDocuments(t *testing.T) {
 			doc:  func(t *testing.T) any { return validDespatch(t) },
 		},
 		{
-			name: "despatch advice without plate",
+			name: "despatch advice with driver but without plate",
 			doc: func(t *testing.T) any {
 				d := validDespatch(t)
-				d.Shipment.ShipmentStage = nil
+				d.Shipment.ShipmentStage[0].TransportMeans = nil
 				return d
 			},
 			wantRule: "LicensePlateIDCheck",
