@@ -1,0 +1,28 @@
+# Trendyol E-Faturam codes.
+# Source: Trendyol E-Faturam OpenAPI documentation,
+# https://developers.trendyolefaturam.com/OpenApi/trendyol-e-faturam-entegrasyon-dokumani
+#   status.*  "Fatura Statü Kodları" (Enum ve Kod Açıklamaları / variables-info)
+#             and the status enum of the invoice responses.
+#   http.*    HTTP statuses documented on the endpoints; error bodies are
+#             RFC 7807 problem documents (title, detail, status, code).
+# GİB codes in gibStatusCode come from the shared provider GİB table.
+code,kind,status,retryable,message,message_en
+status.10,ok,processing,false,İşleniyor,PROCESSING
+status.20,ok,processing,false,Doküman Hazırlanıyor,PROCESSING_DOCUMENT
+status.29,validation,failed,false,Doküman Hatası,DOCUMENT_ERROR
+status.30,ok,queued,false,Oluşturuldu,CREATED
+status.40,ok,sent,false,GİB'e Gönderildi,SENT_TO_GIB
+status.50,ok,delivered,false,Yanıt Bekleniyor (ticari faturalar),WAITING_FOR_REPLY
+status.100,ok,delivered,false,Reddediliyor,DENYING
+status.105,ok,rejected,false,Reddedildi,DENIED
+status.200,ok,delivered,false,Onaylanıyor,CONFIRMING
+status.205,ok,delivered,false,Onaylandı (nihai statü),CONFIRMED
+status.305,ok,cancelled,false,İptal Edildi (e-Arşiv iptali),CANCELLED
+status.405,unknown,failed,false,Hatalı,FAILED
+http.400,invalid-request,,false,Geçersiz istek veya dosya hatası,Bad request or file error
+http.401,auth,,false,Token geçersiz ya da süresi dolmuş,Token invalid or expired
+http.403,permission,,false,Yetki hatası; VKN/TCKN uyuşmazlığı veya IP izinli değil,Forbidden; tax ID mismatch or IP not allowed
+http.404,not-found,,false,Kayıt bulunamadı,Not found
+http.409,invalid-state,,false,Durum hatası; fatura oluşturulamadı veya UUID kullanılamaz,Conflict; build failed or UUID cannot be used
+http.422,validation,failed,false,UBL validasyon hatası veya birden fazla etiket,UBL validation failed or multiple aliases
+http.500,unavailable,,true,Sistem hatası,System error

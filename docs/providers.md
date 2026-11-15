@@ -225,3 +225,14 @@ module (even with `_`) to register it, then use `provider.Open(name, cfg)`.
   cancel.
 - Digital Planet (also Sovos) is a different API and is not covered.
 - Details: [provider/sovos/README.md](../provider/sovos/README.md).
+
+## trendyol — Trendyol E-Faturam
+
+- Module: `github.com/furkanmeclis/go-ubltr/provider/trendyol`
+- Protocol: REST/JSON; `signIn` token, plus `customerSignIn` for
+  marketplace integrators.
+- e-Fatura: UBL file send, status, inbox search, UBL/PDF/HTML download,
+  commercial answer (KABUL / RED), recipient check.
+- e-Arşiv: UBL file send, report status, download, cancel.
+- Stage and live gateways are built in; stage access is IP allow-listed.
+- Details: [provider/trendyol/README.md](../provider/trendyol/README.md).
