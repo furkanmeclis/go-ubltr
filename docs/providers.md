@@ -55,3 +55,22 @@ Module `github.com/furkanmeclis/go-ubltr/provider/nes`, details in
 - Errors: 400 `invalidFields` and 422 `errors[].code` bodies, codes in
   `provider/nes/errors.csv`.
 - Live tests: `NES_API_KEY=... go test -tags live ./...` in `provider/nes`.
+
+## nilvera
+
+Nilvera REST API, e-Fatura and e-Arşiv.
+Module `github.com/furkanmeclis/go-ubltr/provider/nilvera`, details in
+[`provider/nilvera/README.md`](../provider/nilvera/README.md).
+
+- Auth: API key from the Nilvera portal, `Authorization: Bearer`.
+- Hosts: `https://api.nilvera.com` (live), `https://apitest.nilvera.com`
+  (`Test: true`); services `/einvoice`, `/earchive`, `/general`.
+- Send: raw or zipped UBL-TR XML (`POST /einvoice/Send/Xml`,
+  `POST /earchive/Send/Xml`, multipart `file`).
+- Operations: e-Fatura send, status, list-inbox, list-outbox, fetch
+  (UBL / PDF / HTML), respond, check-user, mark-taken, credits; e-Arşiv
+  send, status, list-outbox, fetch, cancel-earchive, credits.
+- Errors: `Errors[].Code` from the published 404 / 409 / 422 tables, in
+  `provider/nilvera/errors.csv`.
+- Live tests: `NILVERA_API_KEY=... go test -tags live ./...` in
+  `provider/nilvera`.

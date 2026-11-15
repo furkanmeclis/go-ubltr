@@ -1,0 +1,10 @@
+{
+  "Message": "HATALI ISTEK",
+  "Errors": [
+    {
+      "Code": 1001,
+      "Description": "ETTN Numarası Sistemde Kayıtlıdır.",
+      "Detail": "e1b40d5b-24b3-4f79-8735-a01ae5577de7 ETTN Numarası Sistemde Kayıtlıdır."
+    }
+  ]
+}

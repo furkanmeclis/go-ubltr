@@ -1,0 +1,10 @@
+{
+  "Message": "GECERSIZ ISTEK",
+  "Errors": [
+    {
+      "Code": 400,
+      "Description": "Alias",
+      "Detail": "Nesnesi Null Olamaz."
+    }
+  ]
+}

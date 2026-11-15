@@ -1,0 +1,45 @@
+{
+  "Page": 1,
+  "PageSize": 1,
+  "TotalCount": 2,
+  "TotalPages": 2,
+  "Content": [
+    {
+      "UUID": "72d0ec9a-96b9-4f41-b0cb-c9598a641baa",
+      "TaxNumber": "9876543210",
+      "SenderTaxNumber": "1234567890",
+      "SenderName": "Örnek A.Ş.",
+      "InvoiceNumber": "ABC2024000000001",
+      "InvoiceProfile": "TICARIFATURA",
+      "InvoiceType": "SATIS",
+      "CurrencyCode": "TRY",
+      "IssueDate": "2024-03-01T00:00:00",
+      "PayableAmount": 1180.5,
+      "TaxExclusiveAmount": 1000.42,
+      "TaxTotalAmount": 180.08,
+      "LineExtensionAmount": 1000.42,
+      "ExchangeRate": 0,
+      "AllowanceTotalAmount": 0,
+      "ChargeTotalAmount": 0,
+      "IsRead": false,
+      "IsPrint": false,
+      "IsArchive": false,
+      "IsTransfer": false,
+      "IsZirveTransfer": false,
+      "AnswerCode": "waitingForApproval",
+      "StatusCode": "succeed",
+      "CreatedDate": "2024-03-01T10:15:00",
+      "StatusDetail": null,
+      "EnvelopeUUID": "0d2e3f4a-5b6c-4d7e-8f9a-0b1c2d3e4f5a",
+      "EnvelopeDate": "2024-03-01T10:14:00",
+      "Tags": [],
+      "SpecialCode": null,
+      "SenderAlias": "urn:mail:defaultgb@example.com",
+      "ReceiverAlias": "urn:mail:defaultpk@example.com",
+      "Luca": {
+        "Status": "None",
+        "Description": null
+      }
+    }
+  ]
+}

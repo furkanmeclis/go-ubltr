@@ -1,0 +1,11 @@
+[
+  {
+    "TaxNumber": "1234567890",
+    "Title": "Örnek A.Ş.",
+    "FirstCreatedTime": "2019-01-01T00:00:00",
+    "CreationTime": "2019-01-01T00:00:00",
+    "DocumentType": "Invoice",
+    "Name": "urn:mail:defaultpk@example.com",
+    "Type": "PK"
+  }
+]

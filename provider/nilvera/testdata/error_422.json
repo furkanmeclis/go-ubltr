@@ -1,0 +1,10 @@
+{
+  "Message": "HATALI ISTEK",
+  "Errors": [
+    {
+      "Code": 2000,
+      "Description": "Yeterli Kontörünüz Bulunmamaktadır.",
+      "Detail": "Yeterli Kontörünüz Bulunmamaktadır. Lütfen Kontör Alımı Yapınız."
+    }
+  ]
+}

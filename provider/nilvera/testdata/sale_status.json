@@ -1,0 +1,20 @@
+{
+  "InvoiceProfile": "TICARIFATURA",
+  "IssueDate": "2024-03-01T00:00:00",
+  "Answer": {
+    "AnswerCode": "waitingForApproval",
+    "AnswerNote": null,
+    "Description": null
+  },
+  "InvoiceStatus": {
+    "Code": "succeed",
+    "Description": "Başarılı",
+    "DetailDescription": null
+  },
+  "EnvelopeInfo": {
+    "UUID": "5f0c1a3e-7d2b-4a55-9c1e-2b3f4a5b6c7d",
+    "GIBCode": 1300,
+    "GIBDescription": "BAŞARIYLA TAMAMLANDI",
+    "CreatedDate": "2024-03-01T10:20:00"
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "ID": 1,
+    "Name": "Kontör Paketi",
+    "ModuleID": 1,
+    "TaxNumber": "9876543210",
+    "TotalCredit": 1000,
+    "UsedCredit": 250,
+    "RemainingCredit": 750,
+    "UsePercentage": 25,
+    "DurationType": "Year",
+    "EndDate": "2025-01-01T00:00:00",
+    "IsControl": true
+  },
+  {
+    "ID": 2,
+    "Name": "Ek Paket",
+    "ModuleID": 1,
+    "TaxNumber": "9876543210",
+    "TotalCredit": 100,
+    "UsedCredit": 10,
+    "RemainingCredit": 90,
+    "UsePercentage": 10,
+    "DurationType": "Indefinite",
+    "EndDate": "0001-01-01T00:00:00",
+    "IsControl": false
+  }
+]
