@@ -23,3 +23,6 @@ tmp/
 examples/**/invoice.html
 examples/**/invoice.pdf
 examples/render/general/*.pdf
+
+# Built CLI binary
+/cmd/ubltr/ubltr
