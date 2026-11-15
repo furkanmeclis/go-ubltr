@@ -21,19 +21,3 @@ use (
 	./render
 	./render/chromium
 )
-
-replace (
-	github.com/furkanmeclis/go-ubltr/provider v0.0.0 => ./provider
-	github.com/furkanmeclis/go-ubltr/provider/edm v0.0.0 => ./provider/edm
-	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0 => ./provider/izibiz
-	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0 => ./provider/nes
-	github.com/furkanmeclis/go-ubltr/provider/nilvera v0.0.0 => ./provider/nilvera
-	github.com/furkanmeclis/go-ubltr/provider/qnb v0.0.0 => ./provider/qnb
-	github.com/furkanmeclis/go-ubltr/provider/sovos v0.0.0 => ./provider/sovos
-	github.com/furkanmeclis/go-ubltr/provider/trendyol v0.0.0 => ./provider/trendyol
-	github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0 => ./provider/turkcell
-	github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0 => ./provider/uyumsoft
-	github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0 => ./provider/watch
-	github.com/furkanmeclis/go-ubltr/provider/watch/redis v0.0.0 => ./provider/watch/redis
-	github.com/furkanmeclis/go-ubltr/provider/watch/sql v0.0.0 => ./provider/watch/sql
-)

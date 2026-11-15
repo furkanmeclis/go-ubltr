@@ -49,3 +49,17 @@ Update `CHANGELOG.md` `[Unreleased]` for user-visible changes. How-to pages live
 ## Reporting issues
 
 Use [GitHub Issues](https://github.com/furkanmeclis/go-ubltr/issues) with the bug or feature form. Include Go version, OS, and a **synthetic** XML snippet when it helps. Security reports: [SECURITY.md](SECURITY.md).
+
+## Releasing
+
+Every module is versioned with the same number. Nested modules depend on
+each other through pseudo-versions of published commits, so they work with
+`go get` before and after a release.
+
+1. Move the `Unreleased` entries in `CHANGELOG.md` under a new version heading and push to `main`.
+2. Run `scripts/tag-release.sh vX.Y.Z` from a clean checkout of `main`.
+
+The script tags every library module at `HEAD` (`render/vX.Y.Z`,
+`provider/uyumsoft/vX.Y.Z`, …) and pushes the root tag last; the Release
+workflow then publishes the GitHub release with the changelog section and
+the list of module tags.

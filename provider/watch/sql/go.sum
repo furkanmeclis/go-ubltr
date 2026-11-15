@@ -1,5 +1,9 @@
 github.com/dustin/go-humanize v1.1.0 h1:dbKTrvD0klcbBV/h4AWJdMuZogJACoMlvWIWZ5b2xWg=
 github.com/dustin/go-humanize v1.1.0/go.mod h1:hc1CvRkJMsgxqjmjMQF3QNRAZBwY8AXBAzKYoSX9sFI=
+github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7 h1:IKqMt3f5vCN3liEei1PNGtmlia+8mHRvODT2FgULbug=
+github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7/go.mod h1:eQeCgKskh/4Nu487oWkIr0hnmocNGdg7Wwmibbko+kI=
+github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0-20261115194115-1bb433204e1d h1:yXhYrwf9NEyI2jiczmEhIiwT+AQeT9K40HQ1FdLRTTQ=
+github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0-20261115194115-1bb433204e1d/go.mod h1:sOowQbOE3Y9LdweXyUwknWzMoJbys3iu1V6cumlekTE=
 github.com/google/pprof v0.0.0-20261016150608-1facf8f91b50 h1:PlNWJRxu5APSV0pWqfIsZ0qt9OOGHSWfZQ4zvx+WgWs=
 github.com/google/pprof v0.0.0-20261016150608-1facf8f91b50/go.mod h1:yUo1AMMpsPIDFGuwDK8nLcf8+vvAd5l2O6JDZ6hpwrM=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
