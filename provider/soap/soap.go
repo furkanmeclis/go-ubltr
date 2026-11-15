@@ -48,8 +48,12 @@ type Client struct {
 	Prepare func(*http.Request)
 }
 
+// envelope is written with a "soap" prefix instead of a default namespace
+// so unqualified payload elements (elementFormDefault="unqualified", common
+// in integrator WSDLs) do not inherit the SOAP envelope namespace.
 type envelope struct {
 	XMLName xml.Name
+	NS      string      `xml:"xmlns:soap,attr"`
 	Header  *headerElem `xml:",omitempty"`
 	Body    bodyElem
 }
@@ -194,11 +198,12 @@ func (c *Client) Marshal(req any) ([]byte, error) {
 		ns = ns12
 	}
 	env := envelope{
-		XMLName: xml.Name{Space: ns, Local: "Envelope"},
-		Body:    bodyElem{XMLName: xml.Name{Space: ns, Local: "Body"}, Content: req},
+		XMLName: xml.Name{Local: "soap:Envelope"},
+		NS:      ns,
+		Body:    bodyElem{XMLName: xml.Name{Local: "soap:Body"}, Content: req},
 	}
 	if c.Header != nil {
-		env.Header = &headerElem{XMLName: xml.Name{Space: ns, Local: "Header"}, Content: c.Header}
+		env.Header = &headerElem{XMLName: xml.Name{Local: "soap:Header"}, Content: c.Header}
 	}
 	var buf bytes.Buffer
 	buf.WriteString(xml.Header)

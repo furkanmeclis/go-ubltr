@@ -70,6 +70,48 @@ func TestFault(t *testing.T) {
 	}
 }
 
+// unqualifiedReq has a namespaced root with unqualified children, as
+// schemas with elementFormDefault="unqualified" require.
+type unqualifiedReq struct {
+	XMLName xml.Name `xml:"tns:Req"`
+	NS      string   `xml:"xmlns:tns,attr"`
+	Child   string   `xml:"CHILD"`
+}
+
+func TestMarshalKeepsUnqualifiedChildren(t *testing.T) {
+	for _, v := range []soap.Version{soap.V11, soap.V12} {
+		c := &soap.Client{Version: v, Header: soap.NewUsernameToken("u", "p")}
+		b, err := c.Marshal(unqualifiedReq{NS: "urn:x", Child: "v"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		dec := xml.NewDecoder(strings.NewReader(string(b)))
+		seen := map[string]xml.Name{}
+		for {
+			tok, err := dec.Token()
+			if err != nil {
+				break
+			}
+			if se, ok := tok.(xml.StartElement); ok {
+				seen[se.Name.Local] = se.Name
+			}
+		}
+		want := map[string]string{"Envelope": envNS(v), "Header": envNS(v), "Body": envNS(v), "Req": "urn:x", "CHILD": ""}
+		for local, ns := range want {
+			if got, ok := seen[local]; !ok || got.Space != ns {
+				t.Errorf("v%d %s namespace = %q, want %q\n%s", v, local, got.Space, ns, b)
+			}
+		}
+	}
+}
+
+func envNS(v soap.Version) string {
+	if v == soap.V12 {
+		return "http://www.w3.org/2003/05/soap-envelope"
+	}
+	return "http://schemas.xmlsoap.org/soap/envelope/"
+}
+
 func TestHTTPErrorWithoutEnvelope(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusServiceUnavailable)
