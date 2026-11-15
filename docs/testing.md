@@ -41,14 +41,16 @@ GOWORK=off go list -m all | grep chromedp   # empty
 | Clone / inspect / attach / diff | `ubltr_test` | fixture Invoice clone identity; Inspect ID/profile/payable; attachment XSD; Diff on ID change |
 | XSD | `ubltr_test`, `internal/validation` | fixture Invoice passes; empty Invoice/CreditNote fail; CreditNote from Invoice fixture |
 | Detect | `ubltr_test` | Invoice fixture plus each document root, including `eArsivRaporu` |
-| Schematron | `ubltr_test`, `internal/validation` | fixture is expected to fail current rules (TCKN); unknown ProfileID fails |
+| Schematron | `ubltr_test`, `internal/validation` | fixture is expected to fail current rules (TCKN); unknown ProfileID fails; builder DespatchAdvice / ApplicationResponse / ReceiptAdvice / Invoice pass `Validate`, and missing plate, missing despatch date, wrong AR profile, and bad unit code fire the expected GİB rule |
+| Violation fields | `ubltr_test`, `internal/validation` | rule, pattern, context, test, location, line, and element on Schematron and XSD failures; `Violations(err)` through wrapping; role/flag severity mapping; location paths |
+| Envelope | `ubltr_test`, `internal/codegen` | `NewEnvelope` → `Marshal` → `Validate` → `UnmarshalEnvelope` round trip; prefixes declared on the envelope root; mixed element types; sender VKN mismatch fires `DocumentSenderCheck`; bad `ElementCount` fails XSD; regenerated `schema/envelope` matches the checked-in files |
 | HTML | `render` | `StyleMinimal` on the GİB sample; Turkish glyphs; malformed XML |
 | Builder | `builder` | fluent Invoice/CreditNote/ApplicationResponse/DespatchAdvice/ReceiptAdvice → XSD-valid XML; e-Arşiv report → Detect; totals rounding fixture |
 | Code lists | `codelist` | every GİB unit/currency/profile code from `UBL-TR_Codelist.xml` |
 | XSLT host access | `render/xslt/helium` | `document('/etc/passwd')` must not read the disk |
 | PDF pipeline (fake) | `render` | stub `PDFRenderer` |
 | PDF smoke | `render/chromium` | disabled (does not launch Chrome) |
-| CLI | `cmd/ubltr` | validate `--xsd` on fixture (pass); default validate fails Schematron; inspect summary; HTML render; `--pdf` is `%PDF` or a Chrome/chromium-module message |
+| CLI | `cmd/ubltr` | validate `--xsd` on fixture (pass); default validate fails Schematron; `--format=json` for validate and inspect (violations with rule, pattern, location, line); `--schematron` on a DespatchAdvice; inspect summary; HTML render; `--pdf` is `%PDF` or a Chrome/chromium-module message |
 
 Table-driven tests use named `t.Run` cases. Independent tests call `t.Parallel()` except the Chrome smoke test.
 
@@ -66,7 +68,7 @@ make generate
 go test ./...
 ```
 
-If generated files under `schema/` or `codelist/` change, include them in the same commit as the generator or schema update.
+If generated files under `schema/` or `codelist/` change, include them in the same commit as the generator or schema update. `internal/codegen` fails if `schema/envelope` is out of date.
 
 ## Examples
 

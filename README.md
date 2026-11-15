@@ -121,7 +121,7 @@ Unit, currency, profile, tax, and related codes are the full GİB lists (`codeli
 
 ## What is generated
 
-`make generate` runs `cmd/ubltr-gen` three times:
+`make generate` runs `cmd/ubltr-gen` four times:
 
 ```
 schemas/ubltr-1.2.1/xsdrt/maindoc/UBL-{Invoice,CreditNote,ApplicationResponse,DespatchAdvice,ReceiptAdvice}-2.1.xsd
@@ -132,12 +132,16 @@ schemas/earchive/EArsiv.xsd
         ↓
 schema/earchive
 
+schemas/ubltr-1.2.1/envelope/PackageProxy_1_2.xsd
+        ↓
+schema/envelope
+
 schemas/ubltr-1.2.1/schematron/UBL-TR_Codelist.xml
         ↓
 codelist/{generated.go,lookup.go}
 ```
 
-Types reachable from those five UBL document elements are emitted into shared `cac` / `cbc` packages. The GİB envelope XSD is not generated. The e-Arşiv report is a separate schema (`http://earsiv.efatura.gov.tr`, root `eArsivRaporu`); it is not a UBL Invoice. e-Arşiv *invoices* remain UBL Invoice with `ProfileID` `EARSIVFATURA`.
+Types reachable from those five UBL document elements are emitted into shared `cac` / `cbc` packages. The GİB envelope (Standard Business Document Header plus `ef:Package`) is generated into `schema/envelope`; documents inside `ElementList` stay raw XML there, and `ubltr.EnvelopeDocuments` decodes them into the UBL types. The e-Arşiv report is a separate schema (`http://earsiv.efatura.gov.tr`, root `eArsivRaporu`); it is not a UBL Invoice. e-Arşiv *invoices* remain UBL Invoice with `ProfileID` `EARSIVFATURA`.
 
 Amounts, dates, and times are `string` so lexical values survive round-trip. Identifier types keep `schemeID`.
 
@@ -145,12 +149,14 @@ Amounts, dates, and times are `string` so lexical values survive round-trip. Ide
 
 | Layer | API | Notes |
 | --- | --- | --- |
-| Kind | `Detect` | Root element + namespace (Invoice, CreditNote, …, e-Arşiv report). |
+| Kind | `Detect` | Root element + namespace (Invoice, CreditNote, …, e-Arşiv report, envelope). |
 | XSD | `ValidateXSD` | [helium](https://github.com/lestrrat-go/helium) against the schema for the detected kind. |
-| Schematron | `ValidateSchematron`, `ValidateSchematronType` | Official GİB Invoice rules (e-Fatura / e-Arşiv). |
-| Both | `Validate` | XSD first; Schematron only for Invoice. |
+| Schematron | `ValidateSchematron`, `ValidateSchematronType` | Official GİB rules for Invoice, ApplicationResponse, DespatchAdvice, ReceiptAdvice, and the envelope. |
+| Both | `Validate` | XSD first, then Schematron where `HasSchematron` is true. |
 
 `ValidateSchematron` uses `type=efatura`. Pass `ubltr.TypeEArchive` to `ValidateSchematronType` for e-Arşiv (`ProfileID` must be `EARSIVFATURA`).
+
+Failures are `*XSDValidationError` / `*SchematronValidationError` with `Violations` that carry rule ID, pattern, XPath-like location, line, and severity; `ubltr.Violations(err)` returns them from any wrapped error.
 
 XSD success is not GİB business-rule success. Official 2009 sample invoices in `testdata/` are XSD-valid and fail current Schematron (for example customer TCKN length). Helium’s native Schematron compiler still cannot ingest the unmodified GİB files; this library flattens them first.
 
@@ -215,7 +221,7 @@ This repository is a Go workspace (`go.work`). `GOWORK=off go test ./...` tests 
 Layout:
 
 - `schemas/` — official GİB/OASIS XSD and Schematron files (source of truth)
-- `schema/` — generated Go types (`schema/ubltr121/...`, `schema/earchive`); do not edit by hand
+- `schema/` — generated Go types (`schema/ubltr121/...`, `schema/earchive`, `schema/envelope`); do not edit by hand
 - `codelist/` — generated GİB unit/currency/profile/tax/… constants
 - `builder/` — fluent builders on top of generated types
 - `render/` — HTML/XSLT module

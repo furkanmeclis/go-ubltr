@@ -34,12 +34,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Embedded XSLT: `InvoiceBuilder.XSLT` and `builder.XSLTReference` (`AdditionalDocumentReference` with DocumentType `XSLT`).
 - `codelist` aliases `ProfileIhracat`, `InvoiceTypeTevkifat`, `InvoiceTypeTevkifatIade`, `InvoiceTypeIstisna`.
 - Golden builder invoices under `testdata/valid/`, checked with XSD and GİB Schematron (`-update` regenerates them).
+- Structured validation errors: `Violation` gains `TestID`, `PatternID`, `Context`, `Test`, `Role`, `Flag`, `Location` (XPath-like, GİB Schematron prefixes), `Line`, `Element`, and `Attribute`, plus JSON tags. XSD violations carry line, element, attribute, and location from helium. New `Violations(err)`, `Errors()` / `Warnings()` on both error types, `Violation.String`, and `Layer*` / `Severity*` constants. Schematron `report` and `role` / `flag` severities are honoured.
+- GİB Schematron for ApplicationResponse, DespatchAdvice (e-İrsaliye), ReceiptAdvice, and the envelope, selected from `Detect`. `Validate` runs XSD then Schematron for every kind that `HasSchematron` reports. `TypeGoruntuleme` for the GİB viewer `type` parameter.
+- `KindEnvelope` in `Detect` and XSD validation of GİB envelopes (`sh:StandardBusinessDocument` with `ef:Package`), including strict validation of the documents inside `ElementList`.
+- Generated GİB envelope types in `schema/envelope` (`ubltr-gen -envelope`, part of `make generate`), and `NewEnvelope`, `UnmarshalEnvelope`, and `EnvelopeDocuments` to build an envelope from documents and extract typed documents from one.
+- `ubltr validate --format=json` and `ubltr inspect --format=json`. Text output now shows line and rule ID. `validate` runs Schematron for despatch, receipt, application response, and envelope files, and `--type` accepts `goruntuleme`.
 
 ### Known limitations
 
 - Official 2009 GİB sample invoices are XSD-valid and fail current Schematron (TCKN length and similar rules).
 - GİB viewer XSLT is not bundled; supply your own stylesheet.
-- GİB envelope types are not generated.
+- Envelope `ElementList` content is raw XML (`InnerXML`); typed documents come from `EnvelopeDocuments`. HR-XML user-account documents are not modelled, and their envelope XSD import is answered with an empty schema.
+- XSD violations have a line but no column (helium does not report columns). Schematron attribute violations use the owner element's line.
 - `encoding/xml` does not guarantee `cbc:` / `cac:` prefixes.
 - The vendored GİB Schematron rejects `WithholdingTaxTotal` on TEVKIFATIADE and YTBTEVKIFATIADE; `NewReturnInvoiceFrom` uses IADE / YTBIADE for withholding returns.
 

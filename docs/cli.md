@@ -19,8 +19,8 @@ The CLI is a nested module (`github.com/furkanmeclis/go-ubltr/cmd/ubltr`). It ma
 ## Commands
 
 ```
-ubltr validate [options] FILE...
-ubltr inspect FILE...
+ubltr validate [--xsd|--schematron] [--type=efatura] [--format=text|json] FILE...
+ubltr inspect [--format=text|json] FILE...
 ubltr render [--pdf] [--style FILE] FILE
 ubltr generate
 ```
@@ -31,18 +31,61 @@ Flags may appear before or after files (`ubltr render invoice.xml --pdf` is vali
 
 ### validate
 
-Default is XSD, then Invoice Schematron (`type=efatura`). CreditNote and other kinds skip Schematron.
+Default is XSD, then GİB Schematron (`type=efatura`) for Invoice, ApplicationResponse, DespatchAdvice (e-İrsaliye), ReceiptAdvice, and envelopes. CreditNote and the e-Arşiv report are checked against XSD only.
 
 ```bash
 ubltr validate invoice.xml
 ubltr validate --xsd invoice.xml
 ubltr validate --schematron --type=earchive invoice.xml
+ubltr validate irsaliye.xml zarf.xml
 ubltr validate testdata/ubltr-1.2.1/*.xml
+ubltr validate --format=json invoice.xml > report.json
 ```
 
-`--xsd` or `--schematron` restricts to one layer. They are mutually exclusive; omit both to run XSD then Invoice Schematron. `--type` is `efatura` (default) or `earchive` and only applies to Invoice Schematron.
+`--xsd` or `--schematron` restricts to one layer. They are mutually exclusive; omit both to run XSD then Schematron. `--schematron` on a CreditNote or e-Arşiv report fails, because GİB has no rules for them. `--type` is `efatura` (default), `earchive`, or `goruntuleme` and only affects ProfileID-related checks.
 
-Every file is checked. Failures go to stderr, prefixed with the path. Exit is `1` if any file fails.
+Every file is checked. Exit is `1` if any file fails.
+
+Text output (default) writes one line per violation to stderr:
+
+```
+invoice.xml:84: schematron PartyIdentificationTCKNVKNCheck: cbc:ID elemanının schemeID ... (/inv:Invoice/cac:AccountingCustomerParty/cac:Party/cac:PartyIdentification[1])
+```
+
+That is `path[:line]: layer [severity] [rule]: message (location)`. With several files, valid ones print `path: ok` to stdout.
+
+`--format=json` writes one JSON object to stdout and nothing to stderr (flag errors aside):
+
+```json
+{
+  "valid": false,
+  "files": [
+    {
+      "path": "invoice.xml",
+      "kind": "invoice",
+      "valid": false,
+      "layer": "schematron",
+      "violations": [
+        {
+          "layer": "schematron",
+          "path": "cac:PartyIdentification",
+          "ruleId": "PartyIdentificationTCKNVKNCheck",
+          "severity": "error",
+          "message": "cbc:ID elemanının schemeID niteliği değeri 'TCKN' olması durumunda ...",
+          "patternId": "invoice",
+          "context": "inv:Invoice/cac:AccountingCustomerParty/cac:Party/cac:PartyIdentification",
+          "test": "not(cbc:ID/@schemeID='TCKN') or string-length(cbc:ID)=11",
+          "location": "/inv:Invoice/cac:AccountingCustomerParty/cac:Party/cac:PartyIdentification[1]",
+          "line": 84,
+          "element": "cac:PartyIdentification"
+        }
+      ]
+    }
+  ]
+}
+```
+
+`layer` is the layer that failed (XSD stops before Schematron). A file that cannot be read or parsed has `error` and no `layer`. `violations` is always an array. Violation keys match the library's `ubltr.Violation` JSON tags; empty fields are omitted.
 
 Official 2009 samples in `testdata/` pass XSD and fail current Schematron.
 
@@ -52,7 +95,10 @@ Prints the library `Inspect` summary (ID, profile, parties, lines, payable).
 
 ```bash
 ubltr inspect invoice.xml
+ubltr inspect --format=json invoice.xml
 ```
+
+`--format=json` writes `{"files": [{"path": ..., "summary": {"kind", "id", "uuid", "profile", "type", "currency", "supplier", "customer", "lines", "tax", "payable"}}]}` to stdout. A file that fails has `error` instead of `summary`, and the exit code is `1`.
 
 ### render
 
@@ -75,7 +121,7 @@ Maintainer command. From a clone of this repository (any subdirectory):
 ubltr generate
 ```
 
-That is the same as `make generate`: UBL-TR types, e-Arşiv report types, and GİB code lists. It is not useful for an application that only imported the module.
+That is the same as `make generate`: UBL-TR types, e-Arşiv report types, GİB envelope types, and GİB code lists. It is not useful for an application that only imported the module.
 
 ## Tests
 

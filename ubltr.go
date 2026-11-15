@@ -21,8 +21,8 @@ const (
 	TypeEFatura = "efatura"
 	// TypeEArchive is the GİB Schematron type parameter for e-Arşiv.
 	TypeEArchive = "earchive"
-	// TypeGoruntuleme is the GİB Schematron type parameter used by the GİB
-	// viewer. It accepts the e-Fatura and e-İrsaliye ProfileID lists.
+	// TypeGoruntuleme is the GİB Schematron type parameter for viewing. Invoice
+	// ProfileID may then be any e-Fatura profile or EARSIVFATURA.
 	TypeGoruntuleme = "goruntuleme"
 )
 
@@ -248,7 +248,7 @@ func HasSchematron(kind Kind) bool {
 
 // ValidateSchematronType checks xmlBytes against GİB UBL-TR Schematron.
 // docType is [TypeEFatura], [TypeEArchive], or [TypeGoruntuleme]; it only
-// changes ProfileID checks.
+// affects ProfileID-related checks.
 func ValidateSchematronType(ctx context.Context, xmlBytes []byte, docType string) error {
 	result, err := validation.Schematron(ctx, xmlBytes, docType)
 	if err != nil {

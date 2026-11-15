@@ -4,11 +4,13 @@ go-ubltr already supports:
 
 - UBL-TR 1.2.1 Invoice, CreditNote, ApplicationResponse, DespatchAdvice, and ReceiptAdvice types generated from XSD
 - e-Arşiv *report* types from GİB `EArsiv.xsd` (root `eArsivRaporu`; distinct from e-Arşiv invoices)
-- Marshal / unmarshal, XSD validation by document kind, and Invoice Schematron (`efatura` / `earchive`)
+- Marshal / unmarshal, XSD validation by document kind, and GİB Schematron for Invoice, ApplicationResponse, DespatchAdvice (e-İrsaliye), ReceiptAdvice, and the envelope (`efatura` / `earchive` / `goruntuleme`)
+- Structured validation errors: rule ID, pattern ID, XPath-like location, line, and severity
+- GİB envelope types generated from the vendored envelope XSDs, plus helpers to build, validate, and unpack envelopes
 - Fluent builders, decimal money/quantity, and generated GİB code lists
 - Clone, inspect, attachments, XML diff, and reader/writer helpers
 - Nested HTML (`render`) and PDF (`render/chromium`) modules
-- Nested `ubltr` CLI (`validate`, `inspect`, `render`, `generate`)
+- Nested `ubltr` CLI (`validate`, `inspect`, `render`, `generate`) with `--format=json` for `validate` and `inspect`
 
 Known limitations are listed in [CHANGELOG.md](CHANGELOG.md).
 
@@ -17,9 +19,6 @@ Known limitations are listed in [CHANGELOG.md](CHANGELOG.md).
 These items are optional. They will only land if they stay small and document-centric.
 
 1. **Schema refresh** — vendor newer GİB XSD, Schematron, envelope, and code-list packages when they are published, and regenerate types. Record checksums in `NOTICE`.
-2. **Envelope types** — generate Go types from the already-vendored GİB envelope XSDs under `schemas/ubltr-1.2.1/envelope/`.
-3. **Richer validation errors** — expose path, rule ID, and severity that already exist internally, without changing the validation engines.
-4. **CLI machine-readable output** — optional `--format=json` for `ubltr inspect` / `ubltr validate`. Human text remains the default.
 
 ## Out of scope
 
