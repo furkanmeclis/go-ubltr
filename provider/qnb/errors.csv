@@ -1,0 +1,35 @@
+# QNB eSolutions (eFinans) codes.
+# Source: QNB eSolutions API documentation
+# (https://www.qnbesolutions.com.tr/api-entegrasyon.html), sections
+# belgeGonderExt, gidenBelgeDurumSorgulaExt, faturaOlusturExt, faturaIptalEt.
+#
+# Rows prefixed durum. / gonderim. / yanit. are the integer fields of the
+# gidenBelgeDurum response (durum, gonderimDurumu, yanitDurumu); they are
+# states, not errors, and carry kind "ok" except durum 2 (İşleme Hatası).
+# AE* rows are e-Arşiv resultCode values. fault: rows match SOAP fault text
+# (case-insensitive substring) and are used to reclassify faults; the
+# "bulunamadı" and TPS_POSTA_KUTUSU_YETKI texts are from the official
+# documentation, "Hash hatası" and "username.pwd.mismatch" are fault texts
+# recorded by github.com/Hasokeyk/qnb-finansbank-invoice-php (AGENTS.md).
+# GİB envelope codes (gonderimCevabiKodu 1000-1300) come from the shared
+# provider GİB table and are not repeated here.
+code,kind,status,retryable,message,message_en
+durum.1,ok,queued,false,Alındı,Received; not processed yet
+durum.2,validation,failed,false,İşleme Hatası,Processing error; fix and resend with belgeGonderExt
+durum.3,ok,processing,false,İşlendi,Processed; follow gonderimDurumu
+gonderim.-2,ok,cancelled,false,İptal edildi; gönderilmeyecek,Cancelled; will not be sent
+gonderim.-1,ok,processing,false,Kuyruğa eklendi,Queued for sending
+gonderim.0,ok,processing,true,Gönderilemedi; sistem yeniden deneyecek,Not sent; the system will retry
+gonderim.1,ok,processing,false,Gönderilecek,Will be sent
+gonderim.2,ok,sent,false,Gönderildi,Sent
+gonderim.3,ok,sent,false,GİB merkez yanıtı geldi,GİB response received
+gonderim.4,ok,delivered,false,Alıcı yanıtı geldi,Receiver response received
+yanit.-1,ok,,false,Yanıt gerekmiyor,No answer required
+yanit.0,ok,,false,Yanıt bekleniyor,Waiting for the commercial answer
+yanit.1,ok,rejected,false,Red cevabı geldi,Rejected by the receiver
+yanit.2,ok,accepted,false,Kabul cevabı geldi,Accepted by the receiver
+AE00000,ok,,false,İşlem başarılı.,Success
+fault:bulunamadı,not-found,,false,Belge bulunamadı,Document not found
+fault:hash,validation,,false,Hash hatası,Hash mismatch
+fault:username.pwd.mismatch,auth,,false,Kullanıcı adı veya şifre hatalı,Wrong username or password
+fault:TPS_POSTA_KUTUSU_YETKI,permission,failed,false,Posta kutusu yetkisi yok (GİB 1172),Mailbox not authorized (GİB 1172)

@@ -196,3 +196,20 @@ p, err := provider.Open("edm", provider.Config{Username: u, Password: pw, VKN: v
 - Live tests: `EDM_USERNAME`, `EDM_PASSWORD`, `-tags live`.
 
 Details: [`provider/edm/README.md`](../provider/edm/README.md).
+# Integrator modules
+
+Each özel entegratör client is a separate module under `provider/<name>`
+implementing the [`provider`](../provider/README.md) contract. Import the
+module (even with `_`) to register it, then use `provider.Open(name, cfg)`.
+
+## qnb — QNB eSolutions (eFinans)
+
+- Module: `github.com/furkanmeclis/go-ubltr/provider/qnb`
+- Protocol: SOAP 1.1 (`connectorService` for e-Fatura, `EarsivWebService`
+  for e-Arşiv), WS-Security UsernameToken.
+- e-Fatura: send, status, inbox listing, UBL/PDF/HTML download,
+  `belgelerAlindi`, recipient check, credits.
+- e-Arşiv: send (synchronous), status, download, cancel.
+- Test endpoints are built in; live endpoints are given by QNB after the
+  test phase and must be configured.
+- Details: [provider/qnb/README.md](../provider/qnb/README.md).
