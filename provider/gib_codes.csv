@@ -19,7 +19,8 @@ code,kind,status,retryable,message,message_en
 1160,validation,failed,false,XML ŞEMA KONTROLÜNDEN GEÇEMEDİ,XML schema check failed
 1161,signature,failed,false,İMZA SAHİBİ TCKN VKN ALINAMADI,Signer TCKN/VKN could not be read
 1162,signature,failed,true,İMZA KAYDEDİLEMEDİ,Signature could not be stored
-1163,duplicate,failed,false,GÖNDERİLEN ZARF SİSTEMDE DAHA ÖNCE KAYITLI OLAN BİR FATURAYI İÇERMEKTEDİR,Envelope contains an already registered invoice
+1163,duplicate,failed,false,ZARF ID DAHA ÖNCE KULLANILMIŞ,Envelope ID already used
+1164,duplicate,failed,false,GÖNDERİLEN ZARF SİSTEMDE DAHA ÖNCE KAYITLI OLAN BİR BELGEYİ İÇERMEKTEDİR,Envelope contains an already registered document
 1170,unavailable,failed,true,YETKİ KONTROL EDİLEMEDİ,Authorization could not be checked
 1171,permission,failed,false,GÖNDERİCİ BİRİM YETKİSİ YOK,Sender unit not authorized
 1172,permission,failed,false,POSTA KUTUSU YETKİSİ YOK,Mailbox not authorized
