@@ -1,0 +1,34 @@
+<!-- GetInvoiceResponse (ArrayOfINVOICE) for HEADER_ONLY=Y. Constructed from
+     the INVOICE / HEADER elements of the published EFaturaEDM WSDL; EDM
+     publishes no response samples. STATUS values from the edm-efatura
+     status map. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <GetInvoiceResponse xmlns="http://tempuri.org/">
+      <INVOICE TRXID="1001" UUID="0b4ad2c4-6c1f-4f63-9a43-1c1c5c1c0001" ID="EDM2026000000001" xmlns="">
+        <HEADER>
+          <SENDER>1234567801</SENDER>
+          <RECEIVER>9876543210</RECEIVER>
+          <SUPPLIER>ÖRNEK SATICI A.Ş.</SUPPLIER>
+          <CUSTOMER>ÖRNEK ALICI LTD.</CUSTOMER>
+          <ISSUE_DATE>2026-11-02</ISSUE_DATE>
+          <PAYABLE_AMOUNT currencyID="TRY">1200.00</PAYABLE_AMOUNT>
+          <FROM>urn:mail:defaultgb@ornek.com.tr</FROM>
+          <TO>urn:mail:defaultpk@edmbilisim.com.tr</TO>
+          <PROFILEID>TICARIFATURA</PROFILEID>
+          <STATUS>RECEIVE - WAIT_APPLICATION_RESPONSE</STATUS>
+          <STATUS_DESCRIPTION>WAIT_APPLICATION_RESPONSE</STATUS_DESCRIPTION>
+          <GIB_STATUS_CODE>1300</GIB_STATUS_CODE>
+          <GIB_STATUS_DESCRIPTION>BAŞARIYLA TAMAMLANDI</GIB_STATUS_DESCRIPTION>
+          <CDATE>2026-11-02T10:15:00</CDATE>
+          <ENVELOPE_IDENTIFIER>5d2c0b52-55e3-4c0e-8d0f-0a2b7c1e0001</ENVELOPE_IDENTIFIER>
+          <INTERNETSALES>false</INTERNETSALES>
+          <EARCHIVE>false</EARCHIVE>
+          <EARCHIVE_REPORT_SENDDATE>0001-01-01</EARCHIVE_REPORT_SENDDATE>
+          <CANCEL_EARCHIVE_REPORT_SENDDATE>0001-01-01</CANCEL_EARCHIVE_REPORT_SENDDATE>
+          <DIRECTION>IN</DIRECTION>
+        </HEADER>
+      </INVOICE>
+    </GetInvoiceResponse>
+  </s:Body>
+</s:Envelope>

@@ -1,0 +1,31 @@
+# EDM Bilişim belge durumları (GetInvoice / GetInvoiceStatus STATUS alanı,
+# "STATUS - SUBSTATUS" metni boşluksuz). EDM herkese açık bir ERROR_CODE
+# listesi yayımlamıyor; bilinmeyen hata kodları ham değerleriyle döner.
+# Kaynak: rebasesoftware/edm-efatura, src/Helper/Helper.php invoiceStatus
+# eşlemesi (açıklama ve WAIT/PROCESS/ACCEPT/REJECT/RESEND aksiyonları).
+# "ok" satırları hata değildir; status sütunu normalize durumdur.
+code,kind,status,retryable,message,message_en
+PACKAGE-PROCESSING,ok,processing,false,Packaging in progress,Packaging in progress
+PACKAGE-FAIL,unknown,failed,true,Error received during packaging (resend),Error received during packaging (resend)
+SEND-PROCESSING,ok,processing,false,Sending process in progress,Sending process in progress
+SEND-WAIT_GIB_RESPONSE,ok,processing,false,Sending process in progress,Sending process in progress
+SEND-WAIT_SYSTEM_RESPONSE,ok,sent,false,Sending process in progress,Sending process in progress
+SEND-WAIT_APPLICATION_RESPONSE,ok,delivered,false,Waiting for response,Waiting for response
+SEND-SUCCEED,ok,delivered,false,Invoice approved by recipient,Invoice approved by recipient
+SEND-FAILED,transport,failed,true,Sending process failed (resend),Sending process failed (resend)
+ACCEPTED-SUCCEED,ok,accepted,false,Invoice approved,Invoice approved
+REJECTED-SUCCEED,ok,rejected,false,Invoice rejected,Invoice rejected
+RECEIVE-WAIT_SYSTEM_RESPONSE,ok,received,false,Waiting for system response,Waiting for system response
+RECEIVE-SUCCEED,ok,received,false,Basic invoice received successfully,Basic invoice received successfully
+RECEIVE-WAIT_APPLICATION_RESPONSE,ok,received,false,Waiting for accept or reject response,Waiting for accept or reject response
+ACCEPT-PROCESSING,ok,processing,false,Sending ACCEPT response,Sending ACCEPT response
+ACCEPT-WAIT_GIB_RESPONSE,ok,processing,false,Sending ACCEPT response,Sending ACCEPT response
+ACCEPT-WAIT_SYSTEM_RESPONSE,ok,processing,false,Sending ACCEPT response,Sending ACCEPT response
+ACCEPT-SUCCEED,ok,accepted,false,ACCEPT response sent,ACCEPT response sent
+ACCEPT-FAILED,transport,failed,true,ACCEPT response could not be delivered (resend),ACCEPT response could not be delivered (resend)
+REJECT-PROCESSING,ok,processing,false,Sending REJECT response,Sending REJECT response
+REJECT-WAIT_GIB_RESPONSE,ok,processing,false,Sending REJECT response,Sending REJECT response
+REJECT-WAIT_SYSTEM_RESPONSE,ok,processing,false,Sending REJECT response,Sending REJECT response
+REJECT-SUCCEED,ok,rejected,false,REJECT response sent,REJECT response sent
+REJECT-FAILED,transport,failed,true,REJECT response could not be delivered (resend),REJECT response could not be delivered (resend)
+UNKNOWN-UNKNOWN,ok,processing,false,Unknown status - process in progress,Unknown status - process in progress
