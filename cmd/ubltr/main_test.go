@@ -137,6 +137,11 @@ func TestRenderPDFFlagAfterFile(t *testing.T) {
 		return
 	}
 	msg := errBuf.String()
+	if strings.Contains(msg, "chrome failed to start") {
+		// Chrome is installed but cannot run here (for example no usable
+		// sandbox on CI runners); the flag was still parsed after the file.
+		t.Skipf("chrome present but not runnable: %.120s", msg)
+	}
 	if !strings.Contains(msg, "github.com/furkanmeclis/go-ubltr/render/chromium") {
 		t.Fatalf("stderr missing chromium module: %q", msg)
 	}
