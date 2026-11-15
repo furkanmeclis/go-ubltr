@@ -14,6 +14,9 @@ const (
 	KindDespatchAdvice      Kind = Kind(validation.KindDespatchAdvice)
 	KindReceiptAdvice       Kind = Kind(validation.KindReceiptAdvice)
 	KindEArchiveReport      Kind = Kind(validation.KindEArchiveReport)
+	// KindEnvelope is the GİB envelope: sh:StandardBusinessDocument with a
+	// StandardBusinessDocumentHeader and an ef:Package of documents.
+	KindEnvelope Kind = Kind(validation.KindEnvelope)
 )
 
 // ErrUnknownDocument is returned by [Detect] and [ValidateXSD] when the XML

@@ -26,9 +26,15 @@ type compiledLet struct {
 }
 
 type compiledTest struct {
-	ruleID  string
-	expr    *xpath3.Expression
-	message []compiledMsgPart
+	ruleID   string
+	id       string
+	test     string
+	report   bool
+	role     string
+	flag     string
+	severity string
+	expr     *xpath3.Expression
+	message  []compiledMsgPart
 }
 
 type compiledMsgPart struct {
@@ -38,9 +44,10 @@ type compiledMsgPart struct {
 }
 
 type compiledRule struct {
-	context *xpath3.Expression
-	tests   []compiledTest
-	lets    []compiledLet
+	contextText string
+	context     *xpath3.Expression
+	tests       []compiledTest
+	lets        []compiledLet
 }
 
 type compiledPattern struct {
@@ -53,6 +60,7 @@ type compiledSchematron struct {
 	constants map[string]xpath3.Sequence
 	docLets   []compiledLet
 	patterns  []compiledPattern
+	locator   nodeLocator
 }
 
 var compileSchematron = sync.OnceValues(func() (*compiledSchematron, error) {
@@ -70,11 +78,19 @@ func compileISO(ctx context.Context) (*compiledSchematron, error) {
 	}
 	raw = expandAbstracts(raw)
 	xc := xpath3.NewCompiler()
+	prefixes := make(map[string]string, len(defaultPrefixes)+len(raw.ns))
+	for k, v := range defaultPrefixes {
+		prefixes[k] = v
+	}
+	for k, v := range raw.ns {
+		prefixes[k] = v
+	}
 	out := &compiledSchematron{
 		ns:        raw.ns,
 		constants: map[string]xpath3.Sequence{},
 		docLets:   []compiledLet{},
 		patterns:  []compiledPattern{},
+		locator:   newNodeLocator(prefixes),
 	}
 
 	dummy, err := helium.NewParser().Parse(ctx, dummyXML())
@@ -160,9 +176,10 @@ func compileRule(xc xpath3.Compiler, r isoRule) (compiledRule, error) {
 		return compiledRule{}, fmt.Errorf("context %q: %w", r.context, err)
 	}
 	cr := compiledRule{
-		context: ctxExpr,
-		tests:   []compiledTest{},
-		lets:    []compiledLet{},
+		contextText: r.context,
+		context:     ctxExpr,
+		tests:       []compiledTest{},
+		lets:        []compiledLet{},
 	}
 	for _, l := range r.lets {
 		expr, err := xc.Compile(l.value)
@@ -179,7 +196,17 @@ func compileRule(xc xpath3.Compiler, r isoRule) (compiledRule, error) {
 		if err != nil {
 			return compiledRule{}, fmt.Errorf("assert %s %q: %w", t.ruleID, t.expr, err)
 		}
-		ct := compiledTest{ruleID: t.ruleID, expr: expr, message: []compiledMsgPart{}}
+		ct := compiledTest{
+			ruleID:   t.ruleID,
+			id:       t.id,
+			test:     t.expr,
+			report:   t.report,
+			role:     t.role,
+			flag:     t.flag,
+			severity: severityOf(t.report, t.role, t.flag),
+			expr:     expr,
+			message:  []compiledMsgPart{},
+		}
 		for _, p := range t.message {
 			part, err := compileMsgPart(xc, p)
 			if err != nil {
@@ -258,8 +285,42 @@ func splitTopLevelUnion(s string) []string {
 }
 
 // Schematron validates xmlBytes against the official GİB UBL-TR Schematron rules.
-// docType is "efatura" (default) or "earchive".
+// docType is "efatura" (default), "earchive", or "goruntuleme". Patterns are
+// chosen from the detected document kind (see [SchematronPatterns]).
 func Schematron(ctx context.Context, xmlBytes []byte, docType string) (Result, error) {
+	kind, err := Detect(xmlBytes)
+	if err != nil && !errors.Is(err, ErrUnknownDocument) {
+		return Result{}, fmt.Errorf("parse xml: %w", err)
+	}
+	return SchematronFor(ctx, xmlBytes, kind, docType)
+}
+
+// patternsByKind lists the GİB Main Schematron pattern ids that apply to each
+// document kind. "general" holds the rules outside any pattern (code-list
+// checks on currencyID, unitCode, IssueDate, …). Envelopes run every pattern
+// because their contexts also match documents inside ef:Package.
+var patternsByKind = map[Kind][]string{
+	KindInvoice:             {"invoice", "general"},
+	KindApplicationResponse: {"applicationresponse", "general"},
+	KindDespatchAdvice:      {"despatchadvice", "general"},
+	KindReceiptAdvice:       {"receiptadvice", "general"},
+}
+
+// HasSchematron reports whether the GİB Main Schematron has rules for kind.
+func HasSchematron(kind Kind) bool {
+	_, ok := patternsByKind[kind]
+	return ok || kind == KindEnvelope
+}
+
+// SchematronPatterns returns the pattern ids run for kind. A nil result means
+// every pattern runs.
+func SchematronPatterns(kind Kind) []string {
+	return append([]string(nil), patternsByKind[kind]...)
+}
+
+// SchematronFor is [Schematron] with an explicit document kind. An empty or
+// unknown kind, or KindEnvelope, runs every pattern.
+func SchematronFor(ctx context.Context, xmlBytes []byte, kind Kind, docType string) (Result, error) {
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -294,12 +355,23 @@ func Schematron(ctx context.Context, xmlBytes []byte, docType string) (Result, e
 		docEv = base.Variables(vars)
 	}
 
+	var only map[string]bool
+	if ids, ok := patternsByKind[kind]; ok {
+		only = make(map[string]bool, len(ids))
+		for _, id := range ids {
+			only[id] = true
+		}
+	}
+
 	var r Result
 	ev := base.Variables(vars)
 	for _, p := range schema.patterns {
+		if only != nil && !only[p.id] {
+			continue
+		}
 		matched := map[helium.Node]struct{}{}
 		for _, rule := range p.rules {
-			collectRule(ctx, base, ev, vars, p.id, rule, doc, matched, &r)
+			collectRule(ctx, schema.locator, base, ev, vars, p.id, rule, doc, matched, &r)
 		}
 	}
 	return r, nil
@@ -307,6 +379,7 @@ func Schematron(ctx context.Context, xmlBytes []byte, docType string) (Result, e
 
 func collectRule(
 	ctx context.Context,
+	loc nodeLocator,
 	base, ev xpath3.Evaluator,
 	vars map[string]xpath3.Sequence,
 	patternID string,
@@ -318,20 +391,24 @@ func collectRule(
 	res, err := ev.Evaluate(ctx, rule.context, doc)
 	if err != nil {
 		r.Violations = append(r.Violations, Violation{
-			Layer:    "schematron",
-			Severity: "error",
-			RuleID:   patternID,
-			Message:  fmt.Sprintf("context xpath: %v", err),
+			Layer:     LayerSchematron,
+			Severity:  SeverityError,
+			RuleID:    patternID,
+			PatternID: patternID,
+			Context:   rule.contextText,
+			Message:   fmt.Sprintf("context xpath: %v", err),
 		})
 		return
 	}
 	nodes, err := res.Nodes()
 	if err != nil {
 		r.Violations = append(r.Violations, Violation{
-			Layer:    "schematron",
-			Severity: "error",
-			RuleID:   patternID,
-			Message:  fmt.Sprintf("context nodes: %v", err),
+			Layer:     LayerSchematron,
+			Severity:  SeverityError,
+			RuleID:    patternID,
+			PatternID: patternID,
+			Context:   rule.contextText,
+			Message:   fmt.Sprintf("context nodes: %v", err),
 		})
 		return
 	}
@@ -351,10 +428,14 @@ func collectRule(
 				letRes, err := ruleEv.Evaluate(ctx, l.expr, node)
 				if err != nil {
 					r.Violations = append(r.Violations, Violation{
-						Layer:    "schematron",
-						Severity: "error",
-						RuleID:   patternID,
-						Message:  fmt.Sprintf("let %s: %v", l.name, err),
+						Layer:     LayerSchematron,
+						Severity:  SeverityError,
+						RuleID:    patternID,
+						PatternID: patternID,
+						Context:   rule.contextText,
+						Location:  loc.path(node),
+						Line:      nodeLine(node),
+						Message:   fmt.Sprintf("let %s: %v", l.name, err),
 					})
 					continue
 				}
@@ -363,31 +444,60 @@ func collectRule(
 			}
 		}
 		for _, t := range rule.tests {
-			fireSchematronTest(ctx, ruleEv, t, node, r)
+			fireSchematronTest(ctx, loc, ruleEv, patternID, rule.contextText, t, node, r)
 		}
 	}
 }
 
-func fireSchematronTest(ctx context.Context, ev xpath3.Evaluator, t compiledTest, node helium.Node, r *Result) {
+func fireSchematronTest(
+	ctx context.Context,
+	loc nodeLocator,
+	ev xpath3.Evaluator,
+	patternID, ruleContext string,
+	t compiledTest,
+	node helium.Node,
+	r *Result,
+) {
 	testRes, err := ev.Evaluate(ctx, t.expr, node)
 	ok := false
 	if err == nil {
 		ok, err = xpath3.EBV(testRes.Sequence())
 	}
-	if err == nil && ok {
+	// An assert fires when its test is false; a report fires when it is true.
+	if err == nil && ok != t.report {
 		return
 	}
 	msg := formatMessage(ctx, ev, t.message, node)
 	if err != nil && strings.TrimSpace(msg) == "" {
 		msg = err.Error()
 	}
-	r.Violations = append(r.Violations, Violation{
-		Layer:    "schematron",
-		Severity: "error",
-		RuleID:   t.ruleID,
-		Path:     nodeName(node),
-		Message:  strings.TrimSpace(msg),
-	})
+	v := Violation{
+		Layer:     LayerSchematron,
+		Severity:  t.severity,
+		RuleID:    t.ruleID,
+		Path:      nodeName(node),
+		Message:   strings.TrimSpace(msg),
+		TestID:    t.id,
+		PatternID: patternID,
+		Context:   ruleContext,
+		Test:      t.test,
+		Role:      t.role,
+		Flag:      t.flag,
+		Location:  loc.path(node),
+		Line:      nodeLine(node),
+	}
+	if err != nil {
+		v.Severity = SeverityError
+	}
+	if node.Type() == helium.AttributeNode {
+		v.Attribute = node.Name()
+		if p := node.Parent(); p != nil {
+			v.Element = p.Name()
+		}
+	} else {
+		v.Element = node.Name()
+	}
+	r.Violations = append(r.Violations, v)
 }
 
 func cloneVars(in map[string]xpath3.Sequence) map[string]xpath3.Sequence {

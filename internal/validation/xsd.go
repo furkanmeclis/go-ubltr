@@ -24,33 +24,25 @@ var schemaRel = map[Kind]string{
 	KindDespatchAdvice:      "ubltr-1.2.1/xsdrt/maindoc/UBL-DespatchAdvice-2.1.xsd",
 	KindReceiptAdvice:       "ubltr-1.2.1/xsdrt/maindoc/UBL-ReceiptAdvice-2.1.xsd",
 	KindEArchiveReport:      "earchive/EArsiv.xsd",
+	KindEnvelope:            envelopeRoot,
 }
 
-// Violation is a single schema or business-rule failure.
-type Violation struct {
-	Layer    string // "xsd" or "schematron"
-	Path     string
-	RuleID   string
-	Severity string
-	Message  string
-}
+// The vendored GİB envelope XSDs import the UBL maindoc schemas by bare file
+// name (UBL-Invoice-2.1.xsd) and an HR-XML schema that is not part of the
+// package. uriFS serves the envelope files as if they sat next to the UBL
+// maindoc schemas, so those relative imports resolve without editing the
+// vendored files, and answers the HR-XML import with an empty schema for its
+// namespace (user-account documents are not supported).
+const (
+	maindocDir   = "ubltr-1.2.1/xsdrt/maindoc/"
+	envelopeDir  = "ubltr-1.2.1/envelope/"
+	envelopeRoot = maindocDir + "PackageProxy_1_2.xsd"
+	hrxmlStub    = "ubltr-1.2.1/xsdrt/HRXML/UserAccount.xsd"
+)
 
-func (v Violation) String() string {
-	if v.Path != "" {
-		return fmt.Sprintf("%s: %s (%s)", v.Layer, v.Message, v.Path)
-	}
-	return fmt.Sprintf("%s: %s", v.Layer, v.Message)
-}
-
-// Result is the outcome of one or more validation layers.
-type Result struct {
-	Violations []Violation
-}
-
-// Valid reports whether validation produced no violations.
-func (r Result) Valid() bool {
-	return len(r.Violations) == 0
-}
+const hrxmlStubXSD = `<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.hr-xml.org/3"/>
+`
 
 // uriFS serves embed paths when helium asks for mem:/… schema locations.
 // Open is unsupported so helium uses ReadFile for names that are not fs.ValidPath.
@@ -63,8 +55,23 @@ func (uriFS) Open(string) (fs.File, error) {
 }
 
 func (f uriFS) ReadFile(name string) ([]byte, error) {
-	rel := strings.TrimPrefix(name, memPrefix)
-	return fs.ReadFile(f.inner, rel)
+	return readSchemaFile(f.inner, strings.TrimPrefix(name, memPrefix))
+}
+
+func readSchemaFile(fsys fs.FS, rel string) ([]byte, error) {
+	data, err := fs.ReadFile(fsys, rel)
+	if err == nil || !errors.Is(err, fs.ErrNotExist) {
+		return data, err
+	}
+	if rel == hrxmlStub {
+		return []byte(hrxmlStubXSD), nil
+	}
+	if base, ok := strings.CutPrefix(rel, maindocDir); ok && !strings.Contains(base, "/") {
+		if data, eerr := fs.ReadFile(fsys, envelopeDir+base); eerr == nil {
+			return data, nil
+		}
+	}
+	return nil, err
 }
 
 var (
@@ -80,7 +87,7 @@ func compileSchema(rel string) (*xsd.Schema, error) {
 	}
 
 	ctx := context.Background()
-	schemaData, err := fs.ReadFile(schemas.FS, rel)
+	schemaData, err := readSchemaFile(schemas.FS, rel)
 	if err != nil {
 		return nil, fmt.Errorf("read xsd %s: %w", rel, err)
 	}
@@ -138,8 +145,9 @@ func XSDFor(ctx context.Context, xmlBytes []byte, kind Kind) (Result, error) {
 	collector := helium.NewErrorCollector(ctx, helium.ErrorLevelNone)
 	err = xsd.NewValidator(schema).ErrorHandler(collector).Validate(ctx, doc)
 	var r Result
+	loc := newNodeLocator(defaultPrefixes)
 	for _, e := range collector.Errors() {
-		r.Violations = append(r.Violations, xsdViolation(e))
+		r.Violations = append(r.Violations, xsdViolation(e, doc, loc))
 	}
 	if len(r.Violations) > 0 {
 		return r, nil
@@ -150,18 +158,32 @@ func XSDFor(ctx context.Context, xmlBytes []byte, kind Kind) (Result, error) {
 	return r, nil
 }
 
-func xsdViolation(err error) Violation {
+func xsdViolation(err error, doc *helium.Document, loc nodeLocator) Violation {
 	v := Violation{
-		Layer:    "xsd",
-		Severity: "error",
+		Layer:    LayerXSD,
+		Severity: SeverityError,
 		Message:  strings.TrimSpace(err.Error()),
+	}
+	var lv helium.ErrorLeveler
+	if errors.As(err, &lv) && lv.ErrorLevel() == helium.ErrorLevelWarning {
+		v.Severity = SeverityWarning
 	}
 	var ve *xsd.ValidationError
 	if errors.As(err, &ve) {
 		v.Message = strings.TrimSpace(ve.Message)
 		v.Path = ve.Element
+		v.Element = ve.Element
+		v.Attribute = ve.AttributeName
+		v.Line = ve.Line
 		if ve.Line > 0 {
 			v.Path = fmt.Sprintf("%s:%d", ve.Element, ve.Line)
+		}
+		if n := findElementAtLine(doc, ve.Line, ve.Element); n != nil {
+			v.Element = loc.qname(n)
+			v.Location = loc.path(n)
+			if ve.AttributeName != "" {
+				v.Location += "/@" + ve.AttributeName
+			}
 		}
 	}
 	return v

@@ -26,7 +26,11 @@ type isoLet struct {
 
 type isoTest struct {
 	ruleID  string
+	id      string
 	expr    string
+	report  bool
+	role    string
+	flag    string
 	message []isoMsgPart
 }
 
@@ -39,6 +43,8 @@ type isoMsgPart struct {
 type isoRule struct {
 	id       string
 	context  string
+	role     string
+	flag     string
 	abstract bool
 	tests    []isoTest
 	lets     []isoLet
@@ -187,6 +193,8 @@ func parseRule(el *helium.Element) isoRule {
 	rule := isoRule{
 		id:       attr(el, "id"),
 		context:  attr(el, "context"),
+		role:     attr(el, "role"),
+		flag:     attr(el, "flag"),
 		abstract: attr(el, "abstract") == "true",
 		tests:    []isoTest{},
 		lets:     []isoLet{},
@@ -212,7 +220,11 @@ func parseRule(el *helium.Element) isoRule {
 func parseTest(el *helium.Element, ruleID string) isoTest {
 	t := isoTest{
 		ruleID:  ruleID,
+		id:      attr(el, "id"),
 		expr:    attr(el, "test"),
+		report:  el.LocalName() == "report",
+		role:    attr(el, "role"),
+		flag:    attr(el, "flag"),
 		message: []isoMsgPart{},
 	}
 	for child := range helium.Children(el) {
@@ -253,9 +265,23 @@ func expandAbstracts(in *isoSchema) *isoSchema {
 				}
 				for _, at := range abs.tests {
 					at.ruleID = t.ruleID
+					if at.role == "" {
+						at.role = abs.role
+					}
+					if at.flag == "" {
+						at.flag = abs.flag
+					}
 					tests = append(tests, at)
 				}
 				rule.lets = append(rule.lets, abs.lets...)
+			}
+			for i := range tests {
+				if tests[i].role == "" {
+					tests[i].role = rule.role
+				}
+				if tests[i].flag == "" {
+					tests[i].flag = rule.flag
+				}
 			}
 			rule.tests = tests
 			if len(rule.tests) == 0 {
