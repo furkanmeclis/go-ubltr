@@ -3,11 +3,22 @@ name: CI
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  modules:
+    name: Modules
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: echo "list=$(scripts/modules.sh --libs | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -17,49 +28,41 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-          cache-dependency-path: |
-            go.sum
-            render/go.sum
-            render/chromium/go.sum
+          cache-dependency-path: "**/go.sum"
 
       - name: Format
         run: |
-          files="$(gofmt -l .)"
+          files="$(gofmt -l $(scripts/modules.sh))"
           if [ -n "$files" ]; then
             echo "unformatted files:"
             echo "$files"
             exit 1
           fi
 
-      - name: Vet
+      - name: Vet and test
         run: |
-          go vet ./...
-          go -C render vet ./...
-          go -C render/chromium vet ./...
-
-      - name: Test
-        run: |
-          go test ./...
-          go test ./render/...
-          go test ./render/chromium/...
+          for m in $(scripts/modules.sh); do
+            echo "::group::$m"
+            go -C "$m" vet ./...
+            go -C "$m" test -race ./...
+            echo "::endgroup::"
+          done
 
   lint:
     name: Lint
+    needs: modules
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        module: [".", "render", "render/chromium"]
+        module: ${{ fromJSON(needs.modules.outputs.list) }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-          cache-dependency-path: |
-            go.sum
-            render/go.sum
-            render/chromium/go.sum
+          cache-dependency-path: "**/go.sum"
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8

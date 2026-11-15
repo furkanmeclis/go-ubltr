@@ -3,9 +3,10 @@
 GO ?= go
 GOLANGCI_LINT ?= golangci-lint
 
-# Library modules covered by CI. cmd/ubltr is included in test/vet/fmt locally.
-LIB_MODULES := . render render/chromium
-FMT_MODULES := . render render/chromium cmd/ubltr
+# Every tracked module; LIB_MODULES skips examples/.
+MODULES := $(shell scripts/modules.sh)
+LIB_MODULES := $(shell scripts/modules.sh --libs)
+FMT_MODULES := $(LIB_MODULES)
 
 generate:
 	$(GO) generate ./schema/ubltr121
@@ -13,17 +14,17 @@ generate:
 	$(GO) generate ./codelist
 
 test:
-	$(GO) test ./...
-	$(GO) test ./render/...
-	$(GO) test ./render/chromium/...
-	$(GO) test ./cmd/ubltr/...
+	@for dir in $(MODULES); do \
+		echo "==> test $$dir"; \
+		$(GO) -C $$dir test ./... || exit 1; \
+	done
 
 tidy:
 	$(GO) work sync
-	$(GO) mod tidy
-	cd render && $(GO) mod tidy
-	cd render/chromium && $(GO) mod tidy
-	cd cmd/ubltr && $(GO) mod tidy
+	@for dir in $(MODULES); do \
+		echo "==> tidy $$dir"; \
+		(cd $$dir && $(GO) mod tidy) || exit 1; \
+	done
 
 fmt:
 	@for dir in $(FMT_MODULES); do \
@@ -42,15 +43,15 @@ fmt-check:
 	exit $$fail
 
 vet:
-	$(GO) vet ./...
-	$(GO) -C render vet ./...
-	$(GO) -C render/chromium vet ./...
-	$(GO) -C cmd/ubltr vet ./...
+	@for dir in $(MODULES); do \
+		echo "==> vet $$dir"; \
+		$(GO) -C $$dir vet ./... || exit 1; \
+	done
 
 lint:
 	@for dir in $(LIB_MODULES); do \
 		echo "==> lint $$dir"; \
-		(cd $$dir && $(GOLANGCI_LINT) run ./...); \
+		(cd $$dir && $(GOLANGCI_LINT) run --config $(CURDIR)/.golangci.yml ./...) || exit 1; \
 	done
 
 check: fmt-check vet lint test
