@@ -123,6 +123,10 @@ ubltr generate
 
 That is the same as `make generate`: UBL-TR types, e-Arşiv report types, GİB envelope types, and GİB code lists. It is not useful for an application that only imported the module.
 
+### watch
+
+Polls an integrator and prints events as NDJSON (`ubltr watch --provider NAME ... | jq`). See [Watch](watch.md).
+
 ## Tests
 
 ```bash

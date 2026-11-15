@@ -10,6 +10,8 @@ Guides for [go-ubltr](https://github.com/furkanmeclis/go-ubltr). The root [READM
 | [e-Arşiv report](e-archive-report.md) | e-Arşiv invoice (`EARSIVFATURA`) vs e-Arşiv report (`EArsiv.xsd`) |
 | [Rendering](rendering.md) | XML → HTML → PDF, stylesheets, security defaults |
 | [CLI](cli.md) | `ubltr validate`, `inspect` (text or JSON), `render`, `generate` |
+| [CLI](cli.md) | `ubltr validate`, `inspect`, `render`, `generate` |
+| [Watch](watch.md) | Polling integrators into events (webhook replacement), `ubltr watch`, Redis and SQL state |
 | [Testing](testing.md) | `make test`, `make check`, core-only runs, PDF skip, fixtures |
 
 Community files at the repository root: [CONTRIBUTING.md](../CONTRIBUTING.md), [SECURITY.md](../SECURITY.md), [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md), [ROADMAP.md](../ROADMAP.md), [CHANGELOG.md](../CHANGELOG.md).
