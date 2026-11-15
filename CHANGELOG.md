@@ -49,6 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Nested `provider/izibiz` module: İzibiz SOAP integrator (e-Fatura, e-Arşiv, e-İrsaliye send/status, inbox/outbox, fetch, respond, cancel, check-user).
 - Nested `provider/edm` module: EDM Bilişim SOAP integrator (e-Fatura send/status, inbox/outbox, fetch, mark-taken, check-user).
 - Nested `provider/qnb` module: QNB eSolutions e-Fatura and e-Arşiv SOAP client.
+- Nested `provider/sovos` module: Sovos Türkiye Bulut e-Fatura and e-Arşiv SOAP client.
 
 ### Known limitations
 

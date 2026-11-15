@@ -1,0 +1,81 @@
+# Sovos Türkiye (FIT / Foriba) Bulut codes.
+# Sources, from the Sovos API packages published at
+# https://api.fitbulut.com/servis/ (assets/docs):
+#   ef.*       "WS API Hata Kodları ve Açıklamaları", Sovos Bulut e-Fatura
+#              Web Servis API Kullanım Kılavuzu V2.3 (ProcessingFault Code).
+#   ea.*       "WS API Hata Kodları ve Açıklamaları", Sovos Bulut e-Arşiv
+#              Fatura Web Servis API Kılavuzu V2.3 (ErrorCode / fault Code).
+#   eastatus.* "EK3 - Sovos Bulut e-Arşiv Fatura Belge Statüleri.xlsx"
+#              (INVOICE_STA and ICI_STA statuses returned by getStatus).
+# GİB envelope codes returned by getEnvelopeStatus come from the shared
+# provider GİB table. Prefixes keep the three numeric ranges apart; the
+# returned Error.Code is the raw number without the prefix.
+code,kind,status,retryable,message,message_en
+ef.1000,invalid-request,,false,Parametre Hatası,Parameter error
+ef.1010,validation,failed,false,Şema validasyonu hatası,Schema validation error
+ef.1020,validation,failed,false,Şematron hatası,Schematron error
+ef.1080,validation,failed,false,UTF-8 validasyonu hatası,UTF-8 validation error
+ef.1100,permission,,false,Gönderici VKN/TCKN ve etiketi GİB'e kayıtlı değil,Sender VKN/alias not registered at GİB
+ef.1101,recipient,,false,Alıcı VKN/TCKN ve etiketi GİB'e kayıtlı değil,Receiver VKN/alias not registered at GİB
+ef.1110,permission,,false,Gönderici VKN/TCKN ve etiketi kayıtlı değil,Sender VKN/alias not registered
+ef.1111,recipient,,false,Alıcı VKN/TCKN ve etiketi kayıtlı değil,Receiver VKN/alias not registered
+ef.1112,not-found,,false,VKN/TCKN ve etiket kayıtlı değil,VKN/alias not registered
+ef.1200,permission,,false,İstemci IP adresinin bu işleme yetkisi yok,Client IP not allowed
+ef.1300,rate-limit,,true,Çağrı limiti aşıldı,Call limit exceeded
+ef.3010,duplicate,,false,Zarf UUID sistemde mevcut,Envelope UUID exists
+ef.3011,duplicate,,false,Fatura UUID sistemde mevcut,Invoice UUID exists
+ef.3012,duplicate,,false,Fatura ID sistemde mevcut,Invoice ID exists
+ef.3013,invalid-request,,false,Fatura ID otomatik üretiliyor; gönderilmemeli,Invoice ID is generated; do not send one
+ef.3014,invalid-request,,false,Fatura ID otomatik üretiliyor; müşteri fatura numarası gönderilmeli,Invoice ID is generated; send CustInvID
+ef.3201,duplicate,,false,Uygulama yanıtı UUID sistemde mevcut,Application response UUID exists
+ef.3210,not-found,,false,Uygulama yanıtı verilen fatura bulunamadı,Answered invoice not found
+ef.3211,not-found,,false,Uygulama yanıtı verilen faturanın zarfı bulunamadı,Envelope of answered invoice not found
+ef.3215,permission,,false,Fatura alıcıya ait değil,Invoice does not belong to the receiver
+ef.3216,permission,,false,Fatura göndericiye ait değil,Invoice does not belong to the sender
+ef.3220,invalid-state,,false,Uygulama yanıtı verilen fatura ticari fatura değil,Invoice is not TICARIFATURA
+ef.3230,invalid-state,,false,Faturaya önceki gönderilen uygulama yanıtı sonuçlanmamış,Previous application response not settled
+ef.3240,invalid-state,,false,Fatura geliş tarihi 8 günü geçtiği için yanıt verilemez,Answer window (8 days) closed
+ef.3410,not-found,,false,UUID'ye ait fatura bulunmadı,No invoice for UUID
+ef.3420,not-found,,false,CustInvID'ye ait fatura bulunmadı,No invoice for CustInvID
+ef.3430,permission,,false,Fatura gönderilen VKN ve etikete ait değil,Invoice does not belong to VKN/alias
+ef.3440,invalid-request,,false,Fatura görüntüsü doküman türü desteklenmiyor,Invoice view type not supported
+ef.3450,unavailable,,true,Fatura görüntüsü oluşturulamadı,Invoice view could not be created
+ef.3610,not-found,,false,UUID'ye ait belge bulunmadı,No document for UUID
+ef.3630,permission,,false,UBL gönderilen VKN/TCKN ve etikete ait değil,UBL does not belong to VKN/alias
+ef.3910,not-found,,false,UUID'ye ait belge bulunamadı,No document for UUID
+ef.3920,permission,,false,Belge gönderilen VKN/TCKN ve etikete ait değil,Document does not belong to VKN/alias
+ef.3950,not-found,,false,UUID'ye ait zarf bulunamadı,No envelope for UUID
+ef.3960,permission,,false,Zarf gönderilen VKN/TCKN ve etikete ait değil,Envelope does not belong to VKN/alias
+ea.5,validation,failed,false,Zip boyutu aşıldı,Zip size exceeded
+ea.20,invalid-request,,false,Desteklenmeyen işlem; zip içindeki fatura sayısını ve OUTPUTTYPE parametresini kontrol edin,Unsupported operation; check invoice count and OUTPUTTYPE
+ea.25,validation,failed,false,Şema geçersiz,Invalid schema
+ea.30,recipient,failed,false,VKN/TCKN e-Fatura mükellefine ait,Receiver is an e-Fatura user
+ea.35,validation,failed,false,Data boyutu aşıldı,Data size exceeded
+ea.37,validation,failed,false,XSLT bulunamadı,XSLT not found
+ea.40,validation,failed,false,Şematron geçersiz,Invalid Schematron
+ea.46,permission,failed,false,e-Arşiv faturanın göndericisi geçersiz,Invalid e-Arşiv sender
+ea.50,validation,failed,false,Rapor veri alanları hatalı/eksik,Report fields invalid or missing
+ea.56,validation,failed,false,IssueDate raporlama periyodu dışında,IssueDate outside the reporting period
+ea.60,duplicate,,false,Zarf database'de mevcut,Envelope exists
+ea.65,duplicate,,false,Rapor database'de mevcut,Report exists
+ea.70,duplicate,,false,e-Arşiv fatura database'de mevcut,e-Arşiv invoice exists
+ea.75,unavailable,,true,e-Arşiv fatura ID'si üretilirken hata oluştu,Error generating invoice ID
+ea.80,validation,failed,false,Zarf doğrulanırken bir hata oluştu,Envelope validation error
+ea.81,validation,failed,false,Fatura doğrulanırken bir hata oluştu,Invoice validation error
+ea.85,validation,failed,false,Zarf kaydedilemedi; içerisinde başarılı fatura yok,Envelope not stored; no valid invoice
+ea.86,validation,failed,false,Zarf kaydedildi; bütün faturalar hata aldı,Envelope stored; all invoices failed
+ea.87,validation,,false,Zarf kaydedildi; bazı faturalar hata aldı,Envelope stored; some invoices failed
+ea.90,validation,failed,false,Hash doğrulanırken bir hata oluştu,Hash verification error
+ea.99,unavailable,,true,Genel sistem hatası oluştu,General system error
+ea.200,ok,,false,OK,OK
+eastatus.100,ok,processing,false,Fatura sisteme ulasti,Invoice received
+eastatus.105,ok,processing,false,Fatura XSLT'si kontrol edildi,Invoice XSLT checked
+eastatus.120,ok,processing,false,Fatura imza kuyrugunda,Invoice queued for signing
+eastatus.125,ok,processing,true,Imzalama sirasinda hata olustu; yeniden kuyruga eklenecek,Signing failed; will be requeued
+eastatus.126,ok,processing,true,Imzalama sirasinda hata olustu; islem yeniden denenecek,Signing failed; will be retried
+eastatus.130,ok,delivered,false,Fatura basariyla imzalandi,Invoice signed
+eastatus.150,ok,delivered,false,Fatura rapora basariyla eklendi,Invoice added to the GİB report
+eastatus.998,ok,delivered,false,XSLT hatasi sebebiyle fatura ciktisi olusturulamadi; rapora eklenmeye hazır,Output failed (XSLT); ready to report
+eastatus.999,validation,failed,false,XSLT hatasi sebebiyle fatura ciktisi olusturulamadi,Output failed (XSLT)
+eastatus.400,ok,cancelled,false,Fatura iptal bilgisi sisteme ulaştı,Cancellation received
+eastatus.460,ok,cancelled,false,Fatura iptal bilgisi başarılı şekilde raporlandı,Cancellation reported

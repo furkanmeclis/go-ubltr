@@ -213,3 +213,15 @@ module (even with `_`) to register it, then use `provider.Open(name, cfg)`.
 - Test endpoints are built in; live endpoints are given by QNB after the
   test phase and must be configured.
 - Details: [provider/qnb/README.md](../provider/qnb/README.md).
+
+## sovos — Sovos Türkiye Bulut (FIT / Foriba)
+
+- Module: `github.com/furkanmeclis/go-ubltr/provider/sovos`
+- Protocol: SOAP 1.1 (`ClientEInvoiceServices`, `ClientEArsivServices`),
+  HTTP Basic authentication.
+- e-Fatura: single-invoice send, envelope status, inbox and outbox listing
+  in one-day windows, UBL/PDF/HTML download.
+- e-Arşiv: send (synchronous), status, signed UBL and PDF/HTML download,
+  cancel.
+- Digital Planet (also Sovos) is a different API and is not covered.
+- Details: [provider/sovos/README.md](../provider/sovos/README.md).
