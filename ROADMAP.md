@@ -12,7 +12,7 @@ go-ubltr already supports:
 - Nested HTML (`render`) and PDF (`render/chromium`) modules
 - Nested `ubltr` CLI (`validate`, `inspect`, `render`, `generate`, `watch`) with `--format=json` for `validate` and `inspect`
 - Vendor-neutral özel entegratör contract in the nested `provider` module (capabilities, normalized statuses and errors, GİB envelope codes)
-- Integrator modules: Uyumsoft (and the muhasebeizleme preset), İzibiz, EDM, NES, Nilvera, Turkcell e-Şirket
+- Integrator modules: Uyumsoft (and the muhasebeizleme preset), İzibiz, EDM, NES, Nilvera, Turkcell e-Şirket, QNB eSolutions, Sovos, Trendyol E-Faturam
 - `provider/watch`: polling integrators into events, with file, Redis and SQL state
 
 Known limitations are listed in [CHANGELOG.md](CHANGELOG.md).
@@ -21,7 +21,7 @@ Known limitations are listed in [CHANGELOG.md](CHANGELOG.md).
 
 These items are optional.
 
-1. **More integrators** — modules for integrators whose API documents are given on request (QNB eSolutions, eLogo, Sovos, Trendyol e-Faturam, Hızlı Bilişim, Mysoft, Veriban …) once their documentation and test accounts are available.
+1. **More integrators** — modules for integrators whose API documents are given on request (eLogo, Hızlı Bilişim, Mysoft, Veriban, Edoksis, İşNet …) once their documentation and test accounts are available.
 2. **Schema refresh** — vendor newer GİB XSD, Schematron, envelope, and code-list packages when they are published, and regenerate types. Record checksums in `NOTICE`.
 
 ## Out of scope

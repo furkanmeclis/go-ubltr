@@ -13,6 +13,9 @@ import (
 	_ "github.com/furkanmeclis/go-ubltr/provider/izibiz"
 	_ "github.com/furkanmeclis/go-ubltr/provider/nes"
 	_ "github.com/furkanmeclis/go-ubltr/provider/nilvera"
+	_ "github.com/furkanmeclis/go-ubltr/provider/qnb"
+	_ "github.com/furkanmeclis/go-ubltr/provider/sovos"
+	_ "github.com/furkanmeclis/go-ubltr/provider/trendyol"
 	_ "github.com/furkanmeclis/go-ubltr/provider/turkcell"
 	_ "github.com/furkanmeclis/go-ubltr/provider/uyumsoft"
 )

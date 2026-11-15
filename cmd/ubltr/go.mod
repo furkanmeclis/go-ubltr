@@ -25,6 +25,9 @@ require (
 	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0
 	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0
 	github.com/furkanmeclis/go-ubltr/provider/nilvera v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/qnb v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/sovos v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/trendyol v0.0.0
 	github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0
 	github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0
 	github.com/go-json-experiment/json v0.0.0-20260623181947-01eb4420fa68 // indirect
@@ -51,3 +54,9 @@ replace github.com/furkanmeclis/go-ubltr/provider/nilvera => ../../provider/nilv
 replace github.com/furkanmeclis/go-ubltr/provider/turkcell => ../../provider/turkcell
 
 replace github.com/furkanmeclis/go-ubltr/provider/uyumsoft => ../../provider/uyumsoft
+
+replace github.com/furkanmeclis/go-ubltr/provider/qnb => ../../provider/qnb
+
+replace github.com/furkanmeclis/go-ubltr/provider/sovos => ../../provider/sovos
+
+replace github.com/furkanmeclis/go-ubltr/provider/trendyol => ../../provider/trendyol

@@ -13,6 +13,9 @@ is enough) to register it with `provider.Open`, or use its typed constructor.
 | `provider/nes` | NES | REST | ✓ | ✓ | – |
 | `provider/nilvera` | Nilvera | REST | ✓ | ✓ | – |
 | `provider/turkcell` | Turkcell e-Şirket | REST | ✓ | ✓ | – |
+| `provider/qnb` | QNB eSolutions (eFinans) | SOAP | ✓ | ✓ | – |
+| `provider/sovos` | Sovos Türkiye (FIT / Foriba) | SOAP | ✓ | ✓ | – |
+| `provider/trendyol` | Trendyol E-Faturam | REST | ✓ | ✓ | – |
 
 The exact operations per document kind are in each module's README and in
 `Capabilities()` at runtime:
@@ -196,12 +199,6 @@ p, err := provider.Open("edm", provider.Config{Username: u, Password: pw, VKN: v
 - Live tests: `EDM_USERNAME`, `EDM_PASSWORD`, `-tags live`.
 
 Details: [`provider/edm/README.md`](../provider/edm/README.md).
-# Integrator modules
-
-Each özel entegratör client is a separate module under `provider/<name>`
-implementing the [`provider`](../provider/README.md) contract. Import the
-module (even with `_`) to register it, then use `provider.Open(name, cfg)`.
-
 ## qnb — QNB eSolutions (eFinans)
 
 - Module: `github.com/furkanmeclis/go-ubltr/provider/qnb`

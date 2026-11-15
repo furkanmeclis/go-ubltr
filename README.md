@@ -224,6 +224,9 @@ Every module declares what it supports (`Capabilities()`, `provider.Supports`), 
 | `provider/nes` | REST | NES |
 | `provider/nilvera` | REST | Nilvera |
 | `provider/turkcell` | REST | Turkcell e-Şirket |
+| `provider/qnb` | SOAP | QNB eSolutions (eFinans) |
+| `provider/sovos` | SOAP | Sovos Türkiye (FIT / Foriba) |
+| `provider/trendyol` | REST | Trendyol E-Faturam |
 
 ## XML output
 
