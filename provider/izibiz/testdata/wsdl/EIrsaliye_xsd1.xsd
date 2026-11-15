@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.2 git-revision#0264419. --><xs:schema xmlns:tns="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://www.w3.org/2005/05/xmlmime">
+
+<xs:complexType name="base64Binary">
+<xs:simpleContent>
+<xs:extension base="xs:base64Binary">
+<xs:attribute ref="tns:contentType"/>
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="hexBinary">
+<xs:simpleContent>
+<xs:extension base="xs:string">
+<xs:attribute ref="tns:contentType"/>
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+
+<xs:attribute name="contentType" type="xs:string"/>
+</xs:schema>

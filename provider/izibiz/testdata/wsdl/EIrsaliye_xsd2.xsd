@@ -1,0 +1,707 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.2 git-revision#0264419. --><xs:schema xmlns:tns="http://schemas.i2i.com/ei/wsdl" xmlns:ns3="http://schemas.i2i.com/ei/entity" xmlns:ns2="http://www.w3.org/2005/05/xmlmime" xmlns:ns1="http://schemas.i2i.com/ei/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://schemas.i2i.com/ei/wsdl">
+
+<xs:import namespace="http://schemas.i2i.com/ei/common" schemaLocation="https://efaturatest.izibiz.com.tr/EIrsaliyeWS/EIrsaliye?xsd=4"/>
+
+<xs:import namespace="http://www.w3.org/2005/05/xmlmime" schemaLocation="https://efaturatest.izibiz.com.tr/EIrsaliyeWS/EIrsaliye?xsd=1"/>
+
+<xs:import namespace="http://schemas.i2i.com/ei/entity" schemaLocation="https://efaturatest.izibiz.com.tr/EIrsaliyeWS/EIrsaliye?xsd=3"/>
+
+<xs:element name="CancelDocumentRequest" type="tns:CancelDocumentRequest"/>
+
+<xs:element name="CancelDocumentResponse" type="tns:CancelDocumentResponse"/>
+
+<xs:element name="GetDespatchAdviceRequest" nillable="true" type="tns:GetDespatchAdviceRequest"/>
+
+<xs:element name="GetDespatchAdviceResponse" nillable="true" type="tns:GetDespatchAdviceResponse"/>
+
+<xs:element name="GetDespatchAdviceStatusRequest" nillable="true" type="tns:GetDespatchAdviceStatusRequest"/>
+
+<xs:element name="GetDespatchAdviceStatusResponse" nillable="true" type="tns:GetDespatchAdviceStatusResponse"/>
+
+<xs:element name="GetDespatchAdviceWithStatusRequest" nillable="true" type="tns:GetDespatchAdviceWithStatusRequest"/>
+
+<xs:element name="GetDespatchAdviceWithStatusResponse" nillable="true" type="tns:GetDespatchAdviceWithStatusResponse"/>
+
+<xs:element name="GetDocumentRequest" type="tns:GetDocumentRequest"/>
+
+<xs:element name="GetDocumentResponse" type="tns:GetDocumentResponse"/>
+
+<xs:element name="GetDocumentStatusRequest" type="tns:GetDocumentStatusRequest"/>
+
+<xs:element name="GetDocumentStatusResponse" type="tns:GetDocumentStatusResponse"/>
+
+<xs:element name="GetReceiptAdviceRequest" nillable="true" type="tns:GetReceiptAdviceRequest"/>
+
+<xs:element name="GetReceiptAdviceResponse" nillable="true" type="tns:GetReceiptAdviceResponse"/>
+
+<xs:element name="GetReceiptAdviceStatusRequest" nillable="true" type="tns:GetReceiptAdviceStatusRequest"/>
+
+<xs:element name="GetReceiptAdviceStatusResponse" nillable="true" type="tns:GetReceiptAdviceStatusResponse"/>
+
+<xs:element name="LoadDespatchAdviceRequest" nillable="true" type="tns:LoadDespatchAdviceRequest"/>
+
+<xs:element name="LoadDespatchAdviceResponse" nillable="true" type="tns:LoadDespatchAdviceResponse"/>
+
+<xs:element name="LoadDocumentRequest" type="tns:LoadDocumentRequest"/>
+
+<xs:element name="LoadDocumentResponse" type="tns:LoadDocumentResponse"/>
+
+<xs:element name="LoadReceiptAdviceRequest" nillable="true" type="tns:LoadReceiptAdviceRequest"/>
+
+<xs:element name="LoadReceiptAdviceResponse" nillable="true" type="tns:LoadReceiptAdviceResponse"/>
+
+<xs:element name="MarkDespatchAdviceRequest" nillable="true" type="tns:MarkDespatchAdviceRequest"/>
+
+<xs:element name="MarkDespatchAdviceResponse" nillable="true" type="tns:MarkDespatchAdviceResponse"/>
+
+<xs:element name="MarkReceiptAdviceRequest" nillable="true" type="tns:MarkReceiptAdviceRequest"/>
+
+<xs:element name="MarkReceiptAdviceResponse" nillable="true" type="tns:MarkReceiptAdviceResponse"/>
+
+<xs:element name="RequestFault" type="ns3:REQUEST_ERRORType"/>
+
+<xs:element name="SendDespatchAdviceRequest" nillable="true" type="tns:SendDespatchAdviceRequest"/>
+
+<xs:element name="SendDespatchAdviceResponse" nillable="true" type="tns:SendDespatchAdviceResponse"/>
+
+<xs:element name="SendDespatchResponseRequest" nillable="true" type="tns:SendDespatchResponseRequest"/>
+
+<xs:element name="SendDespatchResponseResponse" nillable="true" type="tns:SendDespatchResponseResponse"/>
+
+<xs:element name="SendDocumentRequest" type="tns:SendDocumentRequest"/>
+
+<xs:element name="SendDocumentResponse" type="tns:SendDocumentResponse"/>
+
+<xs:element name="SendReceiptAdviceRequest" nillable="true" type="tns:SendReceiptAdviceRequest"/>
+
+<xs:element name="SendReceiptAdviceResponse" nillable="true" type="tns:SendReceiptAdviceResponse"/>
+
+<xs:complexType name="DOCUMENT">
+<xs:sequence>
+<xs:element name="HEADER" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="ID" type="xs:token" minOccurs="0"/>
+<xs:element name="UUID" type="xs:token" minOccurs="0"/>
+<xs:element name="CUSTOMER" type="ns1:CUSTOMER"/>
+<xs:element name="ISSUE_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="ISSUE_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="PAYABLE_AMOUNT" type="ns1:AmountType" minOccurs="0"/>
+<xs:element name="PROFILE_ID" type="xs:token" minOccurs="0"/>
+<xs:element name="STATUS" type="xs:string" minOccurs="0"/>
+<xs:element name="STATUS_CODE" type="xs:int" minOccurs="0"/>
+<xs:element name="STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="SMS_STATUS_CODE" type="xs:int" minOccurs="0"/>
+<xs:element name="SMS_STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="EMAIL" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="EMAIL_STATUS_CODE" type="xs:int" minOccurs="0"/>
+<xs:element name="EMAIL_STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="FILENAME" type="xs:string" minOccurs="0"/>
+<xs:element name="HASH" type="xs:string" minOccurs="0"/>
+<xs:element name="CDATE" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="CONTENT" type="ns2:base64Binary" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDocumentRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="SEARCH_KEY">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="LIMIT" type="xs:int" minOccurs="0"/>
+<xs:element name="ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="UUID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="FROM" type="xs:token" minOccurs="0"/>
+<xs:element name="TO" type="xs:token" minOccurs="0"/>
+<xs:element name="START_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="END_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="READ_INCLUDED" type="xs:boolean" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:token" minOccurs="0"/>
+<xs:element name="SENDER" type="xs:token" minOccurs="0"/>
+<xs:element name="RECEIVER" type="xs:token" minOccurs="0"/>
+<xs:element name="CONTENT_TYPE" type="xs:string" minOccurs="0"/>
+<xs:element name="DATE_TYPE" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="HEADER_ONLY" type="xs:token" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="LoadDocumentRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="DOCUMENT" type="tns:DOCUMENT" maxOccurs="unbounded"/>
+<xs:element name="DOCUMENT_PROPERTIES" type="tns:DOCUMENT_PROPERTIES" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="DOCUMENT_PROPERTIES">
+<xs:sequence>
+<xs:element name="SMS_FLAG" type="xs:string" minOccurs="0"/>
+<xs:element name="SMS_NUMBER" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="EMAIL_FLAG" type="xs:string" minOccurs="0"/>
+<xs:element name="EMAIL" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SendDocumentRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="DOCUMENT" type="tns:DOCUMENT" maxOccurs="unbounded"/>
+<xs:element name="XSLT_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="DOCUMENT_PROPERTIES" type="tns:DOCUMENT_PROPERTIES" minOccurs="0"/>
+<xs:element name="SERIES_PROPERTIES" type="tns:SERIES_PROPERTIES" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="SERIES_PROPERTIES">
+<xs:sequence>
+<xs:element name="SERIES_FLAG" type="xs:string" minOccurs="0"/>
+<xs:element name="SERIES_PREFIX" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDocumentStatusRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="UUID" type="xs:token" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="CancelDocumentRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="UUID" type="xs:token" maxOccurs="unbounded"/>
+<xs:element name="DELETE_FLAG" type="xs:string" default="N" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="LoadDocumentResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SendDocumentResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+<xs:element name="DOCUMENT_ID" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDocumentStatusResponse">
+<xs:sequence>
+<xs:element name="DOCUMENT_STATUS" type="tns:DOCUMENT" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CancelDocumentResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDocumentResponse">
+<xs:sequence>
+<xs:element name="DOCUMENT" type="tns:DOCUMENT" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SEARCH_KEY">
+<xs:sequence>
+<xs:element name="LIMIT" type="xs:int" minOccurs="0"/>
+<xs:element name="ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="UUID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="FROM" type="xs:token" minOccurs="0"/>
+<xs:element name="TO" type="xs:token" minOccurs="0"/>
+<xs:element name="START_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="END_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="READ_INCLUDED" type="xs:boolean" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:token" minOccurs="0"/>
+<xs:element name="SENDER" type="xs:token" minOccurs="0"/>
+<xs:element name="RECEIVER" type="xs:token" minOccurs="0"/>
+<xs:element name="CONTENT_TYPE" type="xs:string" minOccurs="0"/>
+<xs:element name="DATE_TYPE" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetReceiptAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="SEARCH_KEY">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="LIMIT" type="xs:int" minOccurs="0"/>
+<xs:element name="ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="UUID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="FROM" type="xs:token" minOccurs="0"/>
+<xs:element name="TO" type="xs:token" minOccurs="0"/>
+<xs:element name="START_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="END_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="READ_INCLUDED" type="xs:boolean" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:token" minOccurs="0"/>
+<xs:element name="SENDER" type="xs:token" minOccurs="0"/>
+<xs:element name="RECEIVER" type="xs:token" minOccurs="0"/>
+<xs:element name="CONTENT_TYPE" type="xs:string" minOccurs="0"/>
+<xs:element name="DATE_TYPE" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="HEADER_ONLY" type="xs:token" default="N" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetReceiptAdviceResponse">
+<xs:sequence>
+<xs:element name="RECEIPTADVICE" type="tns:RECEIPTADVICE" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RECEIPTADVICE">
+<xs:complexContent>
+<xs:extension base="tns:RECEIPTADVICEINFO">
+<xs:sequence>
+<xs:element name="CONTENT" type="ns2:base64Binary" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="RECEIPTADVICEINFO">
+<xs:sequence>
+<xs:element name="RECEIPTADVICEHEADER" type="tns:RECEIPTADVICEHEADER" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:token"/>
+<xs:attribute name="UUID" type="xs:token"/>
+<xs:attribute name="DIRECTION" type="xs:token"/>
+</xs:complexType>
+
+<xs:complexType name="RECEIPTADVICEHEADER">
+<xs:sequence>
+<xs:element name="ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="UUID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="PROFILEID" type="xs:token" minOccurs="0"/>
+<xs:element name="ISSUE_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="ISSUE_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="ACTUAL_SHIPMENT_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="ACTUAL_SHIPMENT_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="TYPE_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="SENDER" type="ns1:PARTINFO" minOccurs="0"/>
+<xs:element name="RECEIVER" type="ns1:PARTINFO" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:string" minOccurs="0"/>
+<xs:element name="DESPATCH_ADVICE_UUID" type="xs:string" minOccurs="0"/>
+<xs:element name="DESPATCH_ADVICE_ID" type="xs:string" minOccurs="0"/>
+<xs:element name="STATUS" type="xs:string" minOccurs="0"/>
+<xs:element name="STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="STATUS_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="GIB_STATUS_CODE" type="xs:int" minOccurs="0"/>
+<xs:element name="GIB_STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="RESPONSE_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="RESPONSE_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="FILENAME" type="xs:string" minOccurs="0"/>
+<xs:element name="HASH" type="xs:string" minOccurs="0"/>
+<xs:element name="CDATE" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="ENVELOPE_IDENTIFIER" type="xs:token" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LoadDespatchAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="DESPATCHADVICE" type="tns:DESPATCHADVICE" maxOccurs="unbounded"/>
+<xs:element name="PRINTED_FLAG" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="DESPATCHADVICE">
+<xs:complexContent>
+<xs:extension base="tns:DESPATCHADVICEINFO">
+<xs:sequence>
+<xs:element name="CONTENT" type="ns2:base64Binary" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="DESPATCHADVICEINFO">
+<xs:sequence>
+<xs:element name="DESPATCHADVICEHEADER" type="tns:DESPATCHADVICEHEADER" minOccurs="0"/>
+<xs:element name="RECEIPTADVICEHEADER" type="tns:RECEIPTADVICEHEADER" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:token"/>
+<xs:attribute name="UUID" type="xs:token"/>
+<xs:attribute name="DIRECTION" type="xs:token"/>
+</xs:complexType>
+
+<xs:complexType name="DESPATCHADVICEHEADER">
+<xs:sequence>
+<xs:element name="ID" type="xs:string" minOccurs="0"/>
+<xs:element name="UUID" type="xs:string" minOccurs="0"/>
+<xs:element name="PROFILEID" type="xs:token" minOccurs="0"/>
+<xs:element name="ISSUE_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="ISSUE_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="ACTUAL_SHIPMENT_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="ACTUAL_SHIPMENT_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="TYPE_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:string" minOccurs="0"/>
+<xs:element name="SENDER" type="ns1:PARTINFO" minOccurs="0"/>
+<xs:element name="RECEIVER" type="ns1:PARTINFO" minOccurs="0"/>
+<xs:element name="AMOUNT" type="ns1:AmountType" minOccurs="0"/>
+<xs:element name="STATUS" type="xs:string" minOccurs="0"/>
+<xs:element name="STATUS_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="EMAIL" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="EMAIL_STATUS_CODE" type="xs:int" minOccurs="0"/>
+<xs:element name="EMAIL_STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="GIB_STATUS_CODE" type="xs:int" minOccurs="0"/>
+<xs:element name="GIB_STATUS_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="RESPONSE_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="RESPONSE_DESCRIPTION" type="xs:string" minOccurs="0"/>
+<xs:element name="FILENAME" type="xs:string" minOccurs="0"/>
+<xs:element name="HASH" type="xs:string" minOccurs="0"/>
+<xs:element name="CDATE" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="ENVELOPE_IDENTIFIER" type="xs:token" minOccurs="0"/>
+<xs:element name="WEB_KEY" type="xs:string" minOccurs="0"/>
+<xs:element name="DESPATCH_RESPONSE_ID" type="xs:string" minOccurs="0"/>
+<xs:element name="DESPATCH_RESPONSE_UUID" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LoadDespatchAdviceResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MarkDespatchAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="MARK">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="DESPATCHADVICEINFO" type="tns:DESPATCHADVICEINFO" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="value" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="MarkDespatchAdviceResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SendDespatchAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="SENDER" minOccurs="0">
+<xs:complexType>
+<xs:sequence/>
+<xs:attribute name="vkn" type="xs:string"/>
+<xs:attribute name="alias" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="RECEIVER" minOccurs="0">
+<xs:complexType>
+<xs:sequence/>
+<xs:attribute name="vkn" type="xs:string"/>
+<xs:attribute name="alias" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="ID_ASSIGN_FLAG" type="xs:boolean" minOccurs="0"/>
+<xs:element name="ID_ASSIGN_PREFIX" type="xs:token" minOccurs="0"/>
+<xs:element name="XSLT_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="DESPATCHADVICE" type="tns:DESPATCHADVICE" maxOccurs="unbounded"/>
+<xs:element name="DESPATCHADVICE_PROPERTIES" type="tns:DESPATCHADVICE_PROPERTIES" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="DESPATCHADVICE_PROPERTIES">
+<xs:sequence>
+<xs:element name="EMAIL_FLAG" type="xs:string" minOccurs="0"/>
+<xs:element name="EMAIL" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SendDespatchAdviceResponse">
+<xs:sequence>
+<xs:element name="DESPATCH_ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDespatchAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="SEARCH_KEY">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="LIMIT" type="xs:int" minOccurs="0"/>
+<xs:element name="ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="UUID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="FROM" type="xs:token" minOccurs="0"/>
+<xs:element name="TO" type="xs:token" minOccurs="0"/>
+<xs:element name="START_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="END_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="READ_INCLUDED" type="xs:boolean" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:token" minOccurs="0"/>
+<xs:element name="SENDER" type="xs:token" minOccurs="0"/>
+<xs:element name="RECEIVER" type="xs:token" minOccurs="0"/>
+<xs:element name="CONTENT_TYPE" type="xs:string" minOccurs="0"/>
+<xs:element name="DATE_TYPE" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="HEADER_ONLY" type="xs:token" default="N" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetDespatchAdviceResponse">
+<xs:sequence>
+<xs:element name="DESPATCHADVICE" type="tns:DESPATCHADVICE" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDespatchAdviceStatusRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="UUID" type="xs:token" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetDespatchAdviceStatusResponse">
+<xs:sequence>
+<xs:element name="DESPATCHADVICE_STATUS" type="tns:DESPATCHADVICEHEADER" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LoadReceiptAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="RECEIPTADVICE" type="tns:RECEIPTADVICE" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="LoadReceiptAdviceResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MarkReceiptAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="MARK">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="RECEIPTADVICEINFO" type="tns:RECEIPTADVICEINFO" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="value" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="MarkReceiptAdviceResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetDespatchAdviceWithStatusRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="SEARCH_KEY">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="LIMIT" type="xs:int" minOccurs="0"/>
+<xs:element name="ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="UUID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="FROM" type="xs:token" minOccurs="0"/>
+<xs:element name="TO" type="xs:token" minOccurs="0"/>
+<xs:element name="START_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="END_DATE" type="xs:date" minOccurs="0"/>
+<xs:element name="READ_INCLUDED" type="xs:boolean" minOccurs="0"/>
+<xs:element name="DIRECTION" type="xs:token" minOccurs="0"/>
+<xs:element name="SENDER" type="xs:token" minOccurs="0"/>
+<xs:element name="RECEIVER" type="xs:token" minOccurs="0"/>
+<xs:element name="CONTENT_TYPE" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="HEADER_ONLY" type="xs:token" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetDespatchAdviceWithStatusResponse">
+<xs:sequence>
+<xs:element name="DESPATCHADVICE" type="tns:DESPATCHADVICE" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetReceiptAdviceStatusRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="UUID" type="xs:token" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetReceiptAdviceStatusResponse">
+<xs:sequence>
+<xs:element name="RECEIPTADVICE_STATUS" type="tns:RECEIPTADVICEHEADER" maxOccurs="unbounded"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SendReceiptAdviceRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="SENDER" minOccurs="0">
+<xs:complexType>
+<xs:sequence/>
+<xs:attribute name="vkn" type="xs:string"/>
+<xs:attribute name="alias" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="RECEIVER" minOccurs="0">
+<xs:complexType>
+<xs:sequence/>
+<xs:attribute name="vkn" type="xs:string"/>
+<xs:attribute name="alias" type="xs:string"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="ID_ASSIGN_FLAG" type="xs:boolean" minOccurs="0"/>
+<xs:element name="ID_ASSIGN_PREFIX" type="xs:token" minOccurs="0"/>
+<xs:element name="XSLT_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="RECEIPTADVICE" type="tns:RECEIPTADVICE" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="SendReceiptAdviceResponse">
+<xs:sequence>
+<xs:element name="RECEIPT_ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SendDespatchResponseRequest">
+<xs:complexContent>
+<xs:extension base="ns3:REQUEST">
+<xs:sequence>
+<xs:element name="DESPATCHADVICE" type="tns:DESPATCHADVICE"/>
+<xs:element name="STATUS" type="xs:string"/>
+<xs:element name="DESCRIPTION" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="SendDespatchResponseResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns3:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns3:REQUEST_ERRORType" minOccurs="0"/>
+<xs:element name="RECEIPT_ADVICE_ID" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="RECEIPT_ADVICE_UUID" type="xs:normalizedString" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="PROFILE_ID">
+<xs:restriction base="xs:string">
+<xs:enumeration value="EARSIVBELGE"/>
+<xs:enumeration value="EDOVIZBELGE"/>
+<xs:enumeration value="EKIYMETLIMADENBELGE"/>
+<xs:enumeration value="GIDERPUSULASI"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="DATE_TYPE">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ISSUE"/>
+<xs:enumeration value="CREATE"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="PRINTED_FLAG">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Y"/>
+<xs:enumeration value="N"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="DESPATCH_RESPONSE_STATUS">
+<xs:restriction base="xs:string">
+<xs:enumeration value="KABUL"/>
+<xs:enumeration value="RED"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- AuthenticationWS CheckUserResponse; İzibiz Developer Portal output example. -->
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <ns3:CheckUserResponse xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:ns3="http://schemas.i2i.com/ei/wsdl">
+      <USER>
+        <IDENTIFIER>4840847211</IDENTIFIER>
+        <ALIAS>urn:mail:defaultpk@izibiz.com.tr</ALIAS>
+        <TITLE>İZİBİZ AKTİVASYON</TITLE>
+        <TYPE>OZEL</TYPE>
+        <REGISTER_TIME>2013-07-01T15:22:11</REGISTER_TIME>
+        <UNIT>PK</UNIT>
+        <ALIAS_CREATION_TIME>2026-06-03T17:47:43</ALIAS_CREATION_TIME>
+        <ACCOUNT_TYPE>OZELENTEGRASYON</ACCOUNT_TYPE>
+        <DELETED>N</DELETED>
+        <DOCUMENT_TYPE>INVOICE</DOCUMENT_TYPE>
+      </USER>
+    </ns3:CheckUserResponse>
+  </S:Body>
+</S:Envelope>

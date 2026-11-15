@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by XML-WS Runtime (https://github.com/eclipse-ee4j/metro-jax-ws). Runtime's version is XML-WS Runtime 4.0.2 git-revision#0264419. --><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://schemas.i2i.com/ei/common">
+
+<xs:complexType name="CHANGE_INFOType">
+<xs:sequence>
+<xs:element name="CDATE" type="xs:date"/>
+<xs:element name="CPOSITION_ID" type="xs:long"/>
+<xs:element name="CUSER_ID" type="xs:long"/>
+<xs:element name="UDATE" type="xs:date" minOccurs="0"/>
+<xs:element name="UPOSITION_ID" type="xs:long" minOccurs="0"/>
+<xs:element name="UUSER_ID" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LOV_VALUEType">
+<xs:sequence>
+<xs:element name="LOV_ID" type="xs:long"/>
+<xs:element name="LOV_CODE" type="xs:string" default="'N'" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ATTRIBUTESTYPE">
+<xs:sequence>
+<xs:any processContents="skip" namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="NAME" type="xs:string" use="required"/>
+<xs:anyAttribute namespace="##other" processContents="skip"/>
+</xs:complexType>
+
+<xs:complexType name="AmountType">
+<xs:simpleContent>
+<xs:extension base="xs:decimal">
+<xs:attribute name="currencyID" type="xs:normalizedString"/>
+<xs:attribute name="currencyCodeListVersionID" type="xs:normalizedString"/>
+</xs:extension>
+</xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="PARTINFO">
+<xs:sequence/>
+<xs:attribute name="VKN" type="xs:normalizedString"/>
+<xs:attribute name="IDENTIFIER" type="xs:normalizedString"/>
+<xs:attribute name="ALIAS" type="xs:normalizedString"/>
+</xs:complexType>
+
+<xs:complexType name="CUSTOMER">
+<xs:sequence>
+<xs:element name="IDENTIFIER" type="xs:string" minOccurs="0"/>
+<xs:element name="NAME" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="CONTENT_TYPE">
+<xs:restriction base="xs:string">
+<xs:enumeration value="XML"/>
+<xs:enumeration value="PDF"/>
+<xs:enumeration value="HTML"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="FLAG_VALUE">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Y"/>
+<xs:enumeration value="N"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

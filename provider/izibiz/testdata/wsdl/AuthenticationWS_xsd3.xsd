@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.6 git-revision#d201abe. --><xs:schema xmlns:tns="http://schemas.i2i.com/ei/entity" xmlns:ns1="http://schemas.i2i.com/ei/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://schemas.i2i.com/ei/entity">
+
+<xs:import namespace="http://schemas.i2i.com/ei/common" schemaLocation="https://efaturatest.izibiz.com.tr/AuthenticationWS?xsd=4"/>
+
+<xs:complexType name="REQUEST">
+<xs:sequence>
+<xs:element name="REQUEST_HEADER" type="tns:REQUEST_HEADERType"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="REQUEST_HEADERType">
+<xs:sequence>
+<xs:element name="SESSION_ID" type="xs:token"/>
+<xs:element name="CLIENT_TXN_ID" type="xs:token" minOccurs="0"/>
+<xs:element name="INTL_TXN_ID" type="xs:long" minOccurs="0"/>
+<xs:element name="INTL_PARENT_TXN_ID" type="xs:long" minOccurs="0"/>
+<xs:element name="ACTION_DATE" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="CHANGE_INFO" type="ns1:CHANGE_INFOType" minOccurs="0"/>
+<xs:element name="REASON" type="xs:token" minOccurs="0"/>
+<xs:element name="APPLICATION_NAME" type="xs:token" minOccurs="0"/>
+<xs:element name="HOSTNAME" type="xs:token" minOccurs="0"/>
+<xs:element name="CHANNEL_NAME" type="xs:token" minOccurs="0"/>
+<xs:element name="SIMULATION_FLAG" type="xs:token" minOccurs="0"/>
+<xs:element name="COMPRESSED" type="xs:token" minOccurs="0"/>
+<xs:element name="ATTRIBUTES" type="ns1:ATTRIBUTESTYPE" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="API_KEY" type="xs:token" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="REQUEST_ERRORType">
+<xs:sequence>
+<xs:element name="INTL_TXN_ID" type="xs:long"/>
+<xs:element name="CLIENT_TXN_ID" type="xs:token" minOccurs="0"/>
+<xs:element name="ERROR_CODE" type="xs:int"/>
+<xs:element name="ERROR_SHORT_DES" type="xs:string"/>
+<xs:element name="ERROR_LONG_DES" type="xs:string" minOccurs="0"/>
+<xs:element name="STACKTRACE" type="xs:string" minOccurs="0"/>
+<xs:element name="ERROR_ELEMENT_INDEX" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="REQUEST_RETURNType">
+<xs:sequence>
+<xs:element name="INTL_TXN_ID" type="xs:long"/>
+<xs:element name="CLIENT_TXN_ID" type="xs:token" minOccurs="0"/>
+<xs:element name="RETURN_CODE" type="xs:int"/>
+<xs:element name="WARNINGS" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="REQUEST_INFOType">
+<xs:sequence>
+<xs:element name="REQUEST_HEADER" type="tns:REQUEST_HEADERType"/>
+<xs:element name="REQUEST_RETURN" type="tns:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="REQUEST_ERROR" type="tns:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

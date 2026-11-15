@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- EInvoiceWS SendInvoiceResponse; İzibiz Developer Portal output example. -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <SendInvoiceResponse xmlns="http://schemas.i2i.com/ei/wsdl">
+      <REQUEST_RETURN xmlns="">
+        <INTL_TXN_ID>65699137</INTL_TXN_ID>
+        <RETURN_CODE>0</RETURN_CODE>
+      </REQUEST_RETURN>
+      <INVOICE_ID xmlns="">UGR2026000000320</INVOICE_ID>
+    </SendInvoiceResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

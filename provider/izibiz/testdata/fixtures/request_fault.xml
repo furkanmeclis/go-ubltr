@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- SOAP fault carrying RequestFault (e:REQUEST_ERRORType) as detail, the
+     fault declared for every EInvoiceWS operation in the WSDL. ERROR_CODE
+     2005 is the code the ws-client-dotnet sample treats as an expired
+     session. The fault and description texts are placeholders. -->
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+  <S:Body>
+    <S:Fault xmlns:ns4="http://www.w3.org/2003/05/soap-envelope">
+      <faultcode>S:Server</faultcode>
+      <faultstring>ProcessingFault</faultstring>
+      <detail>
+        <ns2:RequestFault xmlns:ns2="http://schemas.i2i.com/ei/wsdl">
+          <INTL_TXN_ID>0</INTL_TXN_ID>
+          <ERROR_CODE>2005</ERROR_CODE>
+          <ERROR_SHORT_DES>session expired</ERROR_SHORT_DES>
+        </ns2:RequestFault>
+      </detail>
+    </S:Fault>
+  </S:Body>
+</S:Envelope>

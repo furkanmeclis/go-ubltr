@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Developer Portal GetInvoiceStatusAll output example (verbatim values),
+     with the response root renamed to GetInvoiceStatusResponse. -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <GetInvoiceStatusResponse xmlns="http://schemas.i2i.com/ei/wsdl">
+      <INVOICE_STATUS xmlns="" ID="MMS2026000000218" UUID="1b5f2ed1-ccb1-4d29-ad30-3a9cee4b0c43">
+        <HEADER>
+          <STATUS>SIGN - FAILED</STATUS>
+          <STATUS_DESCRIPTION>İMZALANIYOR ( Client received SOAP Fault from server: Could not sign UblDocument document! )</STATUS_DESCRIPTION>
+          <GIB_STATUS_CODE>-1</GIB_STATUS_CODE>
+          <GIB_STATUS_DESCRIPTION/>
+          <DIRECTION>OUT</DIRECTION>
+          <CDATE>2026-07-26T19:58:35.000+03:00</CDATE>
+          <ENVELOPE_IDENTIFIER>62deed00-3704-413e-8ce8-cfd4ea40b6f9</ENVELOPE_IDENTIFIER>
+          <STATUS_CODE>106</STATUS_CODE>
+        </HEADER>
+        <WEB_KEY>https://portaltest.izibiz.com.tr/belge/goruntule</WEB_KEY>
+      </INVOICE_STATUS>
+    </GetInvoiceStatusResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

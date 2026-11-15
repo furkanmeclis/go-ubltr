@@ -1,0 +1,28 @@
+# İzibiz web servis ERROR_TYPE / RequestFault ERROR_CODE değerleri.
+# Kaynak: İzibiz Developer Portal (dev.izibiz.com.tr), EInvoiceWS
+# SendInvoice / LoadInvoice "Hata Kodları" tablosu; AuthenticationWS Login
+# hata örneği (10004 Kullanıcı adı veya şifre hatalı).
+# 2005: izibiz/ws-client-dotnet örnek istemcisi bu kodda oturumu yeniden
+# açar (FrmInvoice.cs); kod portal tablosunda yer almıyor.
+# GİB zarf kodları (1000–1300) provider.GIBCodes tablosundan okunur.
+code,kind,status,retryable,message,message_en
+-1,unavailable,,true,Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.,Unexpected error; try again later
+2005,auth,,false,Oturum geçersiz; örnek istemci yeniden oturum açar,Session invalid; the vendor sample logs in again
+10001,unavailable,,true,Sistemde beklenmedik bir hata oluştu,Unexpected system error
+10002,auth,,false,Oturum oluşturulamadı,Session could not be created
+10003,validation,failed,false,Belge şematron kontrolünden geçemedi,Document failed Schematron validation
+10004,auth,,false,Geçersiz oturum. Lütfen tekrar oturum oluşturunuz ve tekrar deneyiniz,Invalid session or bad credentials
+10005,permission,,false,Hesabınızın ilgili ürünü aktif değildir,Product not active for the account
+10006,permission,,false,Yetkiniz bulunmamaktadır,Not authorized
+10007,invalid-request,,false,İstek ZİP bir dosya içermelidir,Request must contain a zip file
+10008,not-found,,false,Belirtilen kriterlere uygun kayıt bulunamamıştır,No record matches the criteria
+10009,duplicate,failed,false,Gönderilen belge daha önce gönderilmiş bir belge ile eşleşmektedir,Document matches an already sent document
+10010,invalid-request,,false,Bir istek boyutu maksimum 5MB veya 100 adet belge içerebilir,A request may hold at most 5 MB or 100 documents
+10011,duplicate,,false,Tekrarlanan işlem: kayıt sistemde mevcuttur,Repeated operation: record exists
+10012,permission,,false,Kullanıcı aktif değil,User not active
+10013,invalid-request,,false,Gönderilen istek geçersizdir,Invalid request
+10014,signature,failed,false,Geçersiz İmza,Invalid signature
+10015,unsupported,,false,Servis desteklenmemektedir,Service not supported
+10016,permission,,false,Müşteri sistemde aktif değildir,Customer not active
+10017,duplicate,failed,false,Gönderilen belge daha önce gönderilmiş bir belge ile eşleşmektedir,Document matches an already sent document
+10018,permission,,false,Yetkisiz erişim tespit edildi,Unauthorized access detected

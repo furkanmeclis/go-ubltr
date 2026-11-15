@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- EInvoiceWS GetInvoiceStatusResponse. Element layout follows the
+     Developer Portal GetInvoiceStatusAll output example (status fields
+     inside HEADER); values from its status tables (111, 1300). -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <GetInvoiceStatusResponse xmlns="http://schemas.i2i.com/ei/wsdl">
+      <INVOICE_STATUS xmlns="" ID="UGR2026000000320" UUID="8d74a41d-729e-4301-a95b-7d582004dc44">
+        <HEADER>
+          <STATUS>SEND - WAIT_APPLICATION_RESPONSE</STATUS>
+          <STATUS_DESCRIPTION>ALICIDAN ONAY BEKLİYOR</STATUS_DESCRIPTION>
+          <GIB_STATUS_CODE>1300</GIB_STATUS_CODE>
+          <GIB_STATUS_DESCRIPTION>BAŞARIYLA TAMAMLANDI</GIB_STATUS_DESCRIPTION>
+          <DIRECTION>OUT</DIRECTION>
+          <CDATE>2026-07-26T19:58:35.000+03:00</CDATE>
+          <ENVELOPE_IDENTIFIER>62deed00-3704-413e-8ce8-cfd4ea40b6f9</ENVELOPE_IDENTIFIER>
+          <STATUS_CODE>111</STATUS_CODE>
+        </HEADER>
+      </INVOICE_STATUS>
+    </GetInvoiceStatusResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

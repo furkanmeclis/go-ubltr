@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (https://github.com/eclipse-ee4j/metro-jax-ws). RI's version is JAX-WS RI 2.3.6 git-revision#d201abe. --><xs:schema xmlns:tns="http://schemas.i2i.com/ei/wsdl" xmlns:ns2="http://www.w3.org/2005/05/xmlmime" xmlns:ns1="http://schemas.i2i.com/ei/entity" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://schemas.i2i.com/ei/wsdl">
+
+<xs:import namespace="http://schemas.i2i.com/ei/entity" schemaLocation="https://efaturatest.izibiz.com.tr/AuthenticationWS?xsd=3"/>
+
+<xs:import namespace="http://www.w3.org/2005/05/xmlmime" schemaLocation="https://efaturatest.izibiz.com.tr/AuthenticationWS?xsd=1"/>
+
+<xs:element name="CheckUserRequest" type="tns:CheckUserRequest"/>
+
+<xs:element name="CheckUserResponse" type="tns:CheckUserResponse"/>
+
+<xs:element name="GetAccountRequest" type="tns:GetAccountRequest"/>
+
+<xs:element name="GetAccountResponse" type="tns:GetAccountResponse"/>
+
+<xs:element name="GetGibUserListRequest" type="tns:GetGibUserListRequest"/>
+
+<xs:element name="GetGibUserListResponse" type="tns:GetGibUserListResponse"/>
+
+<xs:element name="GetGibUserRegisterDetailListRequest" type="tns:GetGibUserRegisterDetailListRequest"/>
+
+<xs:element name="GetGibUserRegisterDetailListResponse" type="tns:GetGibUserRegisterDetailListResponse"/>
+
+<xs:element name="GetUserAuthorizationRequest" type="tns:GetUserAuthorizationRequest"/>
+
+<xs:element name="GetUserAuthorizationResponse" type="tns:GetUserAuthorizationResponse"/>
+
+<xs:element name="LoginRequest" type="tns:LoginRequest"/>
+
+<xs:element name="LoginResponse" type="tns:LoginResponse"/>
+
+<xs:element name="LogoutRequest" type="tns:LogoutRequest"/>
+
+<xs:element name="LogoutResponse" type="tns:LogoutResponse"/>
+
+<xs:element name="RequestFault" type="ns1:REQUEST_ERRORType"/>
+
+<xs:complexType name="GetGibUserRegisterDetailListRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence>
+<xs:element name="TYPE" type="xs:string" default="XML" minOccurs="0"/>
+<xs:element name="STATUS" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="CLOSURE_DATE_START" type="xs:date" minOccurs="0"/>
+<xs:element name="CLOSURE_DATE_END" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetUserAuthorizationRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence>
+<xs:element name="PRODUCT" type="xs:token"/>
+<xs:element name="PRODUCT_DETAIL_FLAG" type="xs:token"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="CheckUserRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence>
+<xs:element name="USER" type="tns:GIBUSER"/>
+<xs:element name="DOCUMENT_TYPE" type="xs:normalizedString" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GIBUSER">
+<xs:sequence>
+<xs:element name="IDENTIFIER" type="xs:string" minOccurs="0"/>
+<xs:element name="ALIAS" type="xs:string" minOccurs="0"/>
+<xs:element name="TITLE" type="xs:string" minOccurs="0"/>
+<xs:element name="TYPE" type="xs:string" minOccurs="0"/>
+<xs:element name="REGISTER_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="UNIT" type="xs:token" minOccurs="0"/>
+<xs:element name="ALIAS_CREATION_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="ACCOUNT_TYPE" type="xs:string" minOccurs="0"/>
+<xs:element name="DELETED" type="xs:string" minOccurs="0"/>
+<xs:element name="ALIAS_DELETION_TIME" type="xs:string" minOccurs="0"/>
+<xs:element name="DOCUMENT_TYPE" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LoginRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence>
+<xs:element name="USER_NAME" type="xs:string"/>
+<xs:element name="PASSWORD" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetAccountRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetGibUserListRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence>
+<xs:element name="TYPE" type="xs:string" default="XML" minOccurs="0"/>
+<xs:element name="DOCUMENT_TYPE" type="xs:normalizedString" minOccurs="0"/>
+<xs:element name="REGISTER_TIME_START" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="ALIAS_TYPE" type="xs:token" minOccurs="0"/>
+<xs:element name="ALIAS_MODIFY_DATE" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="LogoutRequest">
+<xs:complexContent>
+<xs:extension base="ns1:REQUEST">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="GetUserAuthorizationResponse">
+<xs:sequence>
+<xs:element name="AUTHORIZED" type="xs:token" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+<xs:element name="PRODUCT_LIST" type="tns:PRODUCT_LIST" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PRODUCT_LIST">
+<xs:sequence>
+<xs:element name="PRODUCT" type="xs:token" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetAccountResponse">
+<xs:sequence>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+<xs:element name="ACCOUNT_ADDRESS" type="tns:ACCOUNT_ADDRESS" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ACCOUNT_ADDRESS">
+<xs:sequence>
+<xs:element name="COMMERCIAL_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="FIRST_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="LAST_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="VKN_TCKNO" type="xs:string" minOccurs="0"/>
+<xs:element name="EMAIL" type="xs:string" minOccurs="0"/>
+<xs:element name="WEBSITE" type="xs:token" minOccurs="0"/>
+<xs:element name="TAX_OFFICE" type="xs:string" minOccurs="0"/>
+<xs:element name="SICIL_NO" type="xs:string" minOccurs="0"/>
+<xs:element name="MERSIS_NO" type="xs:string" minOccurs="0"/>
+<xs:element name="ISLETME_MERKEZI" type="xs:string" minOccurs="0"/>
+<xs:element name="STREET" type="xs:string" minOccurs="0"/>
+<xs:element name="BUILDING_NAME" type="xs:string" minOccurs="0"/>
+<xs:element name="BUILDING_NO" type="xs:string" minOccurs="0"/>
+<xs:element name="HOUSE_NO" type="xs:string" minOccurs="0"/>
+<xs:element name="SUB_CITY" type="xs:string" minOccurs="0"/>
+<xs:element name="DISTRICT" type="xs:string" minOccurs="0"/>
+<xs:element name="CITY" type="xs:token" minOccurs="0"/>
+<xs:element name="REGION" type="xs:string" minOccurs="0"/>
+<xs:element name="COUNTRY" type="xs:string" minOccurs="0"/>
+<xs:element name="POSTAL_CODE" type="xs:string" minOccurs="0"/>
+<xs:element name="TELNO" type="xs:string" minOccurs="0"/>
+<xs:element name="FAXNO" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetGibUserRegisterDetailListResponse">
+<xs:sequence>
+<xs:element name="CONTENT" type="ns2:base64Binary" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CheckUserResponse">
+<xs:sequence>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+<xs:element name="USER" type="tns:GIBUSER" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LoginResponse">
+<xs:sequence>
+<xs:element name="SESSION_ID" type="xs:token"/>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GetGibUserListResponse">
+<xs:sequence>
+<xs:element name="CONTENT" type="ns2:base64Binary" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LogoutResponse">
+<xs:sequence>
+<xs:element name="REQUEST_RETURN" type="ns1:REQUEST_RETURNType" minOccurs="0"/>
+<xs:element name="ERROR_TYPE" type="ns1:REQUEST_ERRORType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="PRODUCT">
+<xs:restriction base="xs:string">
+<xs:enumeration value="EINVOICE"/>
+<xs:enumeration value="EARCHIVE"/>
+<xs:enumeration value="EDESPATCH"/>
+<xs:enumeration value="CREDITNOTE"/>
+<xs:enumeration value="RECONCILIATION"/>
+<xs:enumeration value="CONNECTOR"/>
+<xs:enumeration value="ELEDGER"/>
+<xs:enumeration value="ELEDGERARCHIVE"/>
+<xs:enumeration value="EINVOICEARCHIVE"/>
+<xs:enumeration value="ESMM"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="PRODUCT_DETAIL_FLAG">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Y"/>
+<xs:enumeration value="N"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="ALIAS_TYPE">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ALL"/>
+<xs:enumeration value="PK"/>
+<xs:enumeration value="GB"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="AUTHORIZED">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Y"/>
+<xs:enumeration value="N"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>

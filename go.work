@@ -6,6 +6,7 @@ use (
 	./examples/render
 	./examples/render/pdf
 	./provider
+	./provider/izibiz
 	./provider/nes
 	./provider/nilvera
 	./provider/turkcell
@@ -19,6 +20,7 @@ use (
 
 replace (
 	github.com/furkanmeclis/go-ubltr/provider v0.0.0 => ./provider
+	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0 => ./provider/izibiz
 	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0 => ./provider/nes
 	github.com/furkanmeclis/go-ubltr/provider/nilvera v0.0.0 => ./provider/nilvera
 	github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0 => ./provider/turkcell

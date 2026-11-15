@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- ERROR_TYPE in a response body. Shape from the Developer Portal fault
+     examples; code and text from its "Hata Kodları" table (10004). -->
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <{{ROOT}} xmlns="http://schemas.i2i.com/ei/wsdl">
+      <ERROR_TYPE xmlns="">
+        <INTL_TXN_ID>0</INTL_TXN_ID>
+        <ERROR_CODE>10004</ERROR_CODE>
+        <ERROR_SHORT_DES>Geçersiz oturum. Lütfen tekrar oturum oluşturunuz ve tekrar deneyiniz</ERROR_SHORT_DES>
+      </ERROR_TYPE>
+    </{{ROOT}}>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
