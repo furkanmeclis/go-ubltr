@@ -1,0 +1,1 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><SendInvoiceResponse xmlns="http://tempuri.org/"><SendInvoiceResult IsSucceded="false" Message="Fatura şema kontrolünden geçemedi: cbc:IssueDate hatalı."/></SendInvoiceResponse></s:Body></s:Envelope>

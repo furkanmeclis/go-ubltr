@@ -6,6 +6,7 @@ use (
 	./examples/render
 	./examples/render/pdf
 	./provider
+	./provider/uyumsoft
 	./render
 	./render/chromium
 )

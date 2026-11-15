@@ -1,0 +1,1 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><IsEInvoiceUserResponse xmlns="http://tempuri.org/"><IsEInvoiceUserResult IsSucceded="true" Value="true"/></IsEInvoiceUserResponse></s:Body></s:Envelope>

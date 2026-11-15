@@ -1,0 +1,55 @@
+# Uyumsoft Integration / muhasebeizleme BasicIntegration codes.
+#
+# Neither service returns numeric error codes: failures are SOAP faults or
+# IsSucceded="false" with a Turkish Message. Rows are therefore keyed by
+#   status:<InvoiceStatus>   invoice state enum values
+#   fault:<faultcode>        SOAP fault codes (local name, prefix dropped)
+#   message:<class>          classes assigned by classifyMessage (errors.go)
+#
+# Sources (retrieved 2026-11-15):
+#   [W1] Uyumsoft Integration WSDL, simpleType InvoiceStatus, binding policy
+#        BasicHttpBinding_IIntegration_policy (UsernameToken over HTTPS):
+#        https://efatura-test.uyumsoft.com.tr/Services/Integration?singleWsdl
+#        (testdata/Integration.wsdl)
+#   [W2] muhasebeizleme BasicIntegration WSDL:
+#        https://api.muhasebeizleme.com/Services/BasicIntegration.svc?singleWsdl
+#        (testdata/BasicIntegration.wsdl)
+#   [D1] Mi API Kılavuzu, https://api.muhasebeizleme.com/kilavuz/ and its
+#        uclar.js (KODLAR.giden / KODLAR.gelen status tables, per-operation
+#        "hatalar" message lists, "Kimlik hataları" fault table)
+#   [S1] OASIS Web Services Security SOAP Message Security 1.0, section 12
+#        (wsse:InvalidSecurity, wsse:FailedAuthentication fault codes)
+code,kind,status,retryable,message,message_en
+# [W1] InvoiceStatus; meanings per [D1] KODLAR.giden (same enum names).
+status:NotPrepared,ok,draft,false,Belge hazırlanmadı,Not prepared
+status:NotSend,ok,draft,false,Belge gönderilmedi,Not sent
+status:Draft,ok,draft,false,Taslak,Draft
+status:Canceled,ok,cancelled,false,İptal edildi,Cancelled
+status:Queued,ok,queued,false,Kuyrukta,Queued
+status:Processing,ok,processing,false,İşleniyor,Processing
+status:SentToGib,ok,sent,false,GİB'e iletildi,Sent to GİB
+status:Approved,ok,delivered,false,Başarıyla tamamlandı,Completed successfully
+status:WaitingForAprovement,ok,delivered,false,Ticari fatura kabul/red yanıtı bekleniyor,Commercial invoice waiting for response
+status:Declined,recipient-response,rejected,false,GİB ya da alıcı belgeyi reddetti,Rejected by GİB or the receiver
+status:Return,recipient-response,rejected,false,Belge iade edildi,Returned by the receiver
+status:EArchivedCanceled,ok,cancelled,false,e-Arşiv faturası iptal edildi,e-Archive invoice cancelled
+status:Error,validation,failed,false,Belge işlenemedi,Document could not be processed
+# [D1] QueryOutboxInvoiceStatus row for an unknown ETTN.
+status:Unknown,not-found,unknown,false,Belge bulunamadı,Document not found
+# [S1] WS-Security faults (Uyumsoft binding authenticates with UsernameToken [W1]).
+fault:InvalidSecurity,auth,,false,Mesaj güvenliği doğrulanamadı,Message security could not be verified
+fault:FailedAuthentication,auth,,false,Kimlik doğrulanamadı,Authentication failed
+fault:InvalidSecurityToken,auth,,false,Geçersiz güvenlik belirteci,Invalid security token
+# [D1] "ActionNotSupported (ContractFilter mismatch): SOAPAction yanlış".
+fault:ActionNotSupported,invalid-request,,false,SOAPAction desteklenmiyor,SOAPAction not supported
+# Message classes, keyword rules in errors.go; example messages from [D1].
+message:auth,auth,,false,Geçersiz süresi dolmuş veya yetkisiz ApiKey / kullanıcı bilgisi,Invalid credentials
+message:quota,quota-exceeded,,false,Kontör yetersiz,Insufficient credits
+message:permission,permission,,false,Hesabın bu işleme yetkisi yok (modül kapalı / başka mükellef adına),Account not allowed (module disabled or foreign sender)
+message:duplicate,duplicate,,false,Belge daha önce gönderilmiş,Document already sent
+message:invalid-state,invalid-state,,false,Belge bu işlem için uygun durumda değil (iptal süresi / daha önce cevaplanmış),Document not in a state that allows this
+message:recipient,recipient,,false,Alıcı e-Fatura mükellefi değil ya da posta kutusu etiketi geçersiz,Receiver not registered or invalid alias
+message:invalid-request,invalid-request,,false,Zorunlu parametre eksik ya da geçersiz,Missing or invalid parameter
+message:validation,validation,,false,Belge doğrulamadan geçemedi,Document validation failed
+message:not-found,not-found,,false,Belge bulunamadı,Not found
+message:unavailable,unavailable,,true,Geçici bir sorun; bir süre sonra tekrar deneyin,Temporary failure; retry later

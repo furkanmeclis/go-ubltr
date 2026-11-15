@@ -1,0 +1,1 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><SetInvoicesTakenResponse xmlns="http://tempuri.org/"><SetInvoicesTakenResult IsSucceded="true" Message="1 belge arşiv olarak işaretlendi." Value="true"/></SetInvoicesTakenResponse></s:Body></s:Envelope>

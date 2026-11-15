@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `KindEnvelope` in `Detect` and XSD validation of GİB envelopes (`sh:StandardBusinessDocument` with `ef:Package`), including strict validation of the documents inside `ElementList`.
 - Generated GİB envelope types in `schema/envelope` (`ubltr-gen -envelope`, part of `make generate`), and `NewEnvelope`, `UnmarshalEnvelope`, and `EnvelopeDocuments` to build an envelope from documents and extract typed documents from one.
 - `ubltr validate --format=json` and `ubltr inspect --format=json`. Text output now shows line and rule ID. `validate` runs Schematron for despatch, receipt, application response, and envelope files, and `--type` accepts `goruntuleme`.
+- Nested `provider/uyumsoft` module: Uyumsoft Integration SOAP client with a muhasebeizleme BasicIntegration preset.
 
 ### Known limitations
 

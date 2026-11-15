@@ -1,0 +1,1 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><CancelEArchiveInvoiceResponse xmlns="http://tempuri.org/"><CancelEArchiveInvoiceResult IsSucceded="true" Value="true"/></CancelEArchiveInvoiceResponse></s:Body></s:Envelope>

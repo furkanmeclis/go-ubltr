@@ -1,0 +1,1 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><GetInboxInvoicePdfResponse xmlns="http://tempuri.org/"><GetInboxInvoicePdfResult IsSucceded="true"><Value InvoiceId="b7c8d9e0-1a2b-4c3d-8e9f-a0b1c2d3e4f5"><Data>JVBERi0xLjQKJWZpeHR1cmUK</Data></Value></GetInboxInvoicePdfResult></GetInboxInvoicePdfResponse></s:Body></s:Envelope>

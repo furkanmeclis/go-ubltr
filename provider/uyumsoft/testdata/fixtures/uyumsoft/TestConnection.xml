@@ -1,0 +1,1 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><TestConnectionResponse xmlns="http://tempuri.org/"><TestConnectionResult IsSucceded="true" Value="true"/></TestConnectionResponse></s:Body></s:Envelope>
