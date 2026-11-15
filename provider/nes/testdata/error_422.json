@@ -1,0 +1,10 @@
+{
+  "message": "HATALI ISTEK",
+  "errors": [
+    {
+      "code": "1150",
+      "description": "SCHEMATRON_CHECK_RESULT_HAS_FAILED",
+      "detail": "ŞEMATRON KONTROL SONUCU HATALI"
+    }
+  ]
+}

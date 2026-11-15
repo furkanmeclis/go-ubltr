@@ -1,0 +1,10 @@
+{
+  "message": "HATALI ISTEK",
+  "errors": [
+    {
+      "code": "422-15",
+      "description": "RECORD_EXISTS",
+      "detail": "Belge daha önce gönderilmiş"
+    }
+  ]
+}

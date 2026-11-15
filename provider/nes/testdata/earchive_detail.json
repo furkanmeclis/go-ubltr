@@ -1,0 +1,29 @@
+{
+  "id": "4517e248-a100-4514-9e9d-3101afe355ee",
+  "createdAt": "2024-03-01T10:15:00+03:00",
+  "issueDate": "2024-03-01T00:00:00+03:00",
+  "accountingCustomerParty": {
+    "partyIdentification": "11111111111",
+    "partyName": null,
+    "firstName": "Ali",
+    "familyName": "Veli"
+  },
+  "documentNumber": "EAR2024000000001",
+  "invoiceTypeCode": "SATIS",
+  "documentCurrencyCode": "TRY",
+  "allowanceTotalAmount": 0,
+  "chargeTotalAmount": 0,
+  "taxExclusiveAmount": 100,
+  "taxTotalAmount": 20,
+  "payableAmount": 120,
+  "pricingExchangeCalculationRate": 0,
+  "errorDescription": null,
+  "isPrinted": false,
+  "isInternet": false,
+  "isCanceled": false,
+  "cancelDate": null,
+  "sendType": "ELEKTRONIK",
+  "transferType": "Api",
+  "archiveDocumentStatus": "Signed",
+  "reportDivisionStatus": "XmlCreateWait"
+}

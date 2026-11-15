@@ -1,0 +1,10 @@
+{
+  "message": "HATALI ISTEK",
+  "errors": [
+    {
+      "code": "422-11",
+      "description": "RECORD_ALREADY_CANCELED",
+      "detail": "Belge daha önce iptal edilmiş"
+    }
+  ]
+}

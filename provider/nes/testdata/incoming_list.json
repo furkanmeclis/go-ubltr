@@ -1,0 +1,80 @@
+{
+  "page": 1,
+  "pageSize": 2,
+  "totalCount": 3,
+  "data": [
+    {
+      "id": "72d0ec9a-96b9-4f41-b0cb-c9598a641baa",
+      "createdAt": "2024-03-01T10:15:00+03:00",
+      "issueDate": "2024-03-01T00:00:00+03:00",
+      "accountingSupplierParty": {
+        "partyIdentification": "1234567890",
+        "partyName": "Örnek A.Ş.",
+        "firstName": null,
+        "familyName": null
+      },
+      "outgoingAnswer": null,
+      "documentAnswer": "Waiting",
+      "incomingEnvelope": {
+        "createdAt": "2024-03-01T10:14:00+03:00",
+        "instanceIdentifier": "0d2e3f4a-5b6c-4d7e-8f9a-0b1c2d3e4f5a",
+        "code": "1300",
+        "description": "BAŞARIYLA TAMAMLANDI",
+        "senderIdentifier": "urn:mail:defaultgb@example.com",
+        "receiverIdentifier": "urn:mail:defaultpk@nes.com.tr"
+      },
+      "tags": [],
+      "noteCount": 0,
+      "relationCount": 0,
+      "documentNumber": "ABC2024000000001",
+      "invoiceTypeCode": "SATIS",
+      "profileId": "TICARIFATURA",
+      "payableAmount": 1180.5,
+      "documentCurrencyCode": "TRY",
+      "errorDescription": null,
+      "isRead": false,
+      "isTransferred": false,
+      "isPrinted": false,
+      "lucaTransferStatus": "None",
+      "tranferredAtToLuca": null,
+      "lucaTransferRequestId": null,
+      "lucaTransferResultCode": null,
+      "lucaTransferResultDescription": null,
+      "mailingCount": null,
+      "taxes": []
+    },
+    {
+      "id": "91c20453-a046-4d5f-a2d8-47382b086b52",
+      "createdAt": "2024-03-01T11:00:00+03:00",
+      "issueDate": "2024-02-29T00:00:00+03:00",
+      "accountingSupplierParty": {
+        "partyIdentification": "22222222222",
+        "partyName": null,
+        "firstName": "Ayşe",
+        "familyName": "Yılmaz"
+      },
+      "outgoingAnswer": null,
+      "documentAnswer": "None",
+      "incomingEnvelope": null,
+      "tags": [],
+      "noteCount": 0,
+      "relationCount": 0,
+      "documentNumber": "XYZ2024000000007",
+      "invoiceTypeCode": "IADE",
+      "profileId": "TEMELFATURA",
+      "payableAmount": 50,
+      "documentCurrencyCode": "TRY",
+      "errorDescription": null,
+      "isRead": true,
+      "isTransferred": false,
+      "isPrinted": false,
+      "lucaTransferStatus": "None",
+      "tranferredAtToLuca": null,
+      "lucaTransferRequestId": null,
+      "lucaTransferResultCode": null,
+      "lucaTransferResultDescription": null,
+      "mailingCount": null,
+      "taxes": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "312ea9a9-85a5-40b4-a95e-1da5ba8aa4f7",
+  "createdAt": "2024-03-01T10:15:00+03:00",
+  "issueDate": "2024-03-01T00:00:00+03:00",
+  "documentNumber": "NES2024000000001",
+  "invoiceTypeCode": "SATIS",
+  "allowanceTotalAmount": 0,
+  "chargeTotalAmount": 0,
+  "taxExclusiveAmount": 100,
+  "taxTotalAmount": 20,
+  "payableAmount": 120,
+  "documentCurrencyCode": "TRY",
+  "pricingExchangeCalculationRate": 0,
+  "documentAnswer": "Accepted",
+  "isPrinted": false,
+  "isArchive": false,
+  "profileId": "TICARIFATURA",
+  "outgoingStatus": "EnvelopeHasBeenTransferredToReceiverSuccessfully",
+  "recordStatus": "Succeed",
+  "outgoingInvoiceInfos": [],
+  "outgoingEnvelope": {
+    "id": "5f0c1a3e-7d2b-4a55-9c1e-2b3f4a5b6c7d",
+    "createdAt": "2024-03-01T10:20:00+03:00",
+    "instanceIdentifier": "5f0c1a3e-7d2b-4a55-9c1e-2b3f4a5b6c7d",
+    "code": "1300",
+    "description": "BAŞARIYLA TAMAMLANDI",
+    "senderIdentifier": "urn:mail:defaultgb@nes.com.tr",
+    "receiverIdentifier": "urn:mail:defaultpk@nes.com.tr"
+  },
+  "incomingAnswer": {
+    "documentAnswer": "Accepted",
+    "answerNote": null,
+    "errorDescription": null,
+    "incomingAnswerEnvelope": {
+      "createdAt": "2024-03-02T09:00:00+03:00",
+      "instanceIdentifier": "8a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+      "code": "1300",
+      "description": "BAŞARIYLA TAMAMLANDI",
+      "senderIdentifier": "urn:mail:defaultgb@example.com",
+      "receiverIdentifier": "urn:mail:defaultpk@nes.com.tr"
+    }
+  }
+}

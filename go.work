@@ -6,6 +6,7 @@ use (
 	./examples/render
 	./examples/render/pdf
 	./provider
+	./provider/nes
 	./provider/uyumsoft
 	./provider/watch
 	./provider/watch/redis
@@ -16,6 +17,7 @@ use (
 
 replace (
 	github.com/furkanmeclis/go-ubltr/provider v0.0.0 => ./provider
+	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0 => ./provider/nes
 	github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0 => ./provider/uyumsoft
 	github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0 => ./provider/watch
 	github.com/furkanmeclis/go-ubltr/provider/watch/redis v0.0.0 => ./provider/watch/redis

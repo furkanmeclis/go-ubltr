@@ -1,0 +1,24 @@
+# NES (nes.com.tr) REST API error codes.
+# Source: 422 "Dönebilecek kodlar" tables in the published OpenAPI files
+# https://apitest.nes.com.tr/einvoice/v1.swagger.json and
+# https://apitest.nes.com.tr/earchive/v1.swagger.json, plus the
+# "Genel Hata Kodları" page https://developertest.nes.com.tr/docs/shared-classes.
+# 11xx rows are GİB codes that NES returns with its own description text.
+code,kind,status,retryable,message,message_en
+1110,validation,failed,false,NOT_ZIP_FILE: Zip dosyası değil yada bozuk,Not a zip file or corrupt
+1130,validation,failed,false,ZIP_COULD_NOT_BE_EXTRACED: Zip dosyası açılamadı,Zip could not be extracted
+1131,validation,failed,false,ZIP_MUST_CONTAIN_A_FILE: Zip bir dosya içermelidir,Zip must contain one file
+1132,validation,failed,false,NOT_XML_FILE: Zip içerisindeki dosya XML formatında değil,File in zip is not XML
+1140,validation,failed,false,DOCUMENT_COULD_NOT_BE_PARSED: Döküman ayrıştırılamadı,Document could not be parsed
+1150,validation,failed,false,SCHEMATRON_CHECK_RESULT_HAS_FAILED: Şematron kontrol sonucu hatalı,Schematron check failed
+1160,validation,failed,false,FAILED_XML_SCHEMA_CHECK: Şema kontrolü başarısız,XML schema check failed
+422-01,invalid-request,,false,INVALID_VALUE: Geçersiz değer,Invalid value
+422-05,invalid-state,,false,MUST_HAVE_AT_LEAST_ONE_DEFAULT_RECORD: En az bir varsayılan kayıt bulunmalıdır,At least one default record is required
+422-10,invalid-state,,false,RECORD_HAS_TRANSACTION: İşlem görmüş kayıt,Record already has transactions
+422-11,invalid-state,cancelled,false,RECORD_ALREADY_CANCELED: Belge daha önce iptal edilmiş,Document already cancelled
+422-15,duplicate,,false,RECORD_EXISTS: Belge daha önce gönderilmiş,Document already sent
+422-16,not-found,,false,RECORD_NOT_EXISTS: Belge taslak belgelerde bulunamadı,Document not found among drafts
+422-20,invalid-request,,false,SPECIAL_XSLT_NOT_EXIST: Özel XSLT bulunamadı,Custom XSLT does not exist
+422-21,invalid-request,,false,SPECIAL_XSLT_SIGNATURE_NOT_EXIST: Özel XSLT imzası bulunamadı,Custom XSLT signature does not exist
+422-25,permission,,false,MODULE_DOES_NOT_EXIST: Modül hesabınızda tanımlı değil,Module not defined for the account
+422-26,permission,,false,MODULE_NOT_ACTIVE: Modül aktif değil,Module not active

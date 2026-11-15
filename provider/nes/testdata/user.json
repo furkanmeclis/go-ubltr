@@ -1,0 +1,18 @@
+{
+  "identifier": "1234567890",
+  "title": "Örnek A.Ş.",
+  "type": "Özel",
+  "firstCreationTime": "2019-01-01T00:00:00",
+  "aliases": [
+    {
+      "alias": "urn:mail:defaultpk@example.com",
+      "creationTime": "2019-01-01T00:00:00",
+      "type": "Pk"
+    },
+    {
+      "alias": "urn:mail:defaultgb@example.com",
+      "creationTime": "2019-01-01T00:00:00",
+      "type": "Gb"
+    }
+  ]
+}

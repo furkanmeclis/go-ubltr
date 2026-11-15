@@ -1,0 +1,10 @@
+{
+  "message": "GECERSIZ ISTEK",
+  "invalidFields": [
+    {
+      "field": "SenderAlias",
+      "description": "Gönderici Etiketi boş geçilemez!",
+      "detail": ""
+    }
+  ]
+}
