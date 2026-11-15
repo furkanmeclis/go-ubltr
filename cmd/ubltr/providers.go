@@ -6,10 +6,15 @@ import (
 
 	"github.com/furkanmeclis/go-ubltr/provider"
 	"github.com/furkanmeclis/go-ubltr/provider/providertest"
+
 	// Integrator modules register themselves with provider.Register when
-	// imported. Add a blank import per integrator module here, e.g.
-	//
-	//	_ "github.com/furkanmeclis/go-ubltr/provider/<name>"
+	// imported.
+	_ "github.com/furkanmeclis/go-ubltr/provider/edm"
+	_ "github.com/furkanmeclis/go-ubltr/provider/izibiz"
+	_ "github.com/furkanmeclis/go-ubltr/provider/nes"
+	_ "github.com/furkanmeclis/go-ubltr/provider/nilvera"
+	_ "github.com/furkanmeclis/go-ubltr/provider/turkcell"
+	_ "github.com/furkanmeclis/go-ubltr/provider/uyumsoft"
 )
 
 // fakeProvider is the in-memory integrator registered for demos and

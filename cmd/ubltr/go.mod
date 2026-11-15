@@ -21,6 +21,12 @@ require (
 	github.com/chromedp/chromedp v0.16.0 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/dlclark/regexp2 v1.12.0 // indirect
+	github.com/furkanmeclis/go-ubltr/provider/edm v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/nilvera v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0
+	github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0
 	github.com/go-json-experiment/json v0.0.0-20260623181947-01eb4420fa68 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
@@ -33,3 +39,15 @@ require (
 replace github.com/furkanmeclis/go-ubltr/provider => ../../provider
 
 replace github.com/furkanmeclis/go-ubltr/provider/watch => ../../provider/watch
+
+replace github.com/furkanmeclis/go-ubltr/provider/edm => ../../provider/edm
+
+replace github.com/furkanmeclis/go-ubltr/provider/izibiz => ../../provider/izibiz
+
+replace github.com/furkanmeclis/go-ubltr/provider/nes => ../../provider/nes
+
+replace github.com/furkanmeclis/go-ubltr/provider/nilvera => ../../provider/nilvera
+
+replace github.com/furkanmeclis/go-ubltr/provider/turkcell => ../../provider/turkcell
+
+replace github.com/furkanmeclis/go-ubltr/provider/uyumsoft => ../../provider/uyumsoft
