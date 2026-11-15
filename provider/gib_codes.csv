@@ -1,0 +1,40 @@
+# GİB e-Fatura sistem yanıtı / zarf durum kodları.
+# Kaynak: GİB e-Fatura Uygulaması entegrasyon kılavuzları ve entegratör
+# dokümanlarında yayımlanan zarf durum listesi. "ok" satırları hata değildir.
+code,kind,status,retryable,message,message_en
+1000,ok,queued,false,ZARF KUYRUĞA EKLENDİ,Envelope queued
+1100,ok,processing,false,ZARF İŞLENİYOR,Envelope processing
+1110,validation,failed,false,ZIP DOSYASI DEĞİL,Not a zip file
+1111,validation,failed,false,ZARF ID UZUNLUĞU GEÇERSİZ,Invalid envelope ID length
+1120,unavailable,failed,true,ZARF ARŞİVDEN KOPYALANAMADI,Envelope could not be copied from archive
+1130,validation,failed,false,ZIP AÇILAMADI,Zip could not be opened
+1131,validation,failed,false,ZIP BİR DOSYA İÇERMELİ,Zip must contain one file
+1132,validation,failed,false,XML DOSYASI DEĞİL,Not an XML file
+1133,validation,failed,false,ZARF ID VE XML DOSYASININ ADI AYNI OLMALI,Envelope ID and XML file name must match
+1140,validation,failed,false,DOKÜMAN AYRIŞTIRILAMADI,Document could not be parsed
+1141,validation,failed,false,ZARF ID YOK,Envelope ID missing
+1142,validation,failed,false,ZARF ID VE ZIP DOSYASI ADI AYNI OLMALI,Envelope ID and zip file name must match
+1143,validation,failed,false,GEÇERSİZ VERSİYON,Invalid version
+1150,validation,failed,false,SCHEMATRON KONTROL SONUCU HATALI,Schematron check failed
+1160,validation,failed,false,XML ŞEMA KONTROLÜNDEN GEÇEMEDİ,XML schema check failed
+1161,signature,failed,false,İMZA SAHİBİ TCKN VKN ALINAMADI,Signer TCKN/VKN could not be read
+1162,signature,failed,true,İMZA KAYDEDİLEMEDİ,Signature could not be stored
+1163,duplicate,failed,false,GÖNDERİLEN ZARF SİSTEMDE DAHA ÖNCE KAYITLI OLAN BİR FATURAYI İÇERMEKTEDİR,Envelope contains an already registered invoice
+1170,unavailable,failed,true,YETKİ KONTROL EDİLEMEDİ,Authorization could not be checked
+1171,permission,failed,false,GÖNDERİCİ BİRİM YETKİSİ YOK,Sender unit not authorized
+1172,permission,failed,false,POSTA KUTUSU YETKİSİ YOK,Mailbox not authorized
+1175,unavailable,failed,true,İMZA YETKİSİ KONTROL EDİLEMEDİ,Signature authority could not be checked
+1176,signature,failed,false,İMZA SAHİBİ YETKİSİZ,Signer not authorized
+1177,signature,failed,false,GEÇERSİZ İMZA,Invalid signature
+1180,unavailable,failed,true,ADRES KONTROL EDİLEMEDİ,Address could not be checked
+1181,recipient,failed,false,ADRES BULUNAMADI,Address not found
+1182,unavailable,failed,true,KULLANICI EKLENEMEDİ,User could not be added
+1183,unavailable,failed,true,KULLANICI SİLİNEMEDİ,User could not be removed
+1190,unavailable,failed,true,SİSTEM YANITI HAZIRLANAMADI,System response could not be prepared
+1195,unavailable,failed,true,SİSTEM HATASI,System error
+1200,ok,sent,false,ZARF BAŞARIYLA İŞLENDİ,Envelope processed
+1210,transport,failed,true,DOKÜMAN BULUNAN ADRESE GÖNDERİLEMEDİ,Document could not be sent to the address
+1215,transport,failed,false,DOKÜMAN GÖNDERİMİ BAŞARISIZ. TEKRAR GÖNDERME SONLANDI,Delivery failed; retries ended
+1220,ok,sent,false,HEDEFTEN SİSTEM YANITI GELMEDİ,No system response from receiver yet
+1230,recipient-response,failed,false,HEDEFTEN SİSTEM YANITI BAŞARISIZ GELDİ,Receiver system response failed
+1300,ok,delivered,false,BAŞARIYLA TAMAMLANDI,Completed successfully

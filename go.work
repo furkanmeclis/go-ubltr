@@ -5,6 +5,7 @@ use (
 	./cmd/ubltr
 	./examples/render
 	./examples/render/pdf
+	./provider
 	./render
 	./render/chromium
 )
