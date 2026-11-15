@@ -25,6 +25,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `CloneInvoice`, `CloneCreditNote`, `Inspect`, `Diff`, `AddAttachment` / `AddAdditionalDocumentReference`, and `UnmarshalReader` / `MarshalWrite`.
 - Nested `ubltr` CLI (`cmd/ubltr`): `validate`, `inspect`, `render`, `generate`.
 - Repository CI, golangci-lint, contribution guide, security policy, and code of conduct.
+- Withholding tax (tevkifat): `TaxBuilder.Withholding` / `WithholdingName`, line and document `WithholdingTaxTotal`, `PayableAmount` = tax-inclusive − withheld, and type checks for TEVKIFAT and related types.
+- Return invoices: `InvoiceBuilder.BillingReference`, `BillingReferenceCode`, `ReturnOf`, and `builder.NewReturnInvoiceFrom` with `ReturnType`, `ReturnLines`, `ReturnSameParties` (DocumentTypeCode `IADE`, swapped parties, TEMELFATURA fallback).
+- `InvoiceBuilder.ExchangeRate` (`cac:PricingExchangeRate`, required for non-TRY invoices), `OrderReference`, `DespatchReference`, `AdditionalDocument`, and `AdditionalDocumentReference`.
+- IHRACAT support: `BuyerCustomer` / `BuyerCustomerBuilder`, `TaxRepresentative` / `TaxRepresentativeBuilder`, `NewExportCustomerBuilder`, `NewExportBuyerBuilder`, `NewTaxFreeBuyerBuilder`, `PartyBuilder.LegalEntity` / `Nationality`, line-level `InvoiceLineBuilder.Delivery` / `Note`, and `DeliveryBuilder.Incoterms`, `SpecialTerms`, `ShipmentID`, `CustomsID` (GTİP), `TransportMode`, `Package`.
+- Exemption codes are checked in `TaxBuilder.Exemption` and kept on the document `TaxTotal`.
+- `builder.AmountInWords` (Turkish amount in words) and `InvoiceBuilder.AmountInWordsNote`.
+- Embedded XSLT: `InvoiceBuilder.XSLT` and `builder.XSLTReference` (`AdditionalDocumentReference` with DocumentType `XSLT`).
+- `codelist` aliases `ProfileIhracat`, `InvoiceTypeTevkifat`, `InvoiceTypeTevkifatIade`, `InvoiceTypeIstisna`.
+- Golden builder invoices under `testdata/valid/`, checked with XSD and GİB Schematron (`-update` regenerates them).
 
 ### Known limitations
 
@@ -32,5 +41,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - GİB viewer XSLT is not bundled; supply your own stylesheet.
 - GİB envelope types are not generated.
 - `encoding/xml` does not guarantee `cbc:` / `cac:` prefixes.
+- The vendored GİB Schematron rejects `WithholdingTaxTotal` on TEVKIFATIADE and YTBTEVKIFATIADE; `NewReturnInvoiceFrom` uses IADE / YTBIADE for withholding returns.
 
 [Unreleased]: https://github.com/furkanmeclis/go-ubltr/compare/HEAD...HEAD
