@@ -8,12 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- `provider/uyumsoft`: the muhasebeizleme preset is verified against its live test system, including an end-to-end send. `Send` removes the builder's `ExtensionContent` placeholder and `cac:Signature` from unsigned documents, because the integrator adds its own signature elements.
+
 - `provider/edm`: `From` / `To` filters (`CR_START_DATE` / `CR_END_DATE`) and `OFFSET` cursor paging for listings, `DefaultListWindow`, and default `CHANNEL_NAME`, `REASON` and `HOSTNAME` header fields. Login, outgoing listing, `CheckUser` and `Status` were verified against the EDM test system.
 
 - `provider/izibiz`: `ListOutbox` lists outgoing e-Arşiv invoices with `GetEArchiveInvoiceList` and pages through `From`/`To` in 24-hour windows. `Capabilities` declares `list-outbox` for `earsiv`.
 - `provider/isnet`: read-only İşNet (NetteFatura) client for e-Fatura and e-Arşiv listing, status, download and recipient check; timeouts from a non-allowlisted IP are reported as `ip-not-allowlisted`.
 
 ### Changed
+
+- `provider/edm`: `Capabilities().SignsDocuments` is now false; the EDM test system requires `SendInvoice` documents to carry the sender's `ds:Signature`.
 
 - GİB e-Fatura Schematron and code lists updated to the 24 August 2026 package (`e-FaturaPaketi (29).zip`): trailer schemes (`DORSE`, `DORSEPLAKA`, `YABANCIDORSE`, `YABANCIDORSEPLAKA`) moved from `LicensePlateIDSchemeIDType` to the new `TransportEquipmentIDSchemeIDType` and are checked on `cac:TransportEquipment/cbc:ID`; the despatch plate requirement applies only when `cac:DriverPerson` is present.
 - `codelist`: new `TrailerScheme*` constants and `ValidTrailerScheme`. `ValidPlateScheme` no longer accepts trailer schemes; the old `PlateSchemeDORSE…` names remain as deprecated aliases.

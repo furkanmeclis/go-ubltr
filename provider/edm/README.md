@@ -64,8 +64,10 @@ retry. Call `Logout` when done.
 | | mark-taken | `MarkInvoice` (`READ`) |
 | | check-user | `CheckUser` |
 
-`SignsDocuments` and `AcceptsRawUBL` are set: the edm-efatura client sends
-unsigned UBL. `MaxBatch` and `MinPollInterval` are unknown (0).
+`AcceptsRawUBL` is set. `SignsDocuments` is **not** set: the EDM test system
+rejects `SendInvoice` documents whose `ExtensionContent` has no
+`ds:Signature` ("List of possible elements expected: …xmldsig#:Signature"),
+so documents must be signed with the sender's mali mühür before `Send`. `MaxBatch` and `MinPollInterval` are unknown (0).
 
 Listings filter on the creation time: `From` / `To` are sent as
 `CR_START_DATE` / `CR_END_DATE` (Türkiye time). EDM refuses
@@ -105,8 +107,12 @@ Verified against the EDM test system (`test.edmbilisim.com.tr`) on
 2026-11-16 with an EDM-issued test account: login, outgoing listing,
 `CheckUser` and `Status` work. The first live run found that EDM requires
 `CHANNEL_NAME` and `REASON` in `REQUEST_HEADER` and a date filter when read
-documents are included; the defaults above come from that run. Sending,
-fetching and `MarkTaken` are not live-verified yet.
+documents are included; the defaults above come from that run.
+
+`Send` reached EDM's schema check: EDM requires a signed document (see
+Capabilities), so sending an unsigned builder document fails with
+`[11029] Ubl yapısı hatalı`. Fetching and `MarkTaken` are not live-verified
+yet.
 
 ## Live tests
 

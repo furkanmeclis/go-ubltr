@@ -141,7 +141,9 @@ func (p *Provider) Capabilities() provider.Capabilities {
 		},
 		Formats:        []provider.Format{provider.FormatUBL, provider.FormatPDF, provider.FormatHTML},
 		Protocol:       "soap",
-		SignsDocuments: true,
+		// The live test system rejects SendInvoice documents without a
+		// ds:Signature in ExtensionContent: callers sign with their mali mühür.
+		SignsDocuments: false,
 		AcceptsRawUBL:  true,
 		TestEndpoint:   true,
 	}

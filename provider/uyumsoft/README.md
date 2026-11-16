@@ -147,6 +147,22 @@ All errors are `*provider.Error`:
 if errors.Is(err, provider.ErrQuotaExceeded) { … }
 ```
 
+## Live verification
+
+The muhasebeizleme preset was verified against its test system
+(`test.api.muhasebeizleme.com`) on 2026-11-16 with a vendor-issued API key:
+credits, outbox and inbox listing (with paging), `Status`, UBL/PDF/HTML
+fetch, `CheckUser`, and an end-to-end `Send` of a builder-made TEMELFATURA
+that reached `SentToGib`.
+
+The first live send failed the integrator's checks: the integrator signs
+documents itself and appends its own `ds:Signature` and `cac:Signature`, so
+the builder's `ExtensionContent` placeholder and `cac:Signature` produced
+two `ExtensionContent` children (XSD) and two `cac:Signature` elements
+(GİB Schematron). For unsigned documents (no `ds:Signature`), `Send` now
+removes both before embedding; signed documents are sent unchanged. The
+Uyumsoft preset uses the same code path but has not been run live.
+
 ## Tests
 
 ```bash
