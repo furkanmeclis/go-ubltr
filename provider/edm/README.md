@@ -31,9 +31,9 @@ p, err := provider.Open("edm", provider.Config{Username: u, Password: pw, VKN: v
 | `Endpoint` | `Config.Endpoint` | Full `EFaturaEDM.svc` URL. Required outside the test system. |
 | `VKN` | `Config.VKN` | `SENDER/@vkn` |
 | `ApplicationName` | `application_name` | `REQUEST_HEADER/APPLICATION_NAME` (default `go-ubltr`) |
-| `ChannelName` | `channel_name` | `REQUEST_HEADER/CHANNEL_NAME` |
-| `Hostname` | `hostname` | `REQUEST_HEADER/HOSTNAME` |
-| `Reason` | `reason` | `REQUEST_HEADER/REASON` |
+| `ChannelName` | `channel_name` | `REQUEST_HEADER/CHANNEL_NAME` (default `go-ubltr`; EDM rejects requests without it) |
+| `Hostname` | `hostname` | `REQUEST_HEADER/HOSTNAME` (default `os.Hostname()`) |
+| `Reason` | `reason` | `REQUEST_HEADER/REASON` (default `go-ubltr`; EDM rejects requests without it) |
 
 Known service URLs:
 
@@ -67,8 +67,12 @@ retry. Call `Logout` when done.
 `SignsDocuments` and `AcceptsRawUBL` are set: the edm-efatura client sends
 unsigned UBL. `MaxBatch` and `MinPollInterval` are unknown (0).
 
-Listings have no cursor and no date filter (passing either is an
-`ErrInvalidRequest`); use `OnlyNew: true` with `MarkTaken`.
+Listings filter on the creation time: `From` / `To` are sent as
+`CR_START_DATE` / `CR_END_DATE` (Türkiye time). EDM refuses
+`READ_INCLUDED=true` without a date filter, so a listing that includes read
+documents and has no `From` / `To` covers the last `DefaultListWindow`
+(30 days). `OnlyNew: true` needs no window. `Cursor` is the `OFFSET` of the
+next page; `Page.Next` is set when a page is full (`Limit` items).
 
 ### Status mapping
 
@@ -95,6 +99,15 @@ fault on `Login` is reported as `ErrAuth`.
 - `github.com/rebasesoftware/edm-efatura` (login, send, get invoice,
   status, request header fields, test URL, status meanings).
 
+## Live verification
+
+Verified against the EDM test system (`test.edmbilisim.com.tr`) on
+2026-11-16 with an EDM-issued test account: login, outgoing listing,
+`CheckUser` and `Status` work. The first live run found that EDM requires
+`CHANNEL_NAME` and `REASON` in `REQUEST_HEADER` and a date filter when read
+documents are included; the defaults above come from that run. Sending,
+fetching and `MarkTaken` are not live-verified yet.
+
 ## Live tests
 
 Live tests only read and use your own account:
@@ -113,4 +126,4 @@ publicly, so they are left out:
   values are not specified.
 - e-Arşiv (`SendInvoice` with `EARSIVFATURA`, `CancelInvoice`,
   `ArchiveInvoice`), e-İrsaliye, credits (`CheckCounter`).
-- `OFFSET`, `START_DATE` / `CR_START_DATE` paging and date filters.
+- `START_DATE` / `END_DATE` (issue-date) filters; listings filter on the creation time only.

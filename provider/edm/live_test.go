@@ -59,7 +59,7 @@ func TestLiveListOutbox(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, it := range page.Items {
-		t.Logf("%s %s %s %s", it.ID, it.UUID, it.Status, it.ProviderCode)
+		t.Logf("%s %s %s %s sender=%s receiver=%s", it.ID, it.UUID, it.Status, it.ProviderCode, it.SenderVKN, it.ReceiverVKN)
 	}
 }
 

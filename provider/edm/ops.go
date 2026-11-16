@@ -3,6 +3,7 @@ package edm
 import (
 	"context"
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 
@@ -107,14 +108,36 @@ func (p *Provider) list(ctx context.Context, q provider.ListQuery, dir provider.
 	if q.Kind != "" && q.Kind != provider.EInvoice {
 		return nil, provider.Unsupported(Name, op, q.Kind)
 	}
+	offset := 0
 	if q.Cursor != "" {
-		return nil, invalid(string(op), "cursor paging is not supported; use OnlyNew with MarkTaken")
-	}
-	if !q.From.IsZero() || !q.To.IsZero() {
-		return nil, invalid(string(op), "date filters are not supported")
+		n, err := strconv.Atoi(q.Cursor)
+		if err != nil || n < 0 {
+			return nil, invalid(string(op), "cursor must be a non-negative OFFSET")
+		}
+		offset = n
 	}
 	read := !q.OnlyNew
-	key := searchKey{Limit: q.Limit, ReadIncluded: &read, Direction: direction(dir)}
+	key := searchKey{Limit: q.Limit, ReadIncluded: &read, Direction: direction(dir), Offset: offset}
+	// From/To filter on the creation time (CR_START_DATE / CR_END_DATE).
+	// EDM refuses READ_INCLUDED=true without a date filter, so listings that
+	// include read documents default to the last DefaultListWindow.
+	from, to := q.From, q.To
+	if read && from.IsZero() && to.IsZero() {
+		to = p.now()
+		from = to.Add(-DefaultListWindow)
+	}
+	if !from.IsZero() {
+		if to.IsZero() {
+			to = p.now()
+		}
+		if !from.Before(to) {
+			return nil, invalid(string(op), "From must be before To")
+		}
+		key.CrStartDate = from.In(turkey).Format(listDateTimeForm)
+		key.CrEndDate = to.In(turkey).Format(listDateTimeForm)
+	} else if !to.IsZero() {
+		key.CrEndDate = to.In(turkey).Format(listDateTimeForm)
+	}
 	resp, err := invoke[getInvoiceResponse](ctx, p, string(op), actionGetInvoice, func(h requestHeader) any {
 		return getInvoiceRequest{NS: nsTempuri, Header: h, SearchKey: key, HeaderOnly: headerOnlyYes, ContentType: contentTypeXML}
 	})
@@ -125,8 +148,21 @@ func (p *Provider) list(ctx context.Context, q provider.ListQuery, dir provider.
 	for _, inv := range resp.Invoices {
 		page.Items = append(page.Items, documentInfo(inv, dir))
 	}
+	if q.Limit > 0 && len(resp.Invoices) >= q.Limit {
+		page.Next = strconv.Itoa(offset + len(resp.Invoices))
+	}
 	return page, nil
 }
+
+// DefaultListWindow is the creation-time window used when a listing
+// includes read documents and no From/To is given.
+const DefaultListWindow = 30 * 24 * time.Hour
+
+// listDateTimeForm is the xs:dateTime form sent in CR_START_DATE and
+// CR_END_DATE (Türkiye local time, no zone).
+const listDateTimeForm = "2006-01-02T15:04:05"
+
+var turkey = time.FixedZone("TRT", 3*60*60)
 
 func direction(d provider.Direction) string {
 	if d == provider.Inbound {

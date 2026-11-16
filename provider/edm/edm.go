@@ -3,6 +3,7 @@ package edm
 import (
 	"errors"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -34,8 +35,9 @@ type Config struct {
 	// VKN is the sender VKN/TCKN sent as SENDER/@vkn.
 	VKN string
 	// ApplicationName, ChannelName, Hostname and Reason fill the matching
-	// REQUEST_HEADER fields. ApplicationName defaults to "go-ubltr"; the
-	// others are sent only when set.
+	// REQUEST_HEADER fields. ApplicationName and ChannelName default to
+	// "go-ubltr" and Reason to "go-ubltr" (EDM requires CHANNEL_NAME and
+	// REASON), Hostname to os.Hostname().
 	ApplicationName, ChannelName, Hostname, Reason string
 	// HTTP overrides the HTTP client.
 	HTTP provider.Doer
@@ -78,6 +80,20 @@ func New(cfg Config) (*Provider, error) {
 	}
 	if cfg.ApplicationName == "" {
 		cfg.ApplicationName = "go-ubltr"
+	}
+	// EDM rejects requests without CHANNEL_NAME ("CHANNEL_NAME verilmeli").
+	if cfg.ChannelName == "" {
+		cfg.ChannelName = "go-ubltr"
+	}
+	// EDM also rejects requests without REASON ("REASON verilmeli").
+	if cfg.Reason == "" {
+		cfg.Reason = "go-ubltr"
+	}
+	if cfg.Hostname == "" {
+		cfg.Hostname, _ = os.Hostname()
+		if cfg.Hostname == "" {
+			cfg.Hostname = "go-ubltr"
+		}
 	}
 	doer := cfg.HTTP
 	if doer == nil {

@@ -189,7 +189,8 @@ func TestSend(t *testing.T) {
 	r := s.last("SendInvoiceRequest")
 	for _, want := range []string{
 		`<tem:SendInvoiceRequest xmlns:tem="http://tempuri.org/"><REQUEST_HEADER><SESSION_ID>E1</SESSION_ID>`,
-		`<APPLICATION_NAME>go-ubltr</APPLICATION_NAME><COMPRESSED>N</COMPRESSED></REQUEST_HEADER>`,
+		`<REASON>go-ubltr</REASON><APPLICATION_NAME>go-ubltr</APPLICATION_NAME>`,
+		`<CHANNEL_NAME>go-ubltr</CHANNEL_NAME><COMPRESSED>N</COMPRESSED></REQUEST_HEADER>`,
 		`<SENDER vkn="1234567801"></SENDER><RECEIVER vkn="9876543210" alias="urn:mail:defaultpk@edmbilisim.com.tr"></RECEIVER><INVOICE TRXID="0"><CONTENT>`,
 	} {
 		if !strings.Contains(r.Body, want) {
@@ -366,16 +367,63 @@ func TestCheckUser(t *testing.T) {
 }
 
 func TestUnsupported(t *testing.T) {
-	p, _ := edm.New(edm.Config{Username: "u", Password: "p", Test: true})
+	// The endpoint is unreachable on purpose: every case must fail before
+	// any network call.
+	p, _ := edm.New(edm.Config{Username: "u", Password: "p", Endpoint: "http://127.0.0.1:1/EFaturaEDM.svc"})
 	ctx := context.Background()
 	arsiv := bytes.Replace(invoiceXML(), []byte("TEMELFATURA"), []byte("EARSIVFATURA"), 1)
 	if _, err := p.Send(ctx, &provider.Document{XML: arsiv}); !errors.Is(err, provider.ErrUnsupported) {
 		t.Fatalf("e-Arşiv send: %v", err)
 	}
-	if _, err := p.ListInbox(ctx, provider.ListQuery{From: time.Now()}); !errors.Is(err, provider.ErrInvalidRequest) {
-		t.Fatalf("date filter: %v", err)
+	now := time.Now()
+	if _, err := p.ListInbox(ctx, provider.ListQuery{From: now, To: now.Add(-time.Hour)}); !errors.Is(err, provider.ErrInvalidRequest) {
+		t.Fatalf("reversed date filter: %v", err)
+	}
+	if _, err := p.ListInbox(ctx, provider.ListQuery{Cursor: "x"}); !errors.Is(err, provider.ErrInvalidRequest) {
+		t.Fatalf("bad cursor: %v", err)
 	}
 	if _, err := p.Fetch(ctx, provider.FetchQuery{Kind: provider.EDespatch, UUID: testUUID}); !errors.Is(err, provider.ErrUnsupported) {
 		t.Fatalf("despatch fetch: %v", err)
+	}
+}
+
+func TestListDateWindowAndOffset(t *testing.T) {
+	headers, err := os.ReadFile(filepath.Join("testdata", "fixtures", "get_invoice_headers.xml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	s := newServer(t)
+	s.on("GetInvoiceRequest", func(int, request) string { return string(headers) })
+	p := newProvider(t, s)
+	ctx := context.Background()
+	trt := time.FixedZone("TRT", 3*60*60)
+	from := time.Date(2026, 11, 1, 0, 0, 0, 0, trt)
+	to := time.Date(2026, 11, 2, 12, 30, 0, 0, trt)
+	page, err := p.ListOutbox(ctx, provider.ListQuery{From: from, To: to, Limit: 1, Cursor: "20"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if page.Next != "21" {
+		t.Fatalf("next = %q", page.Next)
+	}
+	b := s.last("GetInvoiceRequest").Body
+	want := "<LIMIT>1</LIMIT><READ_INCLUDED>true</READ_INCLUDED><DIRECTION>OUT</DIRECTION>" +
+		"<CR_START_DATE>2026-11-01T00:00:00</CR_START_DATE><CR_END_DATE>2026-11-02T12:30:00</CR_END_DATE><OFFSET>20</OFFSET></INVOICE_SEARCH_KEY>"
+	if !strings.Contains(b, want) {
+		t.Fatalf("request lacks %s\n%s", want, b)
+	}
+	// Read documents included and no dates: EDM requires a window.
+	if _, err := p.ListOutbox(ctx, provider.ListQuery{}); err != nil {
+		t.Fatal(err)
+	}
+	if b := s.last("GetInvoiceRequest").Body; !strings.Contains(b, "<CR_START_DATE>") || !strings.Contains(b, "<CR_END_DATE>") {
+		t.Fatalf("default window missing\n%s", b)
+	}
+	// Only new documents: no window needed.
+	if _, err := p.ListInbox(ctx, provider.ListQuery{OnlyNew: true}); err != nil {
+		t.Fatal(err)
+	}
+	if b := s.last("GetInvoiceRequest").Body; strings.Contains(b, "CR_START_DATE") {
+		t.Fatalf("unexpected window\n%s", b)
 	}
 }

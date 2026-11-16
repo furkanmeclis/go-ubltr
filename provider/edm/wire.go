@@ -125,6 +125,9 @@ type searchKey struct {
 	UUID         string `xml:"UUID,omitempty"`
 	ReadIncluded *bool  `xml:"READ_INCLUDED,omitempty"`
 	Direction    string `xml:"DIRECTION,omitempty"`
+	CrStartDate  string `xml:"CR_START_DATE,omitempty"`
+	CrEndDate    string `xml:"CR_END_DATE,omitempty"`
+	Offset       int    `xml:"OFFSET,omitempty"`
 }
 
 type getInvoiceRequest struct {
