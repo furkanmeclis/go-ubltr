@@ -15,7 +15,7 @@ require (
 	github.com/chromedp/chromedp v0.16.0 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/dlclark/regexp2 v1.12.0 // indirect
-	github.com/furkanmeclis/go-ubltr/provider/edm v0.1.1-0.20261116160246-30eb4c49f15f
+	github.com/furkanmeclis/go-ubltr/provider/edm v0.1.1-0.20261116161239-fd810c22e833
 	github.com/furkanmeclis/go-ubltr/provider/isnet v0.0.0-20261115202628-6e840400d911
 	github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115202628-6e840400d911
 	github.com/furkanmeclis/go-ubltr/provider/nes v0.0.0-20261115194115-1bb433204e1d
@@ -24,7 +24,7 @@ require (
 	github.com/furkanmeclis/go-ubltr/provider/sovos v0.0.0-20261115194115-1bb433204e1d
 	github.com/furkanmeclis/go-ubltr/provider/trendyol v0.0.0-20261115194115-1bb433204e1d
 	github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0-20261115194115-1bb433204e1d
-	github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0-20261115194115-1bb433204e1d
+	github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.1.1-0.20261116161239-fd810c22e833
 	github.com/go-json-experiment/json v0.0.0-20260623181947-01eb4420fa68 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect

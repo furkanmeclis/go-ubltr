@@ -12,8 +12,8 @@ github.com/furkanmeclis/go-ubltr v0.0.0-20261115200118-aac84cd0da85 h1:cqKvoxUUm
 github.com/furkanmeclis/go-ubltr v0.0.0-20261115200118-aac84cd0da85/go.mod h1:jOWBVxnjvwa5sC1BmJBbiSq1rK6AnueUUZXYdpDJmzU=
 github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7 h1:IKqMt3f5vCN3liEei1PNGtmlia+8mHRvODT2FgULbug=
 github.com/furkanmeclis/go-ubltr/provider v0.0.0-20261115193915-437b4f0c0da7/go.mod h1:eQeCgKskh/4Nu487oWkIr0hnmocNGdg7Wwmibbko+kI=
-github.com/furkanmeclis/go-ubltr/provider/edm v0.1.1-0.20261116160246-30eb4c49f15f h1:0eKk95GMwOdIdrV5X5erSVaTjIHDMXsXzqeE72K7JBw=
-github.com/furkanmeclis/go-ubltr/provider/edm v0.1.1-0.20261116160246-30eb4c49f15f/go.mod h1:hxuPH7qcXu+nrdJd2QdqdsGtx6q9LVdp/bWcIqx+uz8=
+github.com/furkanmeclis/go-ubltr/provider/edm v0.1.1-0.20261116161239-fd810c22e833 h1:xCRKHOT16U4uEE9BoNFawkpT77g6RHdaKcXigGwaKh0=
+github.com/furkanmeclis/go-ubltr/provider/edm v0.1.1-0.20261116161239-fd810c22e833/go.mod h1:hxuPH7qcXu+nrdJd2QdqdsGtx6q9LVdp/bWcIqx+uz8=
 github.com/furkanmeclis/go-ubltr/provider/isnet v0.0.0-20261115202628-6e840400d911 h1:zHnwYVFdTUY6EtQj0O7hBB9ST22GT6NB0/Rd4K8Z0j0=
 github.com/furkanmeclis/go-ubltr/provider/isnet v0.0.0-20261115202628-6e840400d911/go.mod h1:RxUftEQQHT+mBdAxmnhhN0rMo/Z8mPl8LCbek8kSrgY=
 github.com/furkanmeclis/go-ubltr/provider/izibiz v0.0.0-20261115202628-6e840400d911 h1:cHb2z2+ipYpi5DB9A+X/6XIUGVvWe7j6XXMdeFppAGo=
@@ -30,8 +30,8 @@ github.com/furkanmeclis/go-ubltr/provider/trendyol v0.0.0-20261115194115-1bb4332
 github.com/furkanmeclis/go-ubltr/provider/trendyol v0.0.0-20261115194115-1bb433204e1d/go.mod h1:9hv6XcfjXLPaNqNFoV0i7do3N4nj0wbhxlbi/NfcBnY=
 github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0-20261115194115-1bb433204e1d h1:OcjNllEToziB8BTm8TdzjdVc0d77SHd9diAUZpig1nk=
 github.com/furkanmeclis/go-ubltr/provider/turkcell v0.0.0-20261115194115-1bb433204e1d/go.mod h1:wxzIpjBwh2WYt2vgJ4hvZobDUQAIen1OAzpZUzyleUY=
-github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0-20261115194115-1bb433204e1d h1:5nrMTX59rmqpwf85NJb3kh5sB1yAnqibp0oIdHMXriw=
-github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.0.0-20261115194115-1bb433204e1d/go.mod h1:7M4Kg80kRF56NtjxNf82p673iJ6HUYDAuGg69KU25NM=
+github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.1.1-0.20261116161239-fd810c22e833 h1:JBaTk+1zAHsnttMeJUGD0SXU/TTP+qj2kHADzQxnY/w=
+github.com/furkanmeclis/go-ubltr/provider/uyumsoft v0.1.1-0.20261116161239-fd810c22e833/go.mod h1:7M4Kg80kRF56NtjxNf82p673iJ6HUYDAuGg69KU25NM=
 github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0-20261115194115-1bb433204e1d h1:yXhYrwf9NEyI2jiczmEhIiwT+AQeT9K40HQ1FdLRTTQ=
 github.com/furkanmeclis/go-ubltr/provider/watch v0.0.0-20261115194115-1bb433204e1d/go.mod h1:sOowQbOE3Y9LdweXyUwknWzMoJbys3iu1V6cumlekTE=
 github.com/furkanmeclis/go-ubltr/render v0.0.0-20261115193915-437b4f0c0da7 h1:lbgkfWRkvfbSDXTEX4B/pnnrBrMpQ6gnZ/aSAjLsNgE=
